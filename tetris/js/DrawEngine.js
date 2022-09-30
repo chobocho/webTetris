@@ -1,0 +1,425 @@
+class Button {
+  constructor(name, code, x, y, width, height, alpha) {
+    this.name = name;
+    this.code = code;
+    this.x1 = x;
+    this.y1 = y;
+    this.x2 = x + width;
+    this.y2 = y + height;
+    this.alpha = alpha;
+  }
+
+  in(x, y) {
+    if (x < this.x1 || x > this.x2 || y < this.y1 || y > this.y2) {
+      console.log(this.name, "-1");
+      return -1;
+    }
+    console.log(this.name, this.code);
+    return this.code;
+  }
+}
+
+class IdleDrawEngine extends IdleGameState {
+  constructor() {
+    super();
+
+    let btn_w = blockSize * (board_width + 6) / 4;
+    let btn_h = blockSize * 3;
+    let image_size = btn_h - 3;
+
+    this.buttons = new Array();
+    this.buttons.push(new Button('play', 83, startX + btn_w * 3, blockSize * board_height, image_size, image_size, 1.0));
+    this.buttons.push(new Button('start', 83, startX + blockSize * 2, blockSize * 5, blockSize*6, blockSize*2, 1.0));
+  }
+
+  OnDraw(canvas, tetris, block_image, button_image) {
+    this.__drawKeypad(canvas, button_image);
+  }
+
+  __drawKeypad(canvas_, button_image) {
+    let _canvas = canvas_;
+
+    _canvas.beginPath();
+    this.buttons.forEach(e => {
+      _canvas.drawImage(button_image[e.name], e.x1, e.y1, e.x2-e.x1, e.y2-e.y1);
+    });
+    _canvas.closePath();
+  }
+} 
+
+class PlayDrawEngine extends PlayGameState {
+  constructor() {
+    super();
+
+    let btn_w = blockSize * (board_width + 6) / 4;
+    let btn_h = blockSize * 3;
+    let image_size = btn_h - 3;
+
+    this.buttons = new Array();
+    this.buttons.push(new Button('left', 37, startX, blockSize * (board_height + 4), image_size, image_size, 1.0));
+    this.buttons.push(new Button('right', 39, startX + btn_w * 2, blockSize * (board_height + 4), image_size, image_size, 1.0));
+    this.buttons.push(new Button('down', 40, startX + btn_w, blockSize * (board_height + 4), image_size, image_size, 1.0));
+    this.buttons.push(new Button('up', 38, startX + btn_w * 3, blockSize * (board_height + 4), image_size, image_size, 1.0));
+    this.buttons.push(new Button('bottom', 32, startX + btn_w, blockSize * (board_height + 1), image_size, image_size, 1.0));
+    this.buttons.push(new Button('hold', 17, startX, blockSize * board_height, image_size, image_size, 1.0));
+    this.buttons.push(new Button('pause', 80, startX + btn_w * 3, blockSize * board_height, image_size, image_size, 1.0));
+  }
+
+  OnDraw(canvas, tetris, block_image, button_image) {
+    this.__drawCurrentBlock(canvas, tetris.getCurrentBlock(), block_image);
+    this.__drawNextBlock(canvas, tetris.getNextBlock(), block_image);
+    this.__drawHoldBlock(canvas, tetris.getHoldBlock(), block_image);
+    this.__drawKeypad(canvas, button_image);
+  }
+
+  __drawCurrentBlock(canvas_, block, block_image) {
+    let _canvas = canvas_;
+    let cb_startX = startX + block.x * blockSize;
+    let cb_startY = block.y * blockSize;
+    for (var y = 0; y < block.h; ++y) {
+      for (var x = 0; x < block.w; ++x) {
+        if (block.block[block.r][y][x] != 0) {
+          _canvas.drawImage(block_image[block.type], x * blockSize + cb_startX, y * blockSize + cb_startY, blockSize, blockSize);
+        }
+      }
+    }
+  }
+
+  __drawNextBlock(canvas_, block, block_image) {
+    let _canvas = canvas_;
+
+    let small_block_size = blockSize * 0.7;
+    let nb_startX = startX + (board_width + 2) * blockSize;
+    let nb_startY = blockSize + small_block_size;
+
+    for (var y = 0; y < block.h; ++y) {
+      for (var x = 0; x < block.w; ++x) {
+        if (block.block[block.r][y][x] != 0) {
+          _canvas.drawImage(block_image[block.type], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
+        }
+      }
+    }
+  }
+
+  __drawHoldBlock(canvas_, block, block_image) {
+    let _canvas = canvas_;
+    let hb_startX = startX + (board_width + 2) * blockSize;
+    let hb_startY = 7.5 * blockSize;
+    for (var y = 0; y < block.h; ++y) {
+      for (var x = 0; x < block.w; ++x) {
+        if (block.block[block.r][y][x] != 0) {
+          _canvas.drawImage(block_image[block.type], x * (blockSize/2) + hb_startX, y * (blockSize/2) + hb_startY, blockSize/2, blockSize/2);
+        }
+      }
+    }
+  }
+
+  __drawKeypad(canvas_, button_image) {
+    let _canvas = canvas_;
+
+    _canvas.beginPath();
+    this.buttons.forEach(e => {
+      _canvas.drawImage(button_image[e.name], e.x1, e.y1, e.x2-e.x1, e.y2-e.y1);
+    });
+    _canvas.closePath();
+  }
+}
+
+class PauseDrawEngine extends PauseGameState {
+  constructor() {
+    super();
+
+    let btn_w = blockSize * (board_width + 6) / 4;
+    let btn_h = blockSize * 3;
+    let image_size = btn_h - 3;
+
+    this.buttons = new Array();
+    this.buttons.push(new Button('play', 83, startX + btn_w * 3, blockSize * board_height, image_size, image_size, 1.0));
+    this.buttons.push(new Button('start', 83, startX + blockSize * 2, blockSize * 5, blockSize*6, blockSize*2, 1.0));
+  }
+
+  OnDraw(canvas, tetris, block_image, button_image) {
+    this.__drawKeypad(canvas, button_image);
+  }
+
+  __drawKeypad(canvas_, button_image) {
+    let _canvas = canvas_;
+
+    _canvas.beginPath();
+    this.buttons.forEach(e => {
+      _canvas.drawImage(button_image[e.name], e.x1, e.y1, e.x2-e.x1, e.y2-e.y1);
+    });
+    _canvas.closePath();
+  }
+}
+
+class GameoverDrawEngine extends GameoverGameState {
+  constructor() {
+    super();
+
+    let btn_w = blockSize * (board_width + 6) / 4;
+    let btn_h = blockSize * 3;
+    let image_size = btn_h - 3;
+
+    this.buttons = new Array();
+    this.buttons.push(new Button('play', 83, startX + btn_w * 3, blockSize * board_height, image_size, image_size, 1.0));
+    this.buttons.push(new Button('gameover', 83, startX + blockSize * 2, blockSize * 5, blockSize*6, blockSize*2, 1.0));
+  }
+
+  OnDraw(canvas, tetris, block_image, button_image) {
+    this.__drawKeypad(canvas, button_image);
+  }
+
+  __drawKeypad(canvas_, button_image) {
+    let _canvas = canvas_;
+
+    _canvas.beginPath();
+    this.buttons.forEach(e => {
+      _canvas.drawImage(button_image[e.name], e.x1, e.y1, e.x2-e.x1, e.y2-e.y1);
+    });
+    _canvas.closePath();
+  }
+}
+
+class DrawEngine extends Observer {
+  constructor(tetris) {
+    super();
+    this.tetris = tetris;
+    this.tetris.register(this);
+    this.__LoadImage();
+    this.__initValue();
+  }
+
+  __LoadImage() {
+    this.back_image = LoadImage("img/back.jpg");
+
+    this.left_image = LoadImage("img/left.png");
+    this.right_image = LoadImage("img/right.png");
+    this.down_image = LoadImage("img/down.png");
+    this.bottom_image = LoadImage("img/bottom.png");
+
+    this.rotate_image = LoadImage("img/rotate.png");
+    this.play_image = LoadImage("img/play.png");
+    this.pause_image = LoadImage("img/pause.png");
+    this.hold_image = LoadImage("img/hold.png");
+
+    this.blank_image = LoadImage("img/blank.png");
+    this.next_image = LoadImage("img/next.png");
+    this.hold_text_image = LoadImage("img/hold_text.png");
+    this.score_image = LoadImage("img/score.png");
+    this.high_score_image = LoadImage("img/high_score.png");
+
+    this.start_image = LoadImage("img/start.png");
+    this.gameover_image = LoadImage("img/gameover.png");
+
+    this.n0 = LoadImage("img/sn00.png");
+    this.n1 = LoadImage("img/sn01.png");
+    this.n2 = LoadImage("img/sn02.png");
+    this.n3 = LoadImage("img/sn03.png");
+    this.n4 = LoadImage("img/sn04.png");
+    this.n5 = LoadImage("img/sn05.png");
+    this.n6 = LoadImage("img/sn06.png");
+    this.n7 = LoadImage("img/sn07.png");
+    this.n8 = LoadImage("img/sn08.png");
+    this.n9 = LoadImage("img/sn09.png");
+
+    this.buttonImage = {};
+    this.buttonImage['left'] = this.left_image;
+    this.buttonImage['right'] = this.right_image;
+    this.buttonImage['down'] = this.down_image;
+    this.buttonImage['bottom'] = this.bottom_image;
+    this.buttonImage['up'] = this.rotate_image;
+
+    this.buttonImage['hold'] = this.hold_image;
+    this.buttonImage['play'] = this.play_image;
+    this.buttonImage['pause'] = this.pause_image;
+
+    this.buttonImage['blank'] = this.blank_image;
+    this.buttonImage['next'] = this.next_image;
+    this.buttonImage['hold_text'] = this.hold_text_image;
+    this.buttonImage['score'] = this.score_image;
+    this.buttonImage['high_score'] = this.high_score_image;
+
+    this.buttonImage['start'] = this.start_image;
+    this.buttonImage['gameover'] = this.gameover_image;
+    
+    this.buttonImage['0'] = this.n0;
+    this.buttonImage['1'] = this.n1;
+    this.buttonImage['2'] = this.n2;
+    this.buttonImage['3'] = this.n3;
+    this.buttonImage['4'] = this.n4;
+    this.buttonImage['5'] = this.n5;
+    this.buttonImage['6'] = this.n6;
+    this.buttonImage['7'] = this.n7;
+    this.buttonImage['8'] = this.n8;
+    this.buttonImage['9'] = this.n9;
+
+    this.back_block = LoadImage("img/black.png");
+    this.blue_block = LoadImage("img/blue.png");
+    this.cyan_block = LoadImage("img/cyan.png");
+    this.gray_block = LoadImage("img/gray.png");
+    this.green_block = LoadImage("img/green.png");
+    this.magenta_block = LoadImage("img/magenta.png");
+    this.orange_block = LoadImage("img/orange.png");
+    this.red_block = LoadImage("img/red.png");
+    this.yellow_block = LoadImage("img/yellow.png");
+
+    this.block_image = [];
+    this.block_image.push(this.gray_block);
+    this.block_image.push(this.blue_block);
+    this.block_image.push(this.cyan_block);
+    this.block_image.push(this.green_block);
+    this.block_image.push(this.magenta_block);
+    this.block_image.push(this.orange_block);
+    this.block_image.push(this.red_block);
+    this.block_image.push(this.yellow_block);
+  }
+
+  OnDraw() {
+    this.__drawBoard();
+  }
+
+  __initValue() {
+    this.initState = new InitGameState();
+    this.idleState = new IdleDrawEngine();
+    this.playState = new PlayDrawEngine();
+    this.pauseState = new PauseDrawEngine();
+    this.gameoverState = new GameoverDrawEngine(); 
+    this.state = this.initState;
+
+    let btn_w = blockSize * (board_width + 6) / 4;
+    let btn_h = blockSize * 3;
+    let image_size = btn_h - 3;
+
+    this.startX = startX;
+
+    this.buttons = new Array();
+    this.buttons.push(new Button('left', 0, this.startX, blockSize * (board_height + 4), image_size, image_size, 0.3));
+    this.buttons.push(new Button('right', 0, this.startX + btn_w * 2, blockSize * (board_height + 4), image_size, image_size, 0.3));
+    this.buttons.push(new Button('down', 0, this.startX + btn_w, blockSize * (board_height + 4), image_size, image_size, 0.3));
+    this.buttons.push(new Button('up', 0, this.startX + btn_w * 3, blockSize * (board_height + 4), image_size, image_size, 0.3));
+    this.buttons.push(new Button('bottom', 0, this.startX + btn_w, blockSize * (board_height + 1), image_size, image_size, 0.3));
+
+    this.buttons.push(new Button('next',  0, this.startX + blockSize * 11, 0, blockSize*4, blockSize, 1.0));
+    this.buttons.push(new Button('blank', 0, this.startX + blockSize * 11, blockSize * 1, blockSize*4, blockSize*4, 0.5));
+    this.buttons.push(new Button('hold_text', 0, this.startX + blockSize * 11, blockSize * 6, blockSize*4, blockSize, 1.0));
+    this.buttons.push(new Button('blank', 0, this.startX + blockSize * 11, blockSize * 7, blockSize*4, blockSize*3, 0.5));
+
+    this.buttons.push(new Button('score', 0, this.startX + blockSize * 11, blockSize * 11, blockSize*4, blockSize, 1.0));
+    this.buttons.push(new Button('blank', 0, this.startX + blockSize * 11, blockSize * 12, blockSize*4, blockSize, 0.5));
+    this.buttons.push(new Button('high_score', 0, this.startX + blockSize * 11, blockSize * 14, blockSize*4, blockSize, 1.0));
+    this.buttons.push(new Button('blank', 0, this.startX + blockSize * 11, blockSize * 15, blockSize*4, blockSize, 0.5));
+  }
+
+  __drawBackGround() {
+    bufCtx.beginPath();
+    bufCtx.drawImage(this.back_image, 0, 0, canvas.width, canvas.height);
+
+    let startX = 0;
+    let startY = 0;
+
+    let board = this.tetris.getBoard();
+
+    bufCtx.globalAlpha = 0.5;
+    for (let y = 0; y < board_height; y++) {
+      for (let x = 0; x < board_width; x++) {
+        bufCtx.drawImage(this.back_block, this.startX + x * blockSize + startX, y * blockSize + startY, blockSize, blockSize);
+      }
+    }
+    bufCtx.globalAlpha = 1.0;
+
+    for (let y = 0; y < board_height; y++) {
+      for (let x = 0; x < board_width; x++) {
+        if (board[y][x] == 0) {
+          continue;
+        }
+        bufCtx.drawImage(this.block_image[0], this.startX + x * blockSize + startX, y * blockSize + startY, blockSize, blockSize);
+      }
+    }
+
+    bufCtx.closePath();
+    bufCtx.stroke();
+  }
+
+  __drawKeypad() {
+    bufCtx.beginPath();
+    this.buttons.forEach(e => {
+      bufCtx.globalAlpha = e.alpha;
+      bufCtx.drawImage(this.buttonImage[e.name], e.x1, e.y1, e.x2-e.x1, e.y2-e.y1);
+      bufCtx.globalAlpha = 1.0;
+    });
+    bufCtx.closePath();
+    bufCtx.stroke();
+  }
+
+  __drawScore(canvas_, button_image, score, high_score) {
+    let code = new Array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+    let _canvas = canvas_;
+    _canvas.beginPath();
+    let pos = 14;
+
+    _canvas.drawImage(button_image[code[score%10]], this.startX + blockSize * pos, blockSize * 12, blockSize, blockSize);
+    while (score > 0) {
+      _canvas.drawImage(button_image[code[score%10]], this.startX + blockSize * pos, blockSize * 12, blockSize, blockSize);
+      score = Math.floor(score / 10);
+      pos--;
+    }
+
+    pos = 14;
+    _canvas.drawImage(button_image[code[high_score%10]], this.startX + blockSize * pos, blockSize * 15, blockSize, blockSize);
+    while (high_score > 0) {
+      _canvas.drawImage(button_image[code[high_score%10]], this.startX + blockSize * pos, blockSize * 15, blockSize, blockSize);
+      high_score = Math.floor(high_score / 10);
+      pos--;
+    }
+    _canvas.closePath();
+  }
+
+  __drawBoard() {
+    this.__drawBackGround();
+    this.__drawKeypad();
+    this.state.OnDraw(bufCtx, this.tetris, this.block_image, this.buttonImage, this.startX);
+    this.__drawScore(bufCtx, this.buttonImage, tetris.getScore(), tetris.getHighScore());
+    cvs.clearRect(0, 0, canvas.width, canvas.height);
+    cvs.drawImage(bufCanvas, 0, 0);
+  }
+
+  getEventCode(x, y) {
+    console.log("GetEventCode:", x, y);
+
+    let result = -1;
+
+    this.state.buttons.forEach(e => {
+      let code = e.in(x, y);
+      if (code != -1) {
+        result = code;
+      }
+    });
+
+    return result;
+  }
+
+  update(state) {
+    console.log("Observer update: ", state);
+    switch(state) {
+      case 0:
+        this.state = this.initState;
+        break;
+      case 1:
+        this.state = this.idleState;
+        break;
+      case 2:
+        this.state = this.playState;
+        break;
+      case 3:
+        this.state = this.pauseState;
+        break;
+      case 4:
+        this.state = this.gameoverState;
+        break;
+      default:
+        console.log("Error: Unknown state ", state);
+        break;
+    }
+  }
+}
