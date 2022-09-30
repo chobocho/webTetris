@@ -92,38 +92,18 @@ function InitValue() {
   canvas.addEventListener("mouseup", mouseListener);
 
   window.onkeydown = KeyPressEvent;
+
+  window.addEventListener('resize', resizeCanvas, false);
 }
 
 function InitCanvas() {
-  height = window.innerHeight;
-  width = window.innerWidth;
-
-  if (height == 0 || width == 0) {
-    console.log("Error: width == 0");
-    width = 412;
-    height = 725;
-  }
-
-  console.log(">Width:", width);
-  console.log(">Heigth:", height);
-
-  canvas = document.getElementById("canvas");
-  canvas.width = width;
-  canvas.height = height;
+  resizeCanvas();
   cvs = canvas.getContext("2d");
 
   bufCanvas = document.createElement("canvas");
-  bufCanvas.width = canvas.width;
-  bufCanvas.height = canvas.height;
+  bufCanvas.width = gScreenX;
+  bufCanvas.height = gScreenY;
   bufCtx = bufCanvas.getContext("2d");
-}
-
-function DecisionBlockSize() {
-  block_size_w = height / (board_height + 7);
-  block_size_h = width / (board_width + 6);
-  blockSize = block_size_w < block_size_h ? block_size_w : block_size_h;
-  startX = (canvas.width - (board_width + 6) * blockSize) / 2;
-  console.log(blockSize);
 }
 
 function OnDraw() {
@@ -137,45 +117,36 @@ function resizeCanvas() {
   let height = window.innerHeight;
   let width = window.innerWidth;
 
-  if (height < 200 || width < 300) {
+  if (width < 170 || height < 270) {
     printf("[main]", "Error: width == 0");
-    width = 200;
-    height = 300;
+    width = 170;
+    height = 270;
   }
 
   canvas.width = width;
   canvas.height = height;
 
-  let log_msg = "Width: " + canvas.width + " Height: " + canvas.height;
+  let log_msg = "Canvas Width: " + canvas.width + " Height: " + canvas.height;
   printf("[main] resizeCanvas: ", log_msg);
-
+  log_msg = "Width: " + width + " Height: " + height;
+  printf("Window [main] resizeCanvas: ", log_msg);
   DecisionBlockSize();
 }
 
-function InitCanvas_() {
-  resizeCanvas();
-  cvs = canvas.getContext("2d");
-
-  bufCanvas = document.createElement("canvas");
-  bufCanvas.width = gScreenX;
-  bufCanvas.height = gScreenY;
-  bufCtx = bufCanvas.getContext("2d");
+function DecisionBlockSize() {
+  // 17 = 1 + 10 + 1 + 4 + 1
+  let bsX = canvas.width / 17;
+  // 27 = 1 + 18 + 1 + 3 + 3 + 1
+  let bsY = canvas.height / 27;
+  let bs = bsX < bsY ? bsX : bsY;
+  gCanvasStartX = (canvas.width - bs * 17) / 2;
+  gScale = bs / 40;
+  gBlockSize = bs;
+  printf("[main] DecisionBlockSize", "gCanvasStartX:" + gCanvasStartX + ", scale: " + gScale + ", blockSize: " + bs);
 }
-
-function DecisionBlockSize_() {
-  let screenX = canvas.width / 40;
-  let screenY = canvas.height / 60;
-  gBlockSize = screenX < screenY ? screenX : screenY;
-  gStartX = (canvas.width - gBlockSize * 40) / 2;
-  gScale = gBlockSize / 10;
-  printf("[main] DecisionBlockSize", "gStartX:" + gStartX + ", scale: " + gScale);
-}
-
-window.addEventListener('resize', resizeCanvas, false);
 
 function onLoadPage() {
   InitCanvas();
-  DecisionBlockSize();
   InitValue();
   setInterval(OnDraw, 20);
 }

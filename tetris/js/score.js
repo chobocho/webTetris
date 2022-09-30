@@ -3,7 +3,7 @@ class Score {
     this.score = 0;
     this.highscore = 0;
     this.removedLineCount = 0;
-    this.scoreTable = new Array(0, 1, 2, 5, 10);
+    this.scoreTable = [0, 1, 2, 5, 10];
   }
 
   init() {
@@ -21,14 +21,14 @@ class Score {
 
   increase(removeLines) {
      this.score += this.scoreTable[removeLines];
-     this.__updateHighScore();
+     this._updateHighScore();
   }
 
   add(score) {
     this.score += score;
-    this.__updateHighScore();
+    this._updateHighScore();
  }
-  __updateHighScore() {
+  _updateHighScore() {
     this.highscore = this.highscore > this.score ? this.highscore : this.score;
   }
 }
