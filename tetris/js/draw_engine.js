@@ -10,11 +10,15 @@ class Button {
   }
 
   in(tx, ty) {
-    let x = (tx - gCanvasStartX) / gScale * 1.06;
-    let y = ty / gScale * 1.08;
-    console.log("[Button] " + this.name, tx, "->" + x + ", " + ty + "->" + y);
-    console.log("[Button] " + this.x1 + ", " + this.y1 + ", " + this.x2 + ", " + this.y2);
-    if (x < this.x1 || x > this.x2 || y < this.y1 || y > this.y2) {
+    let bx1 = gCanvasStartX + this.x1 * gScale;
+    let by1 = this.y1 * gScale;
+    let bx2 = gCanvasStartX + this.x2 * gScale;
+    let by2 = this.y2 * gScale;
+
+    console.log("[Button]" + this.name, tx + ", " + ty);
+    console.log("[Button]" + this.name, bx1 + ", " + by1 + ", " + bx2 + ", " + by2);
+
+    if (tx < bx1 || tx > bx2 || ty < by1 || ty > by2) {
       console.log(this.name, "-1");
       return -1;
     }

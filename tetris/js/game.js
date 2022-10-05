@@ -54,14 +54,14 @@ function KeyPressEvent(e) {
 }
 
 function processMouseEvent(x, y) {
-  code = drawEngine.getEventCode(x, y);
+  let code = drawEngine.getEventCode(x, y);
   console.log("processMouseEvent ", code);
   processEvent(code);
 }
 
 function getMousePosition(event) {
-  var x = event.pageX - canvas.offsetLeft;
-  var y = event.pageY - canvas.offsetTop;
+  let x = event.pageX; // - canvas.offsetLeft;
+  let y = event.pageY; // + canvas.offsetTop;
   return {X: x, Y: y};
 }
 
@@ -72,7 +72,7 @@ function mouseListener(event) {
     case "mousemove":
       break;
     case "mouseup":
-      pos = getMousePosition(event)
+      let pos = getMousePosition(event)
       processMouseEvent(pos.X, pos.Y);
       break;
     case "mouseout":
