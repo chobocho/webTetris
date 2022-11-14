@@ -60,8 +60,8 @@ function processMouseEvent(x, y) {
 }
 
 function getMousePosition(event) {
-  let x = event.pageX; // - canvas.offsetLeft;
-  let y = event.pageY; // + canvas.offsetTop;
+  let x = event.pageX - canvas.offsetLeft;
+  let y = event.pageY - canvas.offsetTop;
   return {X: x, Y: y};
 }
 
@@ -123,8 +123,13 @@ function resizeCanvas() {
     height = 270;
   }
 
-  canvas.width = width;
-  canvas.height = height;
+  let bsX = width / 17;
+  let bsY = height / 28;
+  let bs = bsX < bsY ? bsX : bsY;
+  bs = Math.round(bs) - 1;
+
+  canvas.width = bs*17;
+  canvas.height = bs*27;
 
   let log_msg = "Canvas Width: " + canvas.width + " Height: " + canvas.height;
   printf("[main] resizeCanvas: ", log_msg);
@@ -142,6 +147,7 @@ function DecisionBlockSize() {
   gCanvasStartX = (canvas.width - bs * 17) / 2;
   gScale = bs / 40;
   gBlockSize = bs;
+
   printf("[main] DecisionBlockSize", "gCanvasStartX:" + gCanvasStartX + ", scale: " + gScale + ", blockSize: " + bs);
 }
 
