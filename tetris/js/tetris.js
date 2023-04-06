@@ -18,12 +18,13 @@ class Observer {
 }
 
 class Tetris {
-  constructor(width, height) {
+  constructor(width, height, scoreDB) {
     this.width = width;
     this.height = height;
 
+    this._scoreDB = scoreDB;
     this.board = new TetrisBoard(width, height);
-    this.score = new Score();
+    this.score = new Score(scoreDB.getScore());
 
     this.initState = new InitState();
     this.idleState = new IdleState();
@@ -39,6 +40,13 @@ class Tetris {
     this.board.init();
     this.score.init();
     this.setState(this.idleState);
+  }
+
+  resumeGame(gameInfo) {
+    this.board.set(gameInfo);
+    this.playState.set(gameInfo);
+    this.score.set(gameInfo['score']);
+    this.setState(this.pauseState);
   }
 
   register(observer) {
@@ -93,6 +101,7 @@ class Tetris {
   pause() {
     console.log("Pause");
     this.setState(this.pauseState);
+    this.saveGame();
   }
 
   setState(newState) {
@@ -120,6 +129,24 @@ class Tetris {
 
   getHighScore() {
     return this.score.getHighScore();
+  }
+
+  getGameInfo() {
+    return {
+      'gameSate': 3,
+      'score': this.getScore(),
+      'next_block': this.playState.nextBlock.getType(),
+      'hold_block': this.playState.holdBlock.getType(),
+      'current_block': this.playState.currentBlock.getType(),
+      'x': this.playState.currentBlock.getX(),
+      'y': this.playState.currentBlock.getY(),
+      'r': this.playState.currentBlock.getR(),
+      'board': this.board.getBoard()
+    };
+  }
+
+  saveGame() {
+    this._scoreDB.setBoard(this.getGameInfo());
   }
 }
 

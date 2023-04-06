@@ -16,9 +16,11 @@ let board_height = 18;
 let board_width = 10;
 let tetris;
 let drawEngine;
+let gameEngine;
+let scoreDB;
 
-var LoadImage = function (image_name) {
-    var load_image = new Image();
+let LoadImage = function (image_name) {
+    let load_image = new Image();
     load_image.src = image_name;
     return load_image;
 }

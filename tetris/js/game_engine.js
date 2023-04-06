@@ -1,6 +1,7 @@
 class GameEngine extends Observer {
-  constructor(tetris) {
+  constructor(tetris, scoreDB) {
     super();
+    this._scoreDB = scoreDB;
     this.tetris = tetris;
     this.tetris.register(this);
 
@@ -8,14 +9,15 @@ class GameEngine extends Observer {
     this.idleState = new IdleGameState();
     this.playState = new PlayGameState();
     this.pauseState = new PauseGameState();
-    this.gameoverState = new GameoverGameState(); 
+    this.gameoverState = new GameoverGameState();
     this.state = this.initState;
     this.__tick = 0;
   }
 
   tick() {
       this.__tick++;
-      if (this.__tick > 50) {
+      const score = Math.max(this.tetris.getScore() * 25 / 1000, 25);
+      if (this.__tick > (50-score)) {
         this.moveDown();
         this.__tick = 0;
       }
@@ -59,7 +61,7 @@ class GameEngine extends Observer {
     this.tetris.pause();
   }
 
-  update(state) {
+  update(state){
     console.log("Observer update: ", state);
     switch(state) {
       case 0:
@@ -73,9 +75,18 @@ class GameEngine extends Observer {
         break;
       case 3:
         this.state = this.pauseState;
+        if (this.tetris.score.needToSave()) {
+          console.log("[GameEngine] PauseState> ", "SaveScore");
+          this._scoreDB.setScore(this.tetris.score.getHighScore());
+        }
         break;
       case 4:
         this.state = this.gameoverState;
+        if (this.tetris.score.needToSave()) {
+          console.log("[GameEngine] SaveState> ", "SaveScore");
+          this._scoreDB.setScore(this.tetris.score.getHighScore());
+        }
+        this._scoreDB.clear();
         break;
       default:
         console.log("Error: Unknown state ", state);

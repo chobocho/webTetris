@@ -23,6 +23,29 @@ class TetrisBoard {
     return this.board;
   }
 
+  set(gameInfo) {
+    for (let i = 0; i < this.height; i++) {
+      let line = gameInfo['board'][i];
+      for (let j = 0; j < this.width; j++) {
+        this.board[i][j] = (line >> j) & 0x1;
+      }
+    }
+  }
+
+  getBoard() {
+    let result = [];
+    for (let i = 0; i < this.height; i++) {
+      let line = 0;
+      for (let j = 0; j < this.width; j++) {
+        if (this.board[i][j] > 0) {
+          line |= (1 << j);
+        }
+      }
+      result.push(line);
+    }
+    return result;
+  }
+
   isAcceptable(block) {
     for (let i = 0; i < block.h; i++) {
       for (let j = 0; j < block.w; j++) {

@@ -81,10 +81,17 @@ function mouseListener(event) {
 }
 
 function InitValue() {
-  tetris = new Tetris(board_width, board_height);
+  scoreDB = new LocalDB();
+  tetris = new Tetris(board_width, board_height, scoreDB);
   drawEngine = new DrawEngine(tetris);
-  gameEngine = new GameEngine(tetris);
-  tetris.init();
+  gameEngine = new GameEngine(tetris, scoreDB);
+
+  const savedGame = scoreDB.getBoard();
+  if (savedGame['gameSate'] == 3) {
+    tetris.resumeGame(savedGame);
+  } else {
+    tetris.init();
+  }
 
   canvas.addEventListener("mousedown", mouseListener);
   canvas.addEventListener("mousemove", mouseListener);
@@ -157,4 +164,4 @@ function onLoadPage() {
   setInterval(OnDraw, 20);
 }
 
-window.onload = onLoadPage();
+window.onload = onLoadPage;

@@ -1,14 +1,16 @@
 class Score {
-  constructor() {
+  constructor(prev_high_score) {
     this.score = 0;
-    this.highscore = 0;
+    this.highscore = prev_high_score;
     this.removedLineCount = 0;
-    this.scoreTable = [0, 1, 2, 5, 10];
+    this.scoreTable = [0, 1, 10, 30, 50];
+    this._prev_high_score = prev_high_score;
   }
 
   init() {
       this.score = 0;
       this.removedLineCount = 0;
+      this._prev_high_score = this.highscore;
   }
 
   get() {
@@ -20,15 +22,18 @@ class Score {
   }
 
   increase(removeLines) {
+     this.removedLineCount += removeLines;
      this.score += this.scoreTable[removeLines];
      this._updateHighScore();
   }
 
-  add(score) {
-    this.score += score;
-    this._updateHighScore();
- }
+  set(new_score) {
+    this.score = new_score;
+  }
   _updateHighScore() {
     this.highscore = this.highscore > this.score ? this.highscore : this.score;
+  }
+  needToSave() {
+    return this._prev_high_score < this.highscore;
   }
 }

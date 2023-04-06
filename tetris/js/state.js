@@ -108,6 +108,13 @@ class PlayState extends State {
         this.score = score;
     }
 
+    set(gameInfo) {
+        this.nextBlock = this.blockFactory.getBlock(gameInfo['next_block']);
+        this.holdBlock = this.blockFactory.getBlock(gameInfo['hold_block']);
+        this.currentBlock = this.blockFactory.getBlock(gameInfo['current_block']);
+        this.currentBlock.set(gameInfo['x'], gameInfo['y'], gameInfo['r']);
+    }
+
     isPlayState() {
         return true;
     }
@@ -172,6 +179,7 @@ class PlayState extends State {
         this.fixCurrentBlock();
         this.updateBoard();
         this.updateBlock();
+        this.Tetris.saveGame();
         return false;
     }
 

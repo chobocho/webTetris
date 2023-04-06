@@ -12,6 +12,28 @@ class Tetrominos {
     this.board_height = bh;
   }
 
+  getType() {
+      return this.type;
+  }
+
+  getX(){
+      return this.x;
+  }
+
+  getY(){
+      return this.y;
+  }
+
+  getR() {
+      return this.r;
+  }
+
+  set(x, y, r) {
+      this.x = x;
+      this.y = y;
+      this.r = r;
+  }
+
   rotate() {
     this.r = (this.r + 1) % this.numOfBlockType;
   }
@@ -205,27 +227,30 @@ class TetrominosFactory {
   }
   
   create() {
-     return this.__create (Math.floor(Math.random()*7)+1);
+     return this.getBlock (Math.floor(Math.random()*7)+1);
   }
-  __create(type) {
+
+  getBlock(type) {
       switch(type) {
-              case 1:
-                  return new OBlock();
-              case 2:
-                  return new IBlock();
-              case 3:
-                  return new LBlock();
-              case 4:
-                  return new JBlock();
-              case 5:
-                  return new TBlock();
-              case 6:
-                  return new SBlock();
-              case 7:
-                  return new ZBlock();
-              default:
-                  console.log("Tetrominos Create Error! Never come to here!");
-                  return new ITetrominos();
+          case 0:
+              return new EmptyBlock();
+          case 1:
+              return new OBlock();
+          case 2:
+              return new IBlock();
+          case 3:
+              return new LBlock();
+          case 4:
+              return new JBlock();
+          case 5:
+              return new TBlock();
+          case 6:
+              return new SBlock();
+          case 7:
+              return new ZBlock();
+          default:
+              console.log("Tetrominos Create Error! Never come to here!");
+              return new ITetrominos();
       }
   }
 
