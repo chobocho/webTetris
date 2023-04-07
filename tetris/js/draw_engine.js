@@ -334,7 +334,7 @@ class DrawEngine extends Observer {
 
     let board = this.tetris.getBoard();
 
-    bufCtx.globalAlpha = 0.5;
+    bufCtx.globalAlpha = 0.3;
     for (let y = 0; y < board_height; y++) {
       for (let x = 0; x < board_width; x++) {
         bufCtx.drawImage(this.back_block, this.startX + x * blockSize, y * blockSize + startY, blockSize, blockSize);

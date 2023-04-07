@@ -57,13 +57,21 @@ class GameEngine extends Observer {
     }
   }
 
+  resume() {
+    if (this.tetris.isPauseState()) {
+      this.tetris.start();
+    }
+  }
+
   pause() {
     this.tetris.pause();
   }
 
   newGame() {
-    this._scoreDB.clear();
-    this.tetris.init();
+    if (this.tetris.isPauseState()) {
+      this._scoreDB.clear();
+      this.tetris.init();
+    }
   }
 
   update(state){
