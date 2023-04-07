@@ -57,4 +57,4 @@ function onLoadPage() {
     test_Tetris();
 }
 
-window.onload = onLoadPage();
+window.onload = onLoadPage;
