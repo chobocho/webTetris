@@ -82,6 +82,7 @@ class Tetris {
       this.setState(this.gameoverState);
     } else {
        this.state.moveBottom();
+       this.moveDown();
     }
   }
 
