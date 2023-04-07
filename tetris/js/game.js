@@ -35,6 +35,10 @@ function processEvent(code) {
       console.log("Down");
       gameEngine.moveDown();
       break;
+    case 78:
+      console.log("NewGame");
+      gameEngine.newGame();
+      break;
     case 80:
       console.log("Pause");
       gameEngine.pause();

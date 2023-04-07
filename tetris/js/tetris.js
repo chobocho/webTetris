@@ -25,6 +25,7 @@ class Tetris {
     this._scoreDB = scoreDB;
     this.board = new TetrisBoard(width, height);
     this.score = new Score(scoreDB.getScore());
+    this.isNewGame = true;
 
     this.initState = new InitState();
     this.idleState = new IdleState();
@@ -39,10 +40,12 @@ class Tetris {
   init() {
     this.board.init();
     this.score.init();
+    this.isNewGame = true;
     this.setState(this.idleState);
   }
 
   resumeGame(gameInfo) {
+    this.isNewGame = false;
     this.board.set(gameInfo);
     this.playState.set(gameInfo);
     this.score.set(gameInfo['score']);

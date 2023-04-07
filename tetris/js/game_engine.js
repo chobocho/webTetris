@@ -61,6 +61,11 @@ class GameEngine extends Observer {
     this.tetris.pause();
   }
 
+  newGame() {
+    this._scoreDB.clear();
+    this.tetris.init();
+  }
+
   update(state){
     console.log("Observer update: ", state);
     switch(state) {

@@ -71,7 +71,6 @@ class State {
     isGameOverState() { return false; }
     isPlayState() { return false; }
     isPauseState() { return false; }
-    sPauseState() { return false; }
 }
 
 class InitState extends State {
