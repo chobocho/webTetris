@@ -429,7 +429,7 @@ class DrawEngine extends Observer {
     this.__drawBackGround();
     this.__drawKeypad();
     this.state.OnDraw(bufCtx, this.tetris, this.block_image, this.buttonImage, this.startX);
-    this.__drawScore(bufCtx, this.buttonImage, tetris.getScore(), tetris.getHighScore());
+    this.__drawScore(bufCtx, this.buttonImage, this.tetris.getScore(), this.tetris.getHighScore());
     cvs.clearRect(0, 0, canvas.width, canvas.height);
     cvs.drawImage(bufCanvas, gCanvasStartX, 0, gScreenX*gScale, gScreenY*gScale);
   }
