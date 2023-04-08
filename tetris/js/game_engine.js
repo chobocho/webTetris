@@ -69,8 +69,12 @@ class GameEngine extends Observer {
 
   newGame() {
     if (this.tetris.isPauseState()) {
-      this._scoreDB.clear();
-      this.tetris.init();
+      let confirmNewGame = confirm("Do you want to start new game?");
+
+      if (confirmNewGame) {
+        this._scoreDB.clear();
+        this.tetris.init();
+      }
     }
   }
 
