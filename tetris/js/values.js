@@ -14,10 +14,21 @@ let gStartY = 40;
 let blockSize = 40;
 let board_height = 18;
 let board_width = 10;
+let arcadeTetris;
+let arcadeDrawEngine;
+let arcadeGameEngine;
+let arcadeModeDB;
+let arcadeBoardManager;
+
+let puzzleTetris;
+let puzzleDrawEngine;
+let puzzleGameEngine;
+let puzzleModeDB;
+let puzzleBoardManager;
+
 let tetris;
 let drawEngine;
 let gameEngine;
-let scoreDB;
 
 let LoadImage = function (image_name) {
     let load_image = new Image();

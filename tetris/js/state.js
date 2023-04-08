@@ -17,14 +17,17 @@ class State {
 
     rotate() {
         // TODO implement here
+        return false;
     }
 
     moveLeft() {
         // TODO implement here
+        return false;
     }
 
     moveRight() {
         // TODO implement here
+        return false;
     }
 
     moveDown() {
@@ -37,12 +40,17 @@ class State {
 
     moveBottom() {
         // TODO implement here
+        return false;
     }
 
     updateBlock() {
     }
 
     gameOver() {
+        return false;
+    }
+
+    isSolve() {
         return false;
     }
 
@@ -58,11 +66,15 @@ class State {
         return new EmptyBlock(0, 0);
     }
 
+    getNextNextBlock() {
+        return new EmptyBlock(0, 0);
+    }
+
     getHoldBlock() {
         return new EmptyBlock(0, 0);
     }
 
-    getShodowBlock() {
+    getShadowBlock() {
         return new EmptyBlock(0, 0);
     }
 
@@ -85,9 +97,10 @@ class InitState extends State {
 }
 
 class IdleState extends State {
-    constructor(tetris) {
+    constructor(tetris, boardManager) {
         super(tetris);
         this.state = 1;
+        this._boardManager = boardManager;
     }
 
     isIdleState() {
@@ -96,18 +109,32 @@ class IdleState extends State {
 }
 
 class PlayState extends State {
-    constructor(tetris, board, score) {
+    constructor(tetris, board, score, boardManager) {
         super(tetris);
         this.state = 2;
         this.blockFactory = new TetrominosFactory();
         this.currentBlock = this.blockFactory.create();
+        this.nextNextBlock = this.blockFactory.create();
         this.nextBlock = this.blockFactory.create();
         this.holdBlock = this.blockFactory.getEmptyBlock();
         this.tetrisBoard = board;
         this.score = score;
+        this._boardManager = boardManager;
+    }
+
+    init() {
+        this.currentBlock = this.blockFactory.create();
+        this.nextNextBlock = this.blockFactory.create();
+        this.nextBlock = this.blockFactory.create();
+        this.holdBlock = this.blockFactory.getEmptyBlock();
     }
 
     set(gameInfo) {
+        if ('next_next_block' in gameInfo) {
+            this.nextNextBlock = this.blockFactory.getBlock(gameInfo['next_next_block']);
+        } else {
+            this.nextNextBlock = this.blockFactory.create();
+        }
         this.nextBlock = this.blockFactory.getBlock(gameInfo['next_block']);
         this.holdBlock = this.blockFactory.getBlock(gameInfo['hold_block']);
         this.currentBlock = this.blockFactory.getBlock(gameInfo['current_block']);
@@ -122,8 +149,12 @@ class PlayState extends State {
         return !this.tetrisBoard.isAcceptable(this.currentBlock);
     }
 
+    isSolve() {
+        return this._boardManager.isSolve();
+    }
+
     hold() {
-        if (this.holdBlock.type == 0) {
+        if (this.holdBlock.type === 0) {
             this.holdBlock = this.currentBlock;
             this.updateBlock();
             return true;
@@ -155,19 +186,23 @@ class PlayState extends State {
         this.currentBlock.moveLeft();
         if (!this.tetrisBoard.isAcceptable(this.currentBlock)) {
             this.currentBlock.moveRight();
-        } 
+            return false;
+        }
+        return true;
     }
 
     moveRight() {
         this.currentBlock.moveRight();
         if (!this.tetrisBoard.isAcceptable(this.currentBlock)) {
             this.currentBlock.moveLeft();
-        } 
+            return false;
+        }
+        return true;
     }
 
     moveDown() {
         this.currentBlock.moveDown();
-
+        this.Tetris._score.add(1);
         if (this.tetrisBoard.isAcceptable(this.currentBlock)) {
             console.log("Accept");
             return true;
@@ -184,20 +219,21 @@ class PlayState extends State {
 
     moveBottom() {
         if (!this.moveDown()) {
-            return;
+            return false;
         }
         while(this.tetrisBoard.isAcceptable(this.currentBlock)) {
             this.currentBlock.moveDown();
         }
         if (this.tetrisBoard.isAcceptable(this.currentBlock)) {
-            return;
+            return true;
         }
         this.currentBlock.moveUp();
+        return true;
     }
 
     updateBoard() {
         let removedLine = this.tetrisBoard.arrange();
-        if (removedLine == 0) {
+        if (removedLine === 0) {
             return;
         }
         this.score.increase(removedLine);
@@ -205,7 +241,8 @@ class PlayState extends State {
 
     updateBlock() {
         this.currentBlock = this.nextBlock;
-        this.nextBlock = this.blockFactory.create();
+        this.nextBlock = this.nextNextBlock;
+        this.nextNextBlock = this.blockFactory.create();
     }
 
     fixCurrentBlock() {
@@ -220,14 +257,17 @@ class PlayState extends State {
         return this.nextBlock;
     }
 
+    getNextNextBlock() {
+        return this.nextNextBlock;
+    }
+
     getHoldBlock() {
         return this.holdBlock;
     }
 
-    getShodowBlock() {
+    getShadowBlock() {
         return new EmptyBlock(0, 0);
     }
-
 }
 
 class PauseState extends State {

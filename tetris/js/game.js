@@ -35,10 +35,24 @@ function processEvent(code) {
       console.log("Down");
       gameEngine.moveDown();
       break;
+    case 65:
+      if (tetris.isInitState()) {
+        console.log("Start Arcade Mode");
+        tetris = arcadeTetris;
+        gameEngine = arcadeGameEngine;
+        drawEngine = arcadeDrawEngine;
+        gameEngine.init();
+      }
+      break;
+    case 76:
+      console.log("Load");
+      gameEngine.load();
+      break;
     case 78:
       console.log("NewGame");
       gameEngine.newGame();
       break;
+    case 27:
     case 80:
       console.log("Pause");
       gameEngine.pause();
@@ -51,13 +65,22 @@ function processEvent(code) {
       console.log("Start");
       gameEngine.start();
       break;
+    case 85:
+      console.log("Start Puzzle Mode");
+      if (tetris.isInitState()) {
+        tetris = puzzleTetris;
+        gameEngine = puzzleGameEngine;
+        drawEngine = puzzleDrawEngine;
+        gameEngine.init();
+      }
+      break;
     default:
       break;
   }
 }
 
 function KeyPressEvent(e) {
-  var code = e.keyCode;
+  const code = e.keyCode;
   processEvent(code);
 }
 
@@ -89,17 +112,26 @@ function mouseListener(event) {
 }
 
 function InitValue() {
-  scoreDB = new LocalDB();
-  tetris = new Tetris(board_width, board_height, scoreDB);
-  drawEngine = new DrawEngine(tetris);
-  gameEngine = new GameEngine(tetris, scoreDB);
+  let imageLoader = new ImageLoader();
+  imageLoader.load();
 
-  const savedGame = scoreDB.getBoard();
-  if (savedGame['gameSate'] == 3) {
-    tetris.resumeGame(savedGame);
-  } else {
-    tetris.init();
-  }
+  arcadeModeDB = new LocalDB();
+  arcadeBoardManager = new BoardManager();
+  arcadeTetris = new Tetris(board_width, board_height, arcadeModeDB, arcadeBoardManager);
+  arcadeDrawEngine = new DrawEngine(arcadeTetris, imageLoader);
+  arcadeGameEngine = new GameEngine(arcadeTetris, arcadeModeDB);
+
+  puzzleModeDB = new PuzzleDB();
+  puzzleBoardManager = new PuzzleBoardManager();
+  puzzleBoardManager.setMapData(boardMap);
+  puzzleTetris = new Tetris(board_width, board_height, puzzleModeDB, puzzleBoardManager);
+  puzzleDrawEngine = new DrawEngine(puzzleTetris, imageLoader);
+  puzzleGameEngine = new GameEngine(puzzleTetris, puzzleModeDB);
+
+  tetris = arcadeTetris;
+  gameEngine = arcadeGameEngine;
+  drawEngine = arcadeDrawEngine;
+  tetris.init();
 
   canvas.addEventListener("mousedown", mouseListener);
   canvas.addEventListener("mousemove", mouseListener);
@@ -169,7 +201,7 @@ function DecisionBlockSize() {
 function onLoadPage() {
   InitCanvas();
   InitValue();
-  setInterval(OnDraw, 30);
+  setInterval(OnDraw, 20);
 }
 
 window.onload = onLoadPage;

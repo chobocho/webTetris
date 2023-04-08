@@ -12,23 +12,40 @@ class GameEngine extends Observer {
     this.gameoverState = new GameoverGameState();
     this.state = this.initState;
     this._tick = 0;
+    this._max_move = 12;
   }
 
   tick() {
       this._tick++;
-      const speed = Math.min(this.tetris.getScore()*25/10000, 25);
-      if (this._tick > (30-speed)) {
+      let speed = 0;
+      if (this.tetris.isPuzzleMode()) {
+        speed = Math.min(this.tetris.score * 25 / 100000, 10);
+      } else {
+        speed = Math.min(this.tetris.score * 25 / 10000, 25);
+      }
+      if (this._tick > (50-speed)) {
         this.moveDown();
         this._tick = 0;
+        this._max_move = 12;
       }
   }
 
   moveLeft() {
-    this.tetris.moveLeft();
+    if (this.tetris.moveLeft()) {
+      if (this._max_move > 0) {
+        this._tick = 10;
+      }
+      this._max_move--;
+    }
   }
 
   moveRight() {
-    this.tetris.moveRight();
+    if (this.tetris.moveRight()) {
+      if (this._max_move > 0) {
+        this._tick = 10;
+      }
+      this._max_move--;
+    }
   }
 
   moveDown() {
@@ -37,8 +54,9 @@ class GameEngine extends Observer {
   }
 
   moveBottom() {
-    this._tick = 0;
-    this.tetris.moveBottom();
+    if (this.tetris.moveBottom()) {
+      this._tick = 10;
+    }
   }
 
   rotate() {
@@ -49,10 +67,24 @@ class GameEngine extends Observer {
     this.tetris.hold();
   }
 
+  init() {
+    if (this.state.state === 0) {
+      const savedGame = arcadeModeDB.getBoard();
+      if (savedGame['gameSate'] === 3) {
+        tetris.resumeGame(savedGame);
+      } else {
+        tetris.idle();
+      }
+    }
+  }
+
   start() {
-    if (this.state.state == 4) {
+    if (this.tetris.isInitState()) {
+      return;
+    }
+    if (this.tetris.isGameOverState()) {
       this.tetris.init();
-    } else {
+    } else if (this.tetris.isIdleState() || this.tetris.isPauseState()) {
       this.tetris.start();
     }
   }
@@ -63,14 +95,34 @@ class GameEngine extends Observer {
     }
   }
 
+  load() {
+    if (!this.tetris.isPuzzleMode() || !this.tetris.isIdleState()) {
+      return;
+    }
+
+    let new_board = prompt("Input Custom Board", "");
+
+    if (new_board.length === 0) {
+      console.log("Empty data!");
+      return;
+    }
+    this.tetris.loadBoard(new_board);
+  }
+
   pause() {
-    this.tetris.pause();
+    if (this.tetris.isPlayState()) {
+      this.tetris.pause();
+    }
   }
 
   newGame() {
     if (this.tetris.isPauseState()) {
-      this._scoreDB.clear();
-      this.tetris.init();
+      let confirmNewGame = confirm("Do you want to start new game?");
+
+      if (confirmNewGame) {
+        this._scoreDB.clear();
+        this.tetris.init();
+      }
     }
   }
 
@@ -88,16 +140,16 @@ class GameEngine extends Observer {
         break;
       case 3:
         this.state = this.pauseState;
-        if (this.tetris.score.needToSave()) {
+        if (this.tetris._score.needToSave()) {
           console.log("[GameEngine] PauseState> ", "SaveScore");
-          this._scoreDB.setScore(this.tetris.score.getHighScore());
+          this._scoreDB.setScore(this.tetris.getHighScore());
         }
         break;
       case 4:
         this.state = this.gameoverState;
-        if (this.tetris.score.needToSave()) {
+        if (this.tetris._score.needToSave()) {
           console.log("[GameEngine] SaveState> ", "SaveScore");
-          this._scoreDB.setScore(this.tetris.score.getHighScore());
+          this._scoreDB.setScore(this.tetris.getHighScore());
         }
         this._scoreDB.clear();
         break;
