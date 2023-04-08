@@ -44,6 +44,7 @@ class LocalDB {
         return {
             'gameSate': 0,
             'score': 0,
+            'next_next_block': 1,
             'next_block': 1,
             'hold_block': 0,
             'current_block': 1,
@@ -58,6 +59,7 @@ class LocalDB {
         const emptyBoard = {
             'gameSate': 0,
             'score': 0,
+            'next_next_block': 1,
             'next_block': 1,
             'hold_block': 0,
             'current_block': 1,

@@ -103,7 +103,7 @@ class PlayDrawEngine extends PlayGameState {
 
   OnDraw(canvas, tetris, block_image, button_image) {
     this.__drawCurrentBlock(canvas, tetris.getCurrentBlock(), block_image);
-    this.__drawNextBlock(canvas, tetris.getNextBlock(), block_image);
+    this.__drawNextBlock(canvas, tetris.getNextNextBlock(), tetris.getNextBlock(), block_image);
     this.__drawHoldBlock(canvas, tetris.getHoldBlock(), block_image);
     this.__drawKeypad(canvas, button_image);
   }
@@ -121,17 +121,26 @@ class PlayDrawEngine extends PlayGameState {
     }
   }
 
-  __drawNextBlock(canvas_, block, block_image) {
+  __drawNextBlock(canvas_, block1, block2, block_image) {
     let _canvas = canvas_;
 
-    let small_block_size = blockSize * 0.7;
+    let small_block_size = blockSize * 0.6;
     let nb_startX = gStartX + (board_width + 2) * blockSize;
-    let nb_startY = gStartY + blockSize + small_block_size;
+    let nb_startY = gStartY + blockSize + small_block_size * 0.5;
 
-    for (let y = 0; y < block.h; ++y) {
-      for (let x = 0; x < block.w; ++x) {
-        if (block.block[block.r][y][x] !== 0) {
-          _canvas.drawImage(block_image[block.type], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
+    for (let y = 0; y < block1.h; ++y) {
+      for (let x = 0; x < block1.w; ++x) {
+        if (block1.block[block1.r][y][x] !== 0) {
+          _canvas.drawImage(block_image[block1.type], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
+        }
+      }
+    }
+
+    nb_startY = gStartY + blockSize + small_block_size * 5.5;
+    for (let y = 0; y < block2.h; ++y) {
+      for (let x = 0; x < block2.w; ++x) {
+        if (block2.block[block2.r][y][x] !== 0) {
+          _canvas.drawImage(block_image[block2.type], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
         }
       }
     }
@@ -140,7 +149,7 @@ class PlayDrawEngine extends PlayGameState {
   __drawHoldBlock(canvas_, block, block_image) {
     let _canvas = canvas_;
     let hb_startX = gStartX + (board_width + 2) * blockSize;
-    let hb_startY = gStartY + 7.5 * blockSize;
+    let hb_startY = gStartY + 9.5 * blockSize;
     for (let y = 0; y < block.h; ++y) {
       for (let x = 0; x < block.w; ++x) {
         if (block.block[block.r][y][x] !== 0) {
@@ -347,14 +356,14 @@ class DrawEngine extends Observer {
     this.buttons.push(new Button('bottom', 0, this.startX + btn_w, this.startY + blockSize * (board_height + 1), image_size, image_size, 0.3));
 
     this.buttons.push(new Button('next',  0, this.startX + blockSize * 11, this.startY, blockSize*4, blockSize, 1.0));
-    this.buttons.push(new Button('blank', 0, this.startX + blockSize * 11, this.startY+blockSize * 1, blockSize*4, blockSize*4, 0.5));
-    this.buttons.push(new Button('hold_text', 0, this.startX + blockSize * 11, this.startY+blockSize * 6, blockSize*4, blockSize, 1.0));
-    this.buttons.push(new Button('blank', 0, this.startX + blockSize * 11, this.startY+blockSize * 7, blockSize*4, blockSize*3, 0.5));
+    this.buttons.push(new Button('blank', 0, this.startX + blockSize * 11, this.startY+blockSize * 1, blockSize*4, blockSize*6, 0.5));
+    this.buttons.push(new Button('hold_text', 0, this.startX + blockSize * 11, this.startY+blockSize * 8, blockSize*4, blockSize, 1.0));
+    this.buttons.push(new Button('blank', 0, this.startX + blockSize * 11, this.startY+blockSize * 9, blockSize*4, blockSize*3, 0.5));
 
-    this.buttons.push(new Button('score', 0, this.startX + blockSize * 11, this.startY+blockSize * 11, blockSize*4, blockSize, 1.0));
-    this.buttons.push(new Button('blank', 0, this.startX + blockSize * 11, this.startY+blockSize * 12, blockSize*4, blockSize, 0.5));
-    this.buttons.push(new Button('high_score', 0, this.startX + blockSize * 11, this.startY+blockSize * 14, blockSize*4, blockSize, 1.0));
-    this.buttons.push(new Button('blank', 0, this.startX + blockSize * 11, this.startY+blockSize * 15, blockSize*4, blockSize, 0.5));
+    this.buttons.push(new Button('score', 0, this.startX + blockSize * 11, this.startY+blockSize * 13, blockSize*4, blockSize, 1.0));
+    this.buttons.push(new Button('blank', 0, this.startX + blockSize * 11, this.startY+blockSize * 14, blockSize*4, blockSize, 0.5));
+    this.buttons.push(new Button('high_score', 0, this.startX + blockSize * 11, this.startY+blockSize * 16, blockSize*4, blockSize, 1.0));
+    this.buttons.push(new Button('blank', 0, this.startX + blockSize * 11, this.startY+blockSize * 17, blockSize*4, blockSize, 0.5));
   }
 
   __drawBackGround() {
@@ -406,22 +415,23 @@ class DrawEngine extends Observer {
     let pos = 0;
     let imageSize = blockSize * 0.7;
     const drawX = this.startX + blockSize * 14;
-    let drawY = this.startY + blockSize * 12;
+    let drawY = this.startY + blockSize * 14;
 
-    while (score > 0) {
+    do {
       _canvas.drawImage(button_image[code[score%10]], drawX - pos * imageSize, drawY, imageSize, imageSize);
       score = Math.floor(score / 10);
       pos++;
-    }
+    } while (score > 0);
 
     pos = 0;
-    drawY = this.startY + blockSize * 15;
+    drawY = this.startY + blockSize * 17;
 
-    while (high_score > 0) {
+    do {
       _canvas.drawImage(button_image[code[high_score%10]], drawX - pos * imageSize, drawY, imageSize, imageSize);
       high_score = Math.floor(high_score / 10);
       pos++;
-    }
+    } while (high_score > 0);
+
     _canvas.closePath();
   }
 

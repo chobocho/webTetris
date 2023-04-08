@@ -119,9 +119,14 @@ class Tetris {
   isPauseState() { return this.state.isPauseState(); }
 
   getCurrentBlock() { return this.state.getCurrentBlock(); }
+
+  getNextNextBlock() { return this.state.getNextNextBlock(); }
+
   getNextBlock() { return this.state.getNextBlock(); }
+
   getHoldBlock() { return this.state.getHoldBlock(); }
-  getShadowBlock() { return this.state.getShodowBlock(); }
+
+  getShadowBlock() { return this.state.getShadowBlock(); }
 
   getBoard() {
     return this.board.get();
@@ -139,6 +144,7 @@ class Tetris {
     return {
       'gameSate': 3,
       'score': this.getScore(),
+      'next_next_block': this.playState.nextNextBlock.getType(),
       'next_block': this.playState.nextBlock.getType(),
       'hold_block': this.playState.holdBlock.getType(),
       'current_block': this.playState.currentBlock.getType(),
