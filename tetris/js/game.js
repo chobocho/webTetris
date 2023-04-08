@@ -169,7 +169,7 @@ function DecisionBlockSize() {
 function onLoadPage() {
   InitCanvas();
   InitValue();
-  setInterval(OnDraw, 20);
+  setInterval(OnDraw, 30);
 }
 
 window.onload = onLoadPage;

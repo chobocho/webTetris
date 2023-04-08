@@ -2,14 +2,12 @@ class Score {
   constructor(prev_high_score) {
     this.score = 0;
     this.highscore = prev_high_score;
-    this.removedLineCount = 0;
-    this.scoreTable = [0, 1, 10, 30, 50];
+    this.scoreTable = [0, 1, 8, 30, 100];
     this._prev_high_score = prev_high_score;
   }
 
   init() {
       this.score = 0;
-      this.removedLineCount = 0;
       this._prev_high_score = this.highscore;
   }
 
@@ -22,8 +20,10 @@ class Score {
   }
 
   increase(removeLines) {
-     this.removedLineCount += removeLines;
      this.score += this.scoreTable[removeLines];
+     if (removeLines > 2) {
+       this.score += Math.floor(Math.random() * this.scoreTable[removeLines] + 1);
+     }
      this._updateHighScore();
   }
 

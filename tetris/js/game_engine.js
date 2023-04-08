@@ -11,15 +11,15 @@ class GameEngine extends Observer {
     this.pauseState = new PauseGameState();
     this.gameoverState = new GameoverGameState();
     this.state = this.initState;
-    this.__tick = 0;
+    this._tick = 0;
   }
 
   tick() {
-      this.__tick++;
-      const score = Math.max(this.tetris.getScore() * 25 / 1000, 25);
-      if (this.__tick > (50-score)) {
+      this._tick++;
+      const speed = Math.min(this.tetris.getScore()*25/10000, 25);
+      if (this._tick > (30-speed)) {
         this.moveDown();
-        this.__tick = 0;
+        this._tick = 0;
       }
   }
 
@@ -32,12 +32,12 @@ class GameEngine extends Observer {
   }
 
   moveDown() {
-    this.__tick = 0;
+    this._tick = 0;
     this.tetris.moveDown();
   }
 
   moveBottom() {
-    this.__tick = 0;
+    this._tick = 0;
     this.tetris.moveBottom();
   }
 
