@@ -35,6 +35,10 @@ function processEvent(code) {
       console.log("Down");
       gameEngine.moveDown();
       break;
+    case 65:
+      console.log("Arcade Mode");
+      gameEngine.init();
+      break;
     case 78:
       console.log("NewGame");
       gameEngine.newGame();

@@ -42,7 +42,7 @@ class LocalDB {
         // GameState 1: IdleState
         // Block 0: Nothing
         return {
-            'gameSate': 1,
+            'gameSate': 0,
             'score': 0,
             'next_block': 1,
             'hold_block': 0,
@@ -56,7 +56,7 @@ class LocalDB {
 
     clear() {
         const emptyBoard = {
-            'gameSate': 1,
+            'gameSate': 0,
             'score': 0,
             'next_block': 1,
             'hold_block': 0,

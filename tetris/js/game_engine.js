@@ -49,6 +49,12 @@ class GameEngine extends Observer {
     this.tetris.hold();
   }
 
+  init() {
+    if (this.state.state == 0) {
+      this.tetris.idle();
+    }
+  }
+
   start() {
     if (this.state.state == 4) {
       this.tetris.init();

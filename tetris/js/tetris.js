@@ -1,6 +1,3 @@
-let block_ = new IBlock(board_width, board_height);
-let block_move_count = 0;
-
 class Observer {
   constructor() {
   }
@@ -25,7 +22,6 @@ class Tetris {
     this._scoreDB = scoreDB;
     this.board = new TetrisBoard(width, height);
     this.score = new Score(scoreDB.getScore());
-    this.isNewGame = true;
 
     this.initState = new InitState();
     this.idleState = new IdleState();
@@ -33,19 +29,23 @@ class Tetris {
     this.pauseState = new PauseState();
     this.gameoverState = new GameOverState();
 
-    this.state = this.idleState;
+    this.state = this.initState;
     this.observer = [];
   }
 
   init() {
     this.board.init();
     this.score.init();
-    this.isNewGame = true;
+    this.setState(this.initState);
+  }
+
+  idle() {
+    this.board.init();
+    this.score.init();
     this.setState(this.idleState);
   }
 
   resumeGame(gameInfo) {
-    this.isNewGame = false;
     this.board.set(gameInfo);
     this.playState.set(gameInfo);
     this.score.set(gameInfo['score']);

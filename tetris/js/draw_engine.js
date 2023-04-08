@@ -27,6 +27,34 @@ class Button {
   }
 }
 
+class InitDrawEngine extends PauseGameState {
+  constructor() {``
+    super();
+
+    let btn_w = blockSize * 3;
+    let btn_h = blockSize * 3;
+    let image_size = btn_h - 3;
+
+    this.buttons = [];
+    this.buttons.push(new Button('arcade', 65, gStartX + blockSize * 2, gStartY + blockSize * 5, blockSize*6, blockSize*2, 1.0));
+    this.buttons.push(new Button('puzzle', 85, gStartX + blockSize * 2, gStartY + blockSize * 9, blockSize*6, blockSize*2, 1.0));
+  }
+
+  OnDraw(canvas, tetris, block_image, button_image) {
+    this.__drawKeypad(canvas, button_image);
+  }
+
+  __drawKeypad(canvas_, button_image) {
+    let _canvas = canvas_;
+
+    _canvas.beginPath();
+    this.buttons.forEach(e => {
+      _canvas.drawImage(button_image[e.name], e.x1, e.y1, e.x2-e.x1, e.y2-e.y1);
+    });
+    _canvas.closePath();
+  }
+}
+
 class IdleDrawEngine extends IdleGameState {
   constructor() {
     super();
@@ -134,7 +162,7 @@ class PlayDrawEngine extends PlayGameState {
 }
 
 class PauseDrawEngine extends PauseGameState {
-  constructor() {
+  constructor() {``
     super();
 
     let btn_w = blockSize * 3;
@@ -219,6 +247,8 @@ class DrawEngine extends Observer {
     this.high_score_image = LoadImage("img/high_score.png");
 
     this.start_image = LoadImage("img/start.png");
+    this.arcade_image = LoadImage("img/arcade_mode.png");
+    this.puzzle_image = LoadImage("img/puzzle_mode.png");
     this.resume_image = LoadImage("img/resume.png");
     this.new_game_image = LoadImage("img/new_game.png");
     this.gameover_image = LoadImage("img/gameover.png");
@@ -251,6 +281,8 @@ class DrawEngine extends Observer {
     this.buttonImage['score'] = this.score_image;
     this.buttonImage['high_score'] = this.high_score_image;
 
+    this.buttonImage['arcade'] = this.arcade_image;
+    this.buttonImage['puzzle'] = this.puzzle_image;
     this.buttonImage['start'] = this.start_image;
     this.buttonImage['resume'] = this.resume_image;
     this.buttonImage['new_game'] = this.new_game_image;
@@ -293,7 +325,7 @@ class DrawEngine extends Observer {
   }
 
   __initValue() {
-    this.initState = new InitGameState();
+    this.initState = new InitDrawEngine();
     this.idleState = new IdleDrawEngine();
     this.playState = new PlayDrawEngine();
     this.pauseState = new PauseDrawEngine();
