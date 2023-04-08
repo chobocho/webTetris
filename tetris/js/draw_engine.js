@@ -370,21 +370,24 @@ class DrawEngine extends Observer {
     let code = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     let _canvas = canvas_;
     _canvas.beginPath();
-    let pos = 14;
-
-    _canvas.drawImage(button_image[code[score%10]], this.startX + blockSize * pos, this.startY + blockSize * 12, blockSize, blockSize);
+    let pos = 1;
+    let imageSize = blockSize * 0.7;
+    const drawX = this.startX + blockSize * 14;
+    let drawY = this.startY + blockSize * 12;
+    _canvas.drawImage(button_image[code[score%10]], drawX, drawY, imageSize, imageSize);
     while (score > 0) {
-      _canvas.drawImage(button_image[code[score%10]], this.startX + blockSize * pos, this.startY + blockSize * 12, blockSize, blockSize);
+      _canvas.drawImage(button_image[code[score%10]], drawX - pos * imageSize, drawY, imageSize, imageSize);
       score = Math.floor(score / 10);
-      pos--;
+      pos++;
     }
 
-    pos = 14;
-    _canvas.drawImage(button_image[code[high_score%10]], this.startX + blockSize * pos, this.startY + blockSize * 15, blockSize, blockSize);
+    pos = 1;
+    drawY = this.startY + blockSize * 15;
+    _canvas.drawImage(button_image[code[high_score%10]], drawX, drawY, imageSize, imageSize);
     while (high_score > 0) {
-      _canvas.drawImage(button_image[code[high_score%10]], this.startX + blockSize * pos, this.startY + blockSize * 15, blockSize, blockSize);
+      _canvas.drawImage(button_image[code[high_score%10]], drawX - pos * imageSize, drawY, imageSize, imageSize);
       high_score = Math.floor(high_score / 10);
-      pos--;
+      pos++;
     }
     _canvas.closePath();
   }
