@@ -17,7 +17,8 @@ let board_width = 10;
 let tetris;
 let drawEngine;
 let gameEngine;
-let scoreDB;
+let arcadeModeDB;
+let puzzleModeDB;
 
 let LoadImage = function (image_name) {
     let load_image = new Image();

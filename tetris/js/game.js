@@ -57,7 +57,7 @@ function processEvent(code) {
 }
 
 function KeyPressEvent(e) {
-  var code = e.keyCode;
+  const code = e.keyCode;
   processEvent(code);
 }
 
@@ -89,13 +89,13 @@ function mouseListener(event) {
 }
 
 function InitValue() {
-  scoreDB = new LocalDB();
-  tetris = new Tetris(board_width, board_height, scoreDB);
+  arcadeModeDB = new LocalDB();
+  tetris = new Tetris(board_width, board_height, arcadeModeDB);
   drawEngine = new DrawEngine(tetris);
-  gameEngine = new GameEngine(tetris, scoreDB);
+  gameEngine = new GameEngine(tetris, arcadeModeDB);
 
-  const savedGame = scoreDB.getBoard();
-  if (savedGame['gameSate'] == 3) {
+  const savedGame = arcadeModeDB.getBoard();
+  if (savedGame['gameSate'] === 3) {
     tetris.resumeGame(savedGame);
   } else {
     tetris.init();

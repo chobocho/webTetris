@@ -84,9 +84,9 @@ class PlayDrawEngine extends PlayGameState {
     let _canvas = canvas_;
     let cb_startX = gStartX + block.x * blockSize;
     let cb_startY = gStartY + block.y * blockSize;
-    for (var y = 0; y < block.h; ++y) {
-      for (var x = 0; x < block.w; ++x) {
-        if (block.block[block.r][y][x] != 0) {
+    for (let y = 0; y < block.h; ++y) {
+      for (let x = 0; x < block.w; ++x) {
+        if (block.block[block.r][y][x] !== 0) {
           _canvas.drawImage(block_image[block.type], x * blockSize + cb_startX, y * blockSize + cb_startY, blockSize, blockSize);
         }
       }
@@ -100,9 +100,9 @@ class PlayDrawEngine extends PlayGameState {
     let nb_startX = gStartX + (board_width + 2) * blockSize;
     let nb_startY = gStartY + blockSize + small_block_size;
 
-    for (var y = 0; y < block.h; ++y) {
-      for (var x = 0; x < block.w; ++x) {
-        if (block.block[block.r][y][x] != 0) {
+    for (let y = 0; y < block.h; ++y) {
+      for (let x = 0; x < block.w; ++x) {
+        if (block.block[block.r][y][x] !== 0) {
           _canvas.drawImage(block_image[block.type], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
         }
       }
@@ -113,9 +113,9 @@ class PlayDrawEngine extends PlayGameState {
     let _canvas = canvas_;
     let hb_startX = gStartX + (board_width + 2) * blockSize;
     let hb_startY = gStartY + 7.5 * blockSize;
-    for (var y = 0; y < block.h; ++y) {
-      for (var x = 0; x < block.w; ++x) {
-        if (block.block[block.r][y][x] != 0) {
+    for (let y = 0; y < block.h; ++y) {
+      for (let x = 0; x < block.w; ++x) {
+        if (block.block[block.r][y][x] !== 0) {
           _canvas.drawImage(block_image[block.type], x * (blockSize/2) + hb_startX, y * (blockSize/2) + hb_startY, blockSize/2, blockSize/2);
         }
       }
@@ -344,7 +344,7 @@ class DrawEngine extends Observer {
 
     for (let y = 0; y < board_height; y++) {
       for (let x = 0; x < board_width; x++) {
-        if (board[y][x] == 0) {
+        if (board[y][x] === 0) {
           continue;
         }
         bufCtx.drawImage(this.block_image[0], this.startX + x * blockSize , y * blockSize + startY, blockSize, blockSize);
@@ -409,7 +409,7 @@ class DrawEngine extends Observer {
 
     this.state.buttons.forEach(e => {
       let code = e.in(x, y);
-      if (code != -1) {
+      if (code !== -1) {
         result = code;
       }
     });

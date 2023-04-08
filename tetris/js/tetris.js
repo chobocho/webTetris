@@ -1,5 +1,5 @@
-var block_ = new IBlock(board_width, board_height);
-var block_move_count = 0;
+let block_ = new IBlock(board_width, board_height);
+let block_move_count = 0;
 
 class Observer {
   constructor() {
