@@ -42,6 +42,7 @@ class Tetris {
   idle() {
     this.board.init();
     this.score.init();
+    this.playState.init();
     this.setState(this.idleState);
   }
 

@@ -112,6 +112,13 @@ class PlayState extends State {
         this.score = score;
     }
 
+    init() {
+        this.currentBlock = this.blockFactory.create();
+        this.nextNextBlock = this.blockFactory.create();
+        this.nextBlock = this.blockFactory.create();
+        this.holdBlock = this.blockFactory.getEmptyBlock();
+    }
+
     set(gameInfo) {
         if ('next_next_block' in gameInfo) {
             this.nextNextBlock = this.blockFactory.getBlock(gameInfo['next_next_block']);
