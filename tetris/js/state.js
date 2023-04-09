@@ -214,8 +214,8 @@ class PlayState extends State {
     }
 
     updateBlock() {
-        this.nextBlock = this.nextNextBlock;
         this.currentBlock = this.nextBlock;
+        this.nextBlock = this.nextNextBlock;
         this.nextNextBlock = this.blockFactory.create();
     }
 

@@ -30,7 +30,7 @@ class Tetris {
     this.gameoverState = new GameOverState();
 
     this.state = this.initState;
-    this.observer = [];
+    this.observer = []
   }
 
   init() {
