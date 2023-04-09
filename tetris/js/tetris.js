@@ -114,6 +114,7 @@ class Tetris {
     this.notify();
   }
 
+  isInitState() { return this.state.isInitState(); }
   isIdleState() { return this.state.isIdleState(); }
   isGameOverState() { return this.state.isGameOverState(); }
   isPlayState() { return this.state.isPlayState(); }

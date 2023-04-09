@@ -51,14 +51,22 @@ class GameEngine extends Observer {
 
   init() {
     if (this.state.state == 0) {
-      this.tetris.idle();
+      const savedGame = arcadeModeDB.getBoard();
+      if (savedGame['gameSate'] === 3) {
+        tetris.resumeGame(savedGame);
+      } else {
+        tetris.idle();
+      }
     }
   }
 
   start() {
-    if (this.state.state == 4) {
+    if (this.tetris.isInitState()) {
+      return;
+    }
+    if (this.tetris.isGameOverState()) {
       this.tetris.init();
-    } else {
+    } else if (this.tetris.isIdleState() || this.tetris.isPauseState()) {
       this.tetris.start();
     }
   }
@@ -70,7 +78,9 @@ class GameEngine extends Observer {
   }
 
   pause() {
-    this.tetris.pause();
+    if (this.tetris.isPlayState()) {
+      this.tetris.pause();
+    }
   }
 
   newGame() {

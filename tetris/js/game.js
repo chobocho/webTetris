@@ -98,12 +98,7 @@ function InitValue() {
   drawEngine = new DrawEngine(tetris);
   gameEngine = new GameEngine(tetris, arcadeModeDB);
 
-  const savedGame = arcadeModeDB.getBoard();
-  if (savedGame['gameSate'] === 3) {
-    tetris.resumeGame(savedGame);
-  } else {
-    tetris.init();
-  }
+  tetris.init();
 
   canvas.addEventListener("mousedown", mouseListener);
   canvas.addEventListener("mousemove", mouseListener);
