@@ -94,10 +94,17 @@ function mouseListener(event) {
 
 function InitValue() {
   arcadeModeDB = new LocalDB();
-  tetris = new Tetris(board_width, board_height, arcadeModeDB);
-  drawEngine = new DrawEngine(tetris);
-  gameEngine = new GameEngine(tetris, arcadeModeDB);
+  arcadeTetris = new Tetris(board_width, board_height, arcadeModeDB);
+  arcadeDrawEngine = new DrawEngine(arcadeTetris);
+  arcadeGameEngine = new GameEngine(arcadeTetris, arcadeModeDB);
 
+  puzzleTetris = new Tetris(board_width, board_height, arcadeModeDB);
+  puzzleDrawEngine = new DrawEngine(puzzleTetris);
+  puzzleGameEngine = new GameEngine(puzzleTetris, arcadeModeDB);
+
+  tetris = arcadeTetris;
+  gameEngine = arcadeGameEngine;
+  drawEngine = arcadeDrawEngine;
   tetris.init();
 
   canvas.addEventListener("mousedown", mouseListener);
