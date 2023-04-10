@@ -27,7 +27,7 @@ class Button {
   }
 }
 
-class InitDrawEngine extends PauseGameState {
+class InitDrawEngine extends InitGameState {
   constructor() {``
     super();
 

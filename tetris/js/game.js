@@ -43,6 +43,7 @@ function processEvent(code) {
       console.log("NewGame");
       gameEngine.newGame();
       break;
+    case 27:
     case 80:
       console.log("Pause");
       gameEngine.pause();
