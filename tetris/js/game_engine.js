@@ -16,7 +16,7 @@ class GameEngine extends Observer {
 
   tick() {
       this._tick++;
-      const speed = Math.min(this.tetris.getScore()*25/10000, 25);
+      const speed = Math.min(this.tetris.score*25/10000, 25);
       if (this._tick > (50-speed)) {
         this.moveDown();
         this._tick = 0;
@@ -108,14 +108,14 @@ class GameEngine extends Observer {
         break;
       case 3:
         this.state = this.pauseState;
-        if (this.tetris.score.needToSave()) {
+        if (this.tetris._score.needToSave()) {
           console.log("[GameEngine] PauseState> ", "SaveScore");
           this._scoreDB.setScore(this.tetris.score.getHighScore());
         }
         break;
       case 4:
         this.state = this.gameoverState;
-        if (this.tetris.score.needToSave()) {
+        if (this.tetris._score.needToSave()) {
           console.log("[GameEngine] SaveState> ", "SaveScore");
           this._scoreDB.setScore(this.tetris.score.getHighScore());
         }

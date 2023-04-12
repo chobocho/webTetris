@@ -1,3 +1,14 @@
+class BoardManager {
+  constructor() {
+      this.level = 0;
+      this.highLevel = 0;
+  }
+
+  solve() {
+     return false;
+   }
+}
+
 class TetrisBoard {
   constructor(width, height) {
     this.board = [];

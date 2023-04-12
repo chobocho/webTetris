@@ -36,7 +36,10 @@ function processEvent(code) {
       gameEngine.moveDown();
       break;
     case 65:
-      console.log("Arcade Mode");
+      console.log("Start Arcade Mode");
+      tetris = arcadeTetris;
+      gameEngine = arcadeGameEngine;
+      drawEngine = arcadeDrawEngine;
       gameEngine.init();
       break;
     case 78:
@@ -55,6 +58,13 @@ function processEvent(code) {
     case 83:
       console.log("Start");
       gameEngine.start();
+      break;
+    case 85:
+      console.log("Start Puzzle Mode");
+      tetris = puzzleTetris;
+      gameEngine = puzzleGameEngine;
+      drawEngine = puzzleDrawEngine;
+      gameEngine.init();
       break;
     default:
       break;
