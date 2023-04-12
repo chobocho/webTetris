@@ -105,11 +105,13 @@ function mouseListener(event) {
 
 function InitValue() {
   arcadeModeDB = new LocalDB();
-  arcadeTetris = new Tetris(board_width, board_height, arcadeModeDB);
+  arcadeBoardManager = new BoardManager();
+  arcadeTetris = new Tetris(board_width, board_height, arcadeModeDB, arcadeBoardManager);
   arcadeDrawEngine = new DrawEngine(arcadeTetris);
   arcadeGameEngine = new GameEngine(arcadeTetris, arcadeModeDB);
 
-  puzzleTetris = new Tetris(board_width, board_height, arcadeModeDB);
+  puzzleBoardManager = new PuzzleBoardManager();
+  puzzleTetris = new Tetris(board_width, board_height, arcadeModeDB, puzzleBoardManager);
   puzzleDrawEngine = new DrawEngine(puzzleTetris);
   puzzleGameEngine = new GameEngine(puzzleTetris, arcadeModeDB);
 

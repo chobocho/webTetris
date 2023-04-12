@@ -9,8 +9,14 @@ class BoardManager {
    }
 }
 
+class PuzzleBoardManager extends BoardManager {
+  constructor() {
+    super();
+  }
+}
+
 class TetrisBoard {
-  constructor(width, height) {
+  constructor(width, height, boardManager) {
     this.board = [];
     this.width = width;
     this.height = height;

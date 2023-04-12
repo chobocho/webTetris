@@ -15,12 +15,12 @@ class Observer {
 }
 
 class Tetris {
-  constructor(width, height, scoreDB) {
+  constructor(width, height, scoreDB, boardMangaer) {
     this.width = width;
     this.height = height;
 
     this._scoreDB = scoreDB;
-    this.board = new TetrisBoard(width, height);
+    this.board = new TetrisBoard(width, height, boardMangaer);
     this._score = new Score(scoreDB.getScore());
 
     this.initState = new InitState();

@@ -18,11 +18,13 @@ let arcadeTetris;
 let arcadeDrawEngine;
 let arcadeGameEngine;
 let arcadeModeDB;
+let arcadeBoardManager;
 
 let puzzleTetris;
 let puzzleDrawEngine;
 let puzzleGameEngine;
 let puzzleModeDB;
+let puzzleBoardManager;
 
 let tetris;
 let drawEngine;
