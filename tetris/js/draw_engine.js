@@ -238,6 +238,7 @@ class DrawEngine extends Observer {
 
   __LoadImage() {
     this.back_image = LoadImage("img/back.jpg");
+    this.back2_image = LoadImage("img/back2.png");
 
     this.left_image = LoadImage("img/left.png");
     this.right_image = LoadImage("img/right.png");
