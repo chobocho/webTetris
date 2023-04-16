@@ -110,14 +110,14 @@ class GameEngine extends Observer {
         this.state = this.pauseState;
         if (this.tetris._score.needToSave()) {
           console.log("[GameEngine] PauseState> ", "SaveScore");
-          this._scoreDB.setScore(this.tetris.score.getHighScore());
+          this._scoreDB.setScore(this.tetris.getHighScore());
         }
         break;
       case 4:
         this.state = this.gameoverState;
         if (this.tetris._score.needToSave()) {
           console.log("[GameEngine] SaveState> ", "SaveScore");
-          this._scoreDB.setScore(this.tetris.score.getHighScore());
+          this._scoreDB.setScore(this.tetris.getHighScore());
         }
         this._scoreDB.clear();
         break;

@@ -328,6 +328,9 @@ class DrawEngine extends Observer {
     this.block_image.push(this.orange_block);
     this.block_image.push(this.red_block);
     this.block_image.push(this.yellow_block);
+    this.block_image.push(this.gray_block);
+    this.block_image.push(this.gray_block);
+    this.block_image.push(this.gray_block);
   }
 
   OnDraw() {
@@ -389,7 +392,8 @@ class DrawEngine extends Observer {
         if (board[y][x] === 0) {
           continue;
         }
-        bufCtx.drawImage(this.block_image[0], this.startX + x * blockSize , y * blockSize + startY, blockSize, blockSize);
+        const color = board[y][x];
+        bufCtx.drawImage(this.block_image[color], this.startX + x * blockSize , y * blockSize + startY, blockSize, blockSize);
       }
     }
 

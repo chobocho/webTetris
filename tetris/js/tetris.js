@@ -15,17 +15,19 @@ class Observer {
 }
 
 class Tetris {
-  constructor(width, height, scoreDB, boardMangaer) {
+  constructor(width, height, scoreDB, boardManager) {
     this.width = width;
     this.height = height;
 
     this._scoreDB = scoreDB;
-    this.board = new TetrisBoard(width, height, boardMangaer);
+    this.board = new TetrisBoard(width, height, boardManager);
+    this._boardManager = boardManager;
+    this._boardManager.setBoard(this.board);
     this._score = new Score(scoreDB.getScore());
 
-    this.initState = new InitState();
-    this.idleState = new IdleState();
-    this.playState = new PlayState(this, this.board, this._score);
+    this.initState = new InitState(this);
+    this.idleState = new IdleState(this, this._boardManager);
+    this.playState = new PlayState(this, this.board, this._score, this._boardManager);
     this.pauseState = new PauseState();
     this.gameoverState = new GameOverState();
 
@@ -40,13 +42,22 @@ class Tetris {
   }
 
   idle() {
-    this.board.init();
+    if (this._boardManager.isPuzzleMode()) {
+      this._boardManager.updateBoard();
+    } else {
+      this.board.init();
+    }
     this._score.init();
     this.playState.init();
     this.setState(this.idleState);
   }
 
   resumeGame(gameInfo) {
+    if (this._boardManager.isPuzzleMode()) {
+      this.idle();
+      return;
+    }
+
     this.board.set(gameInfo);
     this.playState.set(gameInfo);
     this.score = gameInfo['score'];
@@ -76,8 +87,13 @@ class Tetris {
   moveDown() {
     if (this.state.gameOver()) {
       this.setState(this.gameoverState);
-    } else {
-      this.state.moveDown();
+      return;
+    }
+    this.state.moveDown();
+    if (this.state.isSolve()) {
+      console.log("[Tetris] Solved!");
+      this._boardManager.updateBoard();
+      this.setState(this.idleState);
     }
   }
 

@@ -1,11 +1,32 @@
 class BoardManager {
   constructor() {
-      this.level = 0;
-      this.highLevel = 0;
+    this.level = 0;
+    this.highLevel = 0;
+    this._board = NaN;
   }
 
   solve() {
      return false;
+   }
+
+   setBoard(board) {
+    this._board = board;
+   }
+
+   updateBoard() {
+
+   }
+
+   setMapData(data) {
+     this.mapData = data;
+   }
+
+   isPuzzleMode() {
+    return false;
+   }
+
+   isSolve() {
+    return false;
    }
 }
 
@@ -13,6 +34,35 @@ class PuzzleBoardManager extends BoardManager {
   constructor() {
     super();
   }
+
+  solve() {
+    if (this._board === NaN) {
+      return false;
+    }
+    return false;
+  }
+
+  updateBoard() {
+    if (this._board === NaN) {
+      console.log("PuzzleBoardManager: Board is Nan");
+      return false;
+    }
+    const nextBoard = Math.floor(Math.random() * this.mapData.length);
+    this._board.setColorBoardWithInt(this.mapData[nextBoard]);
+  }
+
+  isPuzzleMode() {
+    return true;
+  }
+
+  isSolve() {
+    if (this._board === NaN) {
+      console.log("PuzzleBoardManager [isSolve]: Board is Nan");
+      return false;
+    }
+    return this._board.isSolve();
+  }
+
 }
 
 class TetrisBoard {
@@ -49,6 +99,17 @@ class TetrisBoard {
     }
   }
 
+  setColorBoardWithInt(data) {
+    for (let i = 0; i < this.height; i++) {
+      if (i in data) {
+        let line = data[i];
+        for (let j = 0; j < this.width; j++) {
+          this.board[i][j] = (line >> (j * 3)) & 0x7;
+        }
+      }
+    }
+  }
+
   getBoard() {
     let result = [];
     for (let i = 0; i < this.height; i++) {
@@ -66,11 +127,11 @@ class TetrisBoard {
   isAcceptable(block) {
     for (let i = 0; i < block.h; i++) {
       for (let j = 0; j < block.w; j++) {
-        if (block.block[block.r][i][j] != 0) {
+        if (block.block[block.r][i][j] !== 0) {
           if (block.x < 0 || (block.x + j) > (this.width - 1) || (block.y + i) > (this.height - 1)) {
             return false;
           }
-          if (this.board[block.y + i][block.x + j] != 0) {
+          if (this.board[block.y + i][block.x + j] !== 0) {
             return false;
           }
         }
@@ -83,7 +144,7 @@ class TetrisBoard {
     for (let i = 0; i < block.h; i++) {
       for (let j = 0; j < block.w; j++) {
         if (block.block[block.r][i][j] != 0) {
-          this.board[i + block.y][j + block.x] = block.type;
+          this.board[i + block.y][j + block.x] = 10;
         }
       }
     }
@@ -113,5 +174,18 @@ class TetrisBoard {
         }
     }
     return removedLine;
+  }
+
+  isSolve() {
+    for (let i = 0; i < this.height; i++) {
+      for (let j = 0; j < this.width; j++) {
+        if (this.board[i][j] === 0 || this.board[i][j] >= 8) {
+          continue;
+        }
+        console.log("[Board][isSolve]" + i + ", " + j);
+        return false;
+      }
+    }
+    return true;
   }
 }

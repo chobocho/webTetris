@@ -110,10 +110,12 @@ function InitValue() {
   arcadeDrawEngine = new DrawEngine(arcadeTetris);
   arcadeGameEngine = new GameEngine(arcadeTetris, arcadeModeDB);
 
+  puzzleModeDB = new PuzzleDB();
   puzzleBoardManager = new PuzzleBoardManager();
-  puzzleTetris = new Tetris(board_width, board_height, arcadeModeDB, puzzleBoardManager);
+  puzzleBoardManager.setMapData(boardMap);
+  puzzleTetris = new Tetris(board_width, board_height, puzzleModeDB, puzzleBoardManager);
   puzzleDrawEngine = new DrawEngine(puzzleTetris);
-  puzzleGameEngine = new GameEngine(puzzleTetris, arcadeModeDB);
+  puzzleGameEngine = new GameEngine(puzzleTetris, puzzleModeDB);
 
   tetris = arcadeTetris;
   gameEngine = arcadeGameEngine;

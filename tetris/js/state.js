@@ -46,6 +46,10 @@ class State {
         return false;
     }
 
+    isSolve() {
+        return false;
+    }
+
     updateBoard() {
 
     }
@@ -89,9 +93,10 @@ class InitState extends State {
 }
 
 class IdleState extends State {
-    constructor(tetris) {
+    constructor(tetris, boardManager) {
         super(tetris);
         this.state = 1;
+        this._boardManager = boardManager;
     }
 
     isIdleState() {
@@ -100,7 +105,7 @@ class IdleState extends State {
 }
 
 class PlayState extends State {
-    constructor(tetris, board, score) {
+    constructor(tetris, board, score, boardManager) {
         super(tetris);
         this.state = 2;
         this.blockFactory = new TetrominosFactory();
@@ -110,6 +115,7 @@ class PlayState extends State {
         this.holdBlock = this.blockFactory.getEmptyBlock();
         this.tetrisBoard = board;
         this.score = score;
+        this._boardManager = boardManager;
     }
 
     init() {
@@ -137,6 +143,10 @@ class PlayState extends State {
 
     gameOver() {
         return !this.tetrisBoard.isAcceptable(this.currentBlock);
+    }
+
+    isSolve() {
+        return this._boardManager.isSolve();
     }
 
     hold() {
