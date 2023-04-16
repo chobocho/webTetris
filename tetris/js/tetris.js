@@ -130,6 +130,7 @@ class Tetris {
     this.notify();
   }
 
+  isPuzzleMode() { return this._boardManager.isPuzzleMode(); }
   isInitState() { return this.state.isInitState(); }
   isIdleState() { return this.state.isIdleState(); }
   isGameOverState() { return this.state.isGameOverState(); }

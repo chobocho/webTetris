@@ -372,7 +372,11 @@ class DrawEngine extends Observer {
 
   __drawBackGround() {
     bufCtx.beginPath();
-    bufCtx.drawImage(this.back_image, 0, 0, gScreenX, gScreenY);
+    if (this.tetris.isPuzzleMode()) {
+      bufCtx.drawImage(this.back2_image, 0, 0, gScreenX, gScreenY);
+    } else {
+      bufCtx.drawImage(this.back_image, 0, 0, gScreenX, gScreenY);
+    }
 
     let startY = this.startY;
     let blockSize = 40;

@@ -36,11 +36,13 @@ function processEvent(code) {
       gameEngine.moveDown();
       break;
     case 65:
-      console.log("Start Arcade Mode");
-      tetris = arcadeTetris;
-      gameEngine = arcadeGameEngine;
-      drawEngine = arcadeDrawEngine;
-      gameEngine.init();
+      if (tetris.isInitState()) {
+        console.log("Start Arcade Mode");
+        tetris = arcadeTetris;
+        gameEngine = arcadeGameEngine;
+        drawEngine = arcadeDrawEngine;
+        gameEngine.init();
+      }
       break;
     case 78:
       console.log("NewGame");
@@ -61,10 +63,12 @@ function processEvent(code) {
       break;
     case 85:
       console.log("Start Puzzle Mode");
-      tetris = puzzleTetris;
-      gameEngine = puzzleGameEngine;
-      drawEngine = puzzleDrawEngine;
-      gameEngine.init();
+      if (tetris.isInitState()) {
+        tetris = puzzleTetris;
+        gameEngine = puzzleGameEngine;
+        drawEngine = puzzleDrawEngine;
+        gameEngine.init();
+      }
       break;
     default:
       break;
