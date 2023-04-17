@@ -1,2 +1,3 @@
-# webTetris
-Javascript tetris
+# Javascript Tetris
+
+![screen shot](./doc/tetris.png)
