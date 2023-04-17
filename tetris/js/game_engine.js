@@ -16,7 +16,12 @@ class GameEngine extends Observer {
 
   tick() {
       this._tick++;
-      const speed = Math.min(this.tetris.score*25/10000, 25);
+      let speed = 0;
+      if (this.tetris.isPuzzleMode()) {
+        speed = Math.min(this.tetris.score * 25 / 100000, 10);
+      } else {
+        speed = Math.min(this.tetris.score * 25 / 10000, 25);
+      }
       if (this._tick > (50-speed)) {
         this.moveDown();
         this._tick = 0;

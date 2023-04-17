@@ -31,6 +31,10 @@ class Score {
      this._updateHighScore();
   }
 
+  add(points) {
+    this._score += points;
+    this._updateHighScore();
+  }
 
   _updateHighScore() {
     this.highscore = this.highscore > this._score ? this.highscore : this._score;

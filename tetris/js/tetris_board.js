@@ -33,6 +33,7 @@ class BoardManager {
 class PuzzleBoardManager extends BoardManager {
   constructor() {
     super();
+    this._index = 0;
   }
 
   solve() {
@@ -44,11 +45,19 @@ class PuzzleBoardManager extends BoardManager {
 
   updateBoard() {
     if (this._board === NaN) {
-      console.log("PuzzleBoardManager: Board is Nan");
+      console.log("[PuzzleBoardManager]: Board is Nan");
       return false;
     }
-    const nextBoard = Math.floor(Math.random() * this.mapData.length);
-    this._board.setColorBoardWithInt(this.mapData[nextBoard]);
+    this._board.setColorBoardWithInt(this.mapData[this._index]);
+    this.nextBoard();
+  }
+
+  nextBoard() {
+    this._index++;
+    if (this._index >= this.mapData.length) {
+      this._index = 0;
+    }
+    console.log("[PuzzleBoardManager] " + this._index);
   }
 
   isPuzzleMode() {

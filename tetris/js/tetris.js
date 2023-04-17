@@ -92,8 +92,17 @@ class Tetris {
     this.state.moveDown();
     if (this.state.isSolve()) {
       console.log("[Tetris] Solved!");
+      this._score.add(1004);
+      this._saveHighScore();
       this._boardManager.updateBoard();
       this.setState(this.idleState);
+    }
+  }
+
+  _saveHighScore() {
+    if (this._score.needToSave()) {
+      console.log("[Tetris] ", "Save High Score");
+      this._scoreDB.setScore(this.getHighScore());
     }
   }
 
