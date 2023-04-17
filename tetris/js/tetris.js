@@ -139,6 +139,24 @@ class Tetris {
     this.notify();
   }
 
+  loadBoard(new_board) {
+    if (new_board.length == 0) {
+      console.log("Empty data!");
+      return;
+    }
+
+    let data = "";
+    try {
+      data = JSON.parse(new_board);
+    } catch (error) {
+      console.error(error);
+      console.log("Ignore Data!");
+      return;
+    }
+    console.log(data);
+    this.board.setColorBoardWithInt(data);
+  }
+
   isPuzzleMode() { return this._boardManager.isPuzzleMode(); }
   isInitState() { return this.state.isInitState(); }
   isIdleState() { return this.state.isIdleState(); }

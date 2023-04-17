@@ -44,6 +44,10 @@ function processEvent(code) {
         gameEngine.init();
       }
       break;
+    case 76:
+      console.log("Load");
+      gameEngine.load();
+      break;
     case 78:
       console.log("NewGame");
       gameEngine.newGame();

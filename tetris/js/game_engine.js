@@ -55,7 +55,7 @@ class GameEngine extends Observer {
   }
 
   init() {
-    if (this.state.state == 0) {
+    if (this.state.state === 0) {
       const savedGame = arcadeModeDB.getBoard();
       if (savedGame['gameSate'] === 3) {
         tetris.resumeGame(savedGame);
@@ -80,6 +80,20 @@ class GameEngine extends Observer {
     if (this.tetris.isPauseState()) {
       this.tetris.start();
     }
+  }
+
+  load() {
+    if (!this.tetris.isPuzzleMode() || !this.tetris.isIdleState()) {
+      return;
+    }
+
+    let new_board = prompt("Input Custom Board", "");
+
+    if (new_board.length === 0) {
+      console.log("Empty data!");
+      return;
+    }
+    this.tetris.loadBoard(new_board);
   }
 
   pause() {

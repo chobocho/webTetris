@@ -31,9 +31,7 @@ class InitDrawEngine extends InitGameState {
   constructor() {``
     super();
 
-    let btn_w = blockSize * 3;
     let btn_h = blockSize * 3;
-    let image_size = btn_h - 3;
 
     this.buttons = [];
     this.buttons.push(new Button('arcade', 65, gStartX + blockSize * 2, gStartY + blockSize * 5, blockSize*6, blockSize*2, 1.0));
@@ -66,6 +64,7 @@ class IdleDrawEngine extends IdleGameState {
     this.buttons = [];
     this.buttons.push(new Button('play', 83, gStartX + btn_w * 3, gStartY + blockSize * (board_height+1), image_size, image_size, 1.0));
     this.buttons.push(new Button('start', 83, gStartX + blockSize * 2, gStartY + blockSize * 5, blockSize*6, blockSize*2, 1.0));
+    this.buttons.push(new Button('up', 76, gStartX + btn_w * 3, gStartY + blockSize * (board_height + 4), image_size, image_size, 0.3));
   }
 
   OnDraw(canvas, tetris, block_image, button_image) {
