@@ -37,14 +37,14 @@ class PuzzleBoardManager extends BoardManager {
   }
 
   solve() {
-    if (this._board === NaN) {
+    if (this._board == NaN) {
       return false;
     }
     return false;
   }
 
   updateBoard() {
-    if (this._board === NaN) {
+    if (this._board == NaN) {
       console.log("[PuzzleBoardManager]: Board is Nan");
       return false;
     }
@@ -65,7 +65,7 @@ class PuzzleBoardManager extends BoardManager {
   }
 
   isSolve() {
-    if (this._board === NaN) {
+    if (this._board == NaN) {
       console.log("PuzzleBoardManager [isSolve]: Board is Nan");
       return false;
     }
@@ -152,7 +152,7 @@ class TetrisBoard {
   addBlock(block) {
     for (let i = 0; i < block.h; i++) {
       for (let j = 0; j < block.w; j++) {
-        if (block.block[block.r][i][j] != 0) {
+        if (block.block[block.r][i][j] !== 0) {
           this.board[i + block.y][j + block.x] = 10;
         }
       }
@@ -165,12 +165,12 @@ class TetrisBoard {
     for (let y = this.height-1; y >= 0; y--) {
         let count = 0;
         for (let x = 0; x < 10; x++) {
-            if (this.board[y][x] != 0) {
+            if (this.board[y][x] !== 0) {
                 count++;
             }
         }
 
-        if (count == this.width) {
+        if (count === this.width) {
           removedLine++;
             for (let x = 0; x < this.width; x++) {
                 let m = 0;

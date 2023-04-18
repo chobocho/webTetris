@@ -154,7 +154,7 @@ class PlayState extends State {
     }
 
     hold() {
-        if (this.holdBlock.type == 0) {
+        if (this.holdBlock.type === 0) {
             this.holdBlock = this.currentBlock;
             this.updateBlock();
             return true;
@@ -233,7 +233,7 @@ class PlayState extends State {
 
     updateBoard() {
         let removedLine = this.tetrisBoard.arrange();
-        if (removedLine == 0) {
+        if (removedLine === 0) {
             return;
         }
         this.score.increase(removedLine);

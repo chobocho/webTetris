@@ -142,7 +142,7 @@ class Tetris {
   }
 
   loadBoard(new_board) {
-    if (new_board.length == 0) {
+    if (new_board.length === 0) {
       console.log("Empty data!");
       return;
     }

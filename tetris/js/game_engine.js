@@ -54,9 +54,8 @@ class GameEngine extends Observer {
   }
 
   moveBottom() {
-    this._tick = 0;
     if (this.tetris.moveBottom()) {
-      this._tick = 0;
+      this._tick = 10;
     }
   }
 
