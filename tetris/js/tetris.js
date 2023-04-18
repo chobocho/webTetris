@@ -77,26 +77,28 @@ class Tetris {
 
   moveLeft() {
     console.log("Tetris: MoveLeft");
-    this.state.moveLeft();
+    return this.state.moveLeft();
   }
 
   moveRight() {
-    this.state.moveRight();
+    return this.state.moveRight();
   }
 
   moveDown() {
     if (this.state.gameOver()) {
       this.setState(this.gameoverState);
-      return;
+      return false;
     }
-    this.state.moveDown();
+    let result = this.state.moveDown();
     if (this.state.isSolve()) {
       console.log("[Tetris] Solved!");
       this._score.add(1004);
       this._saveHighScore();
       this._boardManager.updateBoard();
       this.setState(this.idleState);
+      result = true;
     }
+    return true;
   }
 
   _saveHighScore() {
@@ -109,9 +111,10 @@ class Tetris {
   moveBottom() {
     if (this.state.gameOver()) {
       this.setState(this.gameoverState);
+      return false;
     } else {
        this.state.moveBottom();
-       this.moveDown();
+       return this.moveDown();
     }
   }
 

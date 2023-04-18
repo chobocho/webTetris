@@ -12,6 +12,7 @@ class GameEngine extends Observer {
     this.gameoverState = new GameoverGameState();
     this.state = this.initState;
     this._tick = 0;
+    this._max_move = 12;
   }
 
   tick() {
@@ -25,15 +26,26 @@ class GameEngine extends Observer {
       if (this._tick > (50-speed)) {
         this.moveDown();
         this._tick = 0;
+        this._max_move = 12;
       }
   }
 
   moveLeft() {
-    this.tetris.moveLeft();
+    if (this.tetris.moveLeft()) {
+      if (this._max_move > 0) {
+        this._tick = 10;
+      }
+      this._max_move--;
+    }
   }
 
   moveRight() {
-    this.tetris.moveRight();
+    if (this.tetris.moveRight()) {
+      if (this._max_move > 0) {
+        this._tick = 10;
+      }
+      this._max_move--;
+    }
   }
 
   moveDown() {

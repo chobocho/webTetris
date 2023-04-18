@@ -17,14 +17,17 @@ class State {
 
     rotate() {
         // TODO implement here
+        return false;
     }
 
     moveLeft() {
         // TODO implement here
+        return false;
     }
 
     moveRight() {
         // TODO implement here
+        return false;
     }
 
     moveDown() {
@@ -37,6 +40,7 @@ class State {
 
     moveBottom() {
         // TODO implement here
+        return false;
     }
 
     updateBlock() {
@@ -182,14 +186,18 @@ class PlayState extends State {
         this.currentBlock.moveLeft();
         if (!this.tetrisBoard.isAcceptable(this.currentBlock)) {
             this.currentBlock.moveRight();
-        } 
+            return false;
+        }
+        return true;
     }
 
     moveRight() {
         this.currentBlock.moveRight();
         if (!this.tetrisBoard.isAcceptable(this.currentBlock)) {
             this.currentBlock.moveLeft();
-        } 
+            return false;
+        }
+        return true;
     }
 
     moveDown() {
