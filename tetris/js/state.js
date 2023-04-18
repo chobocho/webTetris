@@ -219,15 +219,16 @@ class PlayState extends State {
 
     moveBottom() {
         if (!this.moveDown()) {
-            return;
+            return false;
         }
         while(this.tetrisBoard.isAcceptable(this.currentBlock)) {
             this.currentBlock.moveDown();
         }
         if (this.tetrisBoard.isAcceptable(this.currentBlock)) {
-            return;
+            return true;
         }
         this.currentBlock.moveUp();
+        return true;
     }
 
     updateBoard() {

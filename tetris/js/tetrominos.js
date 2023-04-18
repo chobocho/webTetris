@@ -69,11 +69,11 @@ class EmptyBlock extends Tetrominos {
 class OBlock extends Tetrominos {
   constructor(bw, bh) {
     super(bw, bh);
-    this.block = [[[1, 1], [1, 1]]];
-    this.x = 4;
+    this.block = [[[0, 1, 1, 0], [0, 1, 1, 0]]];
+    this.x = 3;
     this.y = 0;
     this.r = 0;
-    this.w = 2;
+    this.w = 4;
     this.h = 2;
     this.type = 1;
     this.numOfBlockType = 1;
@@ -85,37 +85,52 @@ class OBlock extends Tetrominos {
 }
 
 class IBlock extends Tetrominos {
-  constructor(bw, bh) {
-    super(bw, bh);
-    this.block = [[[1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0]],
-    [[1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]];
-    this.x = 5;
-    this.y = 0;
-    this.r = 0;
-    this.w = 4;
-    this.h = 4;
-    this.type = 2;
-    this.numOfBlockType = 2;
-  }
+    constructor(bw, bh) {
+        super(bw, bh);
+        this.block = [
+            [[0, 0, 0, 0],
+             [1, 1, 1, 1],
+             [0, 0, 0, 0],
+             [0, 0, 0, 0]],
+            [[0, 0, 1, 0],
+             [0, 0, 1, 0],
+             [0, 0, 1, 0],
+             [0, 0, 1, 0]],
+            [[0, 0, 0, 0],
+             [0, 0, 0, 0],
+             [1, 1, 1, 1],
+             [0, 0, 0, 0]],
+            [[0, 1, 0, 0],
+             [0, 1, 0, 0],
+             [0, 1, 0, 0],
+             [0, 1, 0, 0]]];
+        this.x = 3;
+        this.y = 0;
+        this.r = 0;
+        this.w = 4;
+        this.h = 4;
+        this.type = 2;
+        this.numOfBlockType = 4;
+    }
 }
 
 class LBlock extends Tetrominos {
   constructor(bw, bh) {
     super(bw, bh);
-    this.block = [
-      [[1, 0, 0], 
-       [1, 0, 0], 
-       [1, 1, 0]],
-      [[1, 1, 1], 
-       [1, 0, 0], 
-       [0, 0, 0]],
-      [[1, 1, 0], 
-       [0, 1, 0], 
-       [0, 1, 0]],
-      [[0, 0, 0], 
-       [0, 0, 1], 
-       [1, 1, 1]],
-];
+      this.block = [
+          [[0, 0, 1],
+           [1, 1, 1],
+           [0, 0, 0]],
+          [[0, 1, 0],
+           [0, 1, 0],
+           [0, 1, 1]],
+          [[0, 0, 0],
+           [1, 1, 1],
+           [1, 0, 0]],
+          [[1, 1, 0],
+           [0, 1, 0],
+           [0, 1, 0]],
+      ];
     this.x = 4;
     this.y = 0;
     this.r = 0;
@@ -130,19 +145,19 @@ class JBlock extends Tetrominos {
   constructor(bw, bh) {
     super(bw, bh);
     this.block = [
-      [[0, 1, 0], 
-       [0, 1, 0], 
+      [[1, 0, 0],
+       [1, 1, 1],
+       [0, 0, 0]],
+      [[0, 1, 1],
+       [0, 1, 0],
+       [0, 1, 0]],
+      [[0, 0, 0],
+       [1, 1, 1],
+       [0, 0, 1]],
+      [[0, 1, 0],
+       [0, 1, 0],
        [1, 1, 0]],
-      [[1, 0, 0], 
-       [1, 1, 1], 
-       [0, 0, 0]],
-      [[1, 1, 0], 
-       [1, 0, 0], 
-       [1, 0, 0]],
-      [[1, 1, 1], 
-       [0, 0, 1], 
-       [0, 0, 0]],
-];
+    ];
     this.x = 4;
     this.y = 0;
     this.r = 0;
@@ -157,18 +172,18 @@ class TBlock extends Tetrominos {
   constructor(bw, bh) {
     super(bw, bh);
     this.block = [
-      [[1, 0, 0], 
-       [1, 1, 0], 
-       [1, 0, 0]],
-      [[1, 1, 1], 
-       [0, 1, 0], 
+      [[0, 1, 0],
+       [1, 1, 1],
        [0, 0, 0]],
-      [[0, 1, 0], 
-       [1, 1, 0], 
+      [[0, 1, 0],
+       [0, 1, 1],
+       [0, 1, 0]],
+      [[0, 0, 0],
+       [1, 1, 1],
        [0, 1, 0]],
       [[0, 1, 0], 
-       [1, 1, 1], 
-       [0, 0, 0]],
+       [1, 1, 0],
+       [0, 1, 0]],
 ];
     this.x = 4;
     this.y = 0;
@@ -183,35 +198,47 @@ class TBlock extends Tetrominos {
 class SBlock extends Tetrominos {
   constructor(bw, bh) {
     super(bw, bh);
-    this.block = [
-      [[0, 1, 1], 
-       [1, 1, 0], 
-       [0, 0, 0]],
-      [[1, 0, 0], 
-       [1, 1, 0], 
-       [0, 1, 0]]
-];
+      this.block = [
+          [[0, 1, 1],
+           [1, 1, 0],
+           [0, 0, 0]],
+          [[0, 1, 0],
+           [0, 1, 1],
+           [0, 0, 1]],
+          [[0, 0, 0],
+           [0, 1, 1],
+           [1, 1, 0]],
+          [[1, 0, 0],
+           [1, 1, 0],
+           [0, 1, 0]]
+      ];
     this.x = 4;
     this.y = 0;
     this.r = 0;
     this.w = 3;
     this.h = 3;
     this.type = 6;
-    this.numOfBlockType = 2;
+    this.numOfBlockType = 4;
   }
 }
 
 class ZBlock extends Tetrominos {
   constructor(bw, bh) {
     super(bw, bh);
-    this.block = [
-      [[1, 1, 0], 
-       [0, 1, 1], 
-       [0, 0, 0]],
-      [[0, 1, 0], 
-       [1, 1, 0], 
-       [1, 0, 0]]
-];
+      this.block = [
+          [[1, 1, 0],
+           [0, 1, 1],
+           [0, 0, 0]],
+          [[0, 0, 1],
+           [0, 1, 1],
+           [0, 1, 0]],
+          [[0, 0, 0],
+           [1, 1, 0],
+           [0, 1, 1]],
+          [[0, 1, 0],
+           [1, 1, 0],
+           [1, 0, 0]]
+      ];
     this.x = 4;
     this.y = 0;
     this.r = 0;

@@ -98,7 +98,7 @@ class Tetris {
       this.setState(this.idleState);
       result = true;
     }
-    return true;
+    return result;
   }
 
   _saveHighScore() {
@@ -113,8 +113,7 @@ class Tetris {
       this.setState(this.gameoverState);
       return false;
     } else {
-       this.state.moveBottom();
-       return this.moveDown();
+      return this.state.moveBottom();
     }
   }
 
