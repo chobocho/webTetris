@@ -102,7 +102,7 @@ class GameEngine extends Observer {
 
     let new_board = prompt("Input Custom Board", "");
 
-    if (new_board.length === 0) {
+    if (new_board == null || new_board.length === 0) {
       console.log("Empty data!");
       return;
     }

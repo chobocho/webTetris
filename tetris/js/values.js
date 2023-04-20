@@ -26,6 +26,12 @@ let puzzleGameEngine;
 let puzzleModeDB;
 let puzzleBoardManager;
 
+let itemTetris;
+let itemDrawEngine;
+let itemGameEngine;
+let itemModeDB;
+let itemBoardManager;
+
 let tetris;
 let drawEngine;
 let gameEngine;

@@ -34,6 +34,7 @@ class InitDrawEngine extends InitGameState {
     this.buttons = [];
     this.buttons.push(new Button('arcade', 65, gStartX + blockSize * 2, gStartY + blockSize * 5, blockSize*6, blockSize*2, 1.0));
     this.buttons.push(new Button('puzzle', 85, gStartX + blockSize * 2, gStartY + blockSize * 9, blockSize*6, blockSize*2, 1.0));
+    this.buttons.push(new Button('item_mode', 73, gStartX + blockSize * 2, gStartY + blockSize * 13, blockSize*6, blockSize*2, 1.0));
   }
 
   OnDraw(canvas, tetris, block_image, button_image) {
@@ -256,6 +257,7 @@ class DrawEngine extends Observer {
 
     this.start_image = this._image_res.start;
     this.arcade_image = this._image_res.arcade;
+    this.item_mode_image = this._image_res.item_mode;
     this.puzzle_image = this._image_res.puzzle;
     this.resume_image = this._image_res.resume;
     this.new_game_image = this._image_res.new_game;
@@ -291,6 +293,7 @@ class DrawEngine extends Observer {
 
     this.buttonImage['arcade'] = this.arcade_image;
     this.buttonImage['puzzle'] = this.puzzle_image;
+    this.buttonImage['item_mode'] = this.item_mode_image;
     this.buttonImage['start'] = this.start_image;
     this.buttonImage['resume'] = this.resume_image;
     this.buttonImage['new_game'] = this.new_game_image;

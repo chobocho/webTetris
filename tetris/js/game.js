@@ -44,6 +44,15 @@ function processEvent(code) {
         gameEngine.init();
       }
       break;
+    case 73:
+      console.log("Start Item Mode");
+      if (tetris.isInitState()) {
+        tetris = itemTetris;
+        gameEngine = itemGameEngine;
+        drawEngine = itemDrawEngine;
+        gameEngine.init();
+      }
+      break;
     case 76:
       console.log("Load");
       gameEngine.load();
@@ -127,6 +136,13 @@ function InitValue() {
   puzzleTetris = new Tetris(board_width, board_height, puzzleModeDB, puzzleBoardManager);
   puzzleDrawEngine = new DrawEngine(puzzleTetris, imageLoader);
   puzzleGameEngine = new GameEngine(puzzleTetris, puzzleModeDB);
+
+  itemModeDB = new PuzzleDB();
+  itemBoardManager = new PuzzleBoardManager();
+  itemBoardManager.setMapData(boardMap);
+  itemTetris = new Tetris(board_width, board_height, itemModeDB, itemBoardManager);
+  itemDrawEngine = new DrawEngine(itemTetris, imageLoader);
+  itemGameEngine = new GameEngine(itemTetris, itemModeDB);
 
   tetris = arcadeTetris;
   gameEngine = arcadeGameEngine;

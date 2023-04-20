@@ -26,6 +26,7 @@ class ImageLoader {
         this._images.start = LoadImage("img/start.png");
         this._images.arcade = LoadImage("img/arcade_mode.png");
         this._images.puzzle = LoadImage("img/puzzle_mode.png");
+        this._images.item_mode = LoadImage("img/item_mode.png");
         this._images.resume = LoadImage("img/resume.png");
         this._images.new_game = LoadImage("img/new_game.png");
         this._images.gameover = LoadImage("img/gameover.png");
