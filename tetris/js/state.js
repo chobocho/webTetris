@@ -202,7 +202,7 @@ class PlayState extends State {
 
     moveDown() {
         this.currentBlock.moveDown();
-
+        this.Tetris._score.add(1);
         if (this.tetrisBoard.isAcceptable(this.currentBlock)) {
             console.log("Accept");
             return true;
