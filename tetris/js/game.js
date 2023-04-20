@@ -112,17 +112,20 @@ function mouseListener(event) {
 }
 
 function InitValue() {
+  let imageLoader = new ImageLoader();
+  imageLoader.load();
+
   arcadeModeDB = new LocalDB();
   arcadeBoardManager = new BoardManager();
   arcadeTetris = new Tetris(board_width, board_height, arcadeModeDB, arcadeBoardManager);
-  arcadeDrawEngine = new DrawEngine(arcadeTetris);
+  arcadeDrawEngine = new DrawEngine(arcadeTetris, imageLoader);
   arcadeGameEngine = new GameEngine(arcadeTetris, arcadeModeDB);
 
   puzzleModeDB = new PuzzleDB();
   puzzleBoardManager = new PuzzleBoardManager();
   puzzleBoardManager.setMapData(boardMap);
   puzzleTetris = new Tetris(board_width, board_height, puzzleModeDB, puzzleBoardManager);
-  puzzleDrawEngine = new DrawEngine(puzzleTetris);
+  puzzleDrawEngine = new DrawEngine(puzzleTetris, imageLoader);
   puzzleGameEngine = new GameEngine(puzzleTetris, puzzleModeDB);
 
   tetris = arcadeTetris;

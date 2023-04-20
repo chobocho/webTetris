@@ -31,8 +31,6 @@ class InitDrawEngine extends InitGameState {
   constructor() {``
     super();
 
-    let btn_h = blockSize * 3;
-
     this.buttons = [];
     this.buttons.push(new Button('arcade', 65, gStartX + blockSize * 2, gStartY + blockSize * 5, blockSize*6, blockSize*2, 1.0));
     this.buttons.push(new Button('puzzle', 85, gStartX + blockSize * 2, gStartY + blockSize * 9, blockSize*6, blockSize*2, 1.0));
@@ -227,51 +225,52 @@ class GameoverDrawEngine extends GameoverGameState {
 }
 
 class DrawEngine extends Observer {
-  constructor(tetris) {
+  constructor(tetris, images) {
     super();
     this.tetris = tetris;
     this.tetris.register(this);
+    this._image_res = images._images;
     this.__LoadImage();
     this.__initValue();
   }
 
   __LoadImage() {
-    this.back_image = LoadImage("img/back.jpg");
-    this.back2_image = LoadImage("img/back2.png");
+    this.back_image = this._image_res.back;
+    this.back2_image = this._image_res.back2;
 
-    this.left_image = LoadImage("img/left.png");
-    this.right_image = LoadImage("img/right.png");
-    this.down_image = LoadImage("img/down.png");
-    this.bottom_image = LoadImage("img/bottom.png");
+    this.left_image = this._image_res.left;
+    this.right_image = this._image_res.right;
+    this.down_image = this._image_res.down;
+    this.bottom_image = this._image_res.bottom;
 
-    this.rotate_image = LoadImage("img/rotate.png");
-    this.play_image = LoadImage("img/play.png");
-    this.pause_image = LoadImage("img/pause.png");
-    this.hold_image = LoadImage("img/hold.png");
+    this.rotate_image = this._image_res.rotate;
+    this.play_image = this._image_res.play;
+    this.pause_image = this._image_res.pause;
+    this.hold_image = this._image_res.hold;
 
-    this.blank_image = LoadImage("img/blank.png");
-    this.next_image = LoadImage("img/next.png");
-    this.hold_text_image = LoadImage("img/hold_text.png");
-    this.score_image = LoadImage("img/score.png");
-    this.high_score_image = LoadImage("img/high_score.png");
+    this.blank_image = this._image_res.blank;
+    this.next_image = this._image_res.next;
+    this.hold_text_image = this._image_res.hold_text;
+    this.score_image = this._image_res.score;
+    this.high_score_image = this._image_res.high_score;
 
-    this.start_image = LoadImage("img/start.png");
-    this.arcade_image = LoadImage("img/arcade_mode.png");
-    this.puzzle_image = LoadImage("img/puzzle_mode.png");
-    this.resume_image = LoadImage("img/resume.png");
-    this.new_game_image = LoadImage("img/new_game.png");
-    this.gameover_image = LoadImage("img/gameover.png");
+    this.start_image = this._image_res.start;
+    this.arcade_image = this._image_res.arcade;
+    this.puzzle_image = this._image_res.puzzle;
+    this.resume_image = this._image_res.resume;
+    this.new_game_image = this._image_res.new_game;
+    this.gameover_image = this._image_res.gameover;
 
-    this.n0 = LoadImage("img/sn00.png");
-    this.n1 = LoadImage("img/sn01.png");
-    this.n2 = LoadImage("img/sn02.png");
-    this.n3 = LoadImage("img/sn03.png");
-    this.n4 = LoadImage("img/sn04.png");
-    this.n5 = LoadImage("img/sn05.png");
-    this.n6 = LoadImage("img/sn06.png");
-    this.n7 = LoadImage("img/sn07.png");
-    this.n8 = LoadImage("img/sn08.png");
-    this.n9 = LoadImage("img/sn09.png");
+    this.n0 = this._image_res.n0;
+    this.n1 = this._image_res.n1;
+    this.n2 = this._image_res.n2;
+    this.n3 = this._image_res.n3;
+    this.n4 = this._image_res.n4;
+    this.n5 = this._image_res.n5;
+    this.n6 = this._image_res.n6;
+    this.n7 = this._image_res.n7;
+    this.n8 = this._image_res.n8;
+    this.n9 = this._image_res.n9;
 
     this.buttonImage = {};
     this.buttonImage['left'] = this.left_image;
@@ -308,15 +307,15 @@ class DrawEngine extends Observer {
     this.buttonImage['8'] = this.n8;
     this.buttonImage['9'] = this.n9;
 
-    this.back_block = LoadImage("img/black.png");
-    this.blue_block = LoadImage("img/blue.png");
-    this.cyan_block = LoadImage("img/cyan.png");
-    this.gray_block = LoadImage("img/gray.png");
-    this.green_block = LoadImage("img/green.png");
-    this.magenta_block = LoadImage("img/magenta.png");
-    this.orange_block = LoadImage("img/orange.png");
-    this.red_block = LoadImage("img/red.png");
-    this.yellow_block = LoadImage("img/yellow.png");
+    this.back_block = this._image_res.back_block;
+    this.blue_block = this._image_res.blue_block;
+    this.cyan_block = this._image_res.cyan_block;
+    this.gray_block = this._image_res.gray_block;
+    this.green_block = this._image_res.green_block;
+    this.magenta_block = this._image_res.magenta_block;
+    this.orange_block = this._image_res.orange_block;
+    this.red_block = this._image_res.red_block;
+    this.yellow_block = this._image_res.yellow_block;
 
     this.block_image = [];
     this.block_image.push(this.gray_block);
@@ -330,6 +329,8 @@ class DrawEngine extends Observer {
     this.block_image.push(this.gray_block);
     this.block_image.push(this.gray_block);
     this.block_image.push(this.gray_block);
+
+    console.log("[DRAW_ENGINE] image load success!");
   }
 
   OnDraw() {
@@ -359,7 +360,7 @@ class DrawEngine extends Observer {
     this.buttons.push(new Button('bottom', 0, this.startX + btn_w, this.startY + blockSize * (board_height + 1), image_size, image_size, 0.3));
 
     this.buttons.push(new Button('next',  0, this.startX + blockSize * 11, this.startY, blockSize*4, blockSize, 1.0));
-    this.buttons.push(new Button('blank', 0, this.startX + blockSize * 11, this.startY+blockSize * 1, blockSize*4, blockSize*6, 0.5));
+    this.buttons.push(new Button('blank', 0, this.startX + blockSize * 11, this.startY+blockSize, blockSize*4, blockSize*6, 0.5));
     this.buttons.push(new Button('hold_text', 0, this.startX + blockSize * 11, this.startY+blockSize * 8, blockSize*4, blockSize, 1.0));
     this.buttons.push(new Button('blank', 0, this.startX + blockSize * 11, this.startY+blockSize * 9, blockSize*4, blockSize*3, 0.5));
 
