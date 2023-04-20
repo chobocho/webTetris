@@ -15,7 +15,7 @@ class Observer {
 }
 
 class Tetris {
-  constructor(width, height, scoreDB, boardManager) {
+  constructor(width, height, scoreDB, boardManager, blockFactory) {
     this.width = width;
     this.height = height;
 
@@ -27,7 +27,7 @@ class Tetris {
 
     this.initState = new InitState(this);
     this.idleState = new IdleState(this, this._boardManager);
-    this.playState = new PlayState(this, this.board, this._score, this._boardManager);
+    this.playState = new PlayState(this, this.board, this._score, this._boardManager, blockFactory);
     this.pauseState = new PauseState();
     this.gameoverState = new GameOverState();
 
@@ -44,6 +44,8 @@ class Tetris {
   idle() {
     if (this._boardManager.isPuzzleMode()) {
       this._boardManager.updateBoard();
+    } else if (this._boardManager.isItemMode()) {
+      this._boardManager.updateBoard();
     } else {
       this.board.init();
     }
@@ -57,6 +59,11 @@ class Tetris {
       this.idle();
       return;
     }
+    if (this._boardManager.isItemMode()) {
+      this.idle();
+      return;
+    }
+
 
     this.board.set(gameInfo);
     this.playState.set(gameInfo);
@@ -92,7 +99,11 @@ class Tetris {
     let result = this.state.moveDown();
     if (this.state.isSolve()) {
       console.log("[Tetris] Solved!");
-      this._score.add(1004);
+      if (this.isPuzzleMode()) {
+        this._score.add(1024);
+      } else if (this.isItemMode()) {
+        this._score.add(512);
+      }
       this._saveHighScore();
       this._boardManager.updateBoard();
       this.setState(this.idleState);
@@ -118,7 +129,7 @@ class Tetris {
   }
 
   rotate() {
-    this.state.rotate();
+    return this.state.rotate();
   }
 
   hold() {
@@ -160,6 +171,7 @@ class Tetris {
   }
 
   isPuzzleMode() { return this._boardManager.isPuzzleMode(); }
+  isItemMode() { return this._boardManager.isItemMode(); }
   isInitState() { return this.state.isInitState(); }
   isIdleState() { return this.state.isIdleState(); }
   isGameOverState() { return this.state.isGameOverState(); }

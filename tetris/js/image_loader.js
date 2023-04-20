@@ -6,6 +6,7 @@ class ImageLoader {
     load() {
         this._images.back = LoadImage("img/back.jpg");
         this._images.back2 = LoadImage("img/back2.png");
+        this._images.back3 = LoadImage("img/back3.png");
 
         this._images.left = LoadImage("img/left.png");
         this._images.right = LoadImage("img/right.png");
@@ -26,6 +27,7 @@ class ImageLoader {
         this._images.start = LoadImage("img/start.png");
         this._images.arcade = LoadImage("img/arcade_mode.png");
         this._images.puzzle = LoadImage("img/puzzle_mode.png");
+        this._images.item_mode = LoadImage("img/item_mode.png");
         this._images.resume = LoadImage("img/resume.png");
         this._images.new_game = LoadImage("img/new_game.png");
         this._images.gameover = LoadImage("img/gameover.png");
@@ -50,7 +52,10 @@ class ImageLoader {
         this._images.orange_block = LoadImage("img/orange.png");
         this._images.red_block = LoadImage("img/red.png");
         this._images.yellow_block = LoadImage("img/yellow.png");
-
+        this._images.boom_block = LoadImage("img/boom.png");
+        this._images.blue_boom_block = LoadImage("img/blue_boom.png");
+        this._images.green_boom_block = LoadImage("img/green_boom.png");
+        this._images.red_boom_block = LoadImage("img/red_boom.png");
         console.log("[ImageLoader] load images!");
     }
 }
