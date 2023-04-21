@@ -124,7 +124,7 @@ function InitValue() {
   let imageLoader = new ImageLoader();
   imageLoader.load();
 
-  arcadeModeDB = new LocalDB();
+  arcadeModeDB = new ArcadeDB();
   arcadeBoardManager = new BoardManager();
   arcadeTetris = new Tetris(board_width, board_height, arcadeModeDB, arcadeBoardManager);
   arcadeDrawEngine = new DrawEngine(arcadeTetris, imageLoader);
@@ -137,8 +137,8 @@ function InitValue() {
   puzzleDrawEngine = new DrawEngine(puzzleTetris, imageLoader);
   puzzleGameEngine = new GameEngine(puzzleTetris, puzzleModeDB);
 
-  itemModeDB = new PuzzleDB();
-  itemBoardManager = new PuzzleBoardManager();
+  itemModeDB = new ItemTetrisDB();
+  itemBoardManager = new ItemBoardManager();
   itemBoardManager.setMapData(boardMap);
   itemTetris = new Tetris(board_width, board_height, itemModeDB, itemBoardManager);
   itemDrawEngine = new DrawEngine(itemTetris, imageLoader);

@@ -319,6 +319,7 @@ class DrawEngine extends Observer {
     this.orange_block = this._image_res.orange_block;
     this.red_block = this._image_res.red_block;
     this.yellow_block = this._image_res.yellow_block;
+    this.boom_block = this._image_res.boom_block;
 
     this.block_image = [];
     this.block_image.push(this.gray_block);
@@ -326,11 +327,11 @@ class DrawEngine extends Observer {
     this.block_image.push(this.cyan_block);
     this.block_image.push(this.green_block);
     this.block_image.push(this.magenta_block);
-    this.block_image.push(this.orange_block);
+    this.block_image.push(this.orange_block); //5
     this.block_image.push(this.red_block);
     this.block_image.push(this.yellow_block);
-    this.block_image.push(this.gray_block);
-    this.block_image.push(this.gray_block);
+    this.block_image.push(this.gray_block); // 8
+    this.block_image.push(this.boom_block); // 9
     this.block_image.push(this.gray_block);
 
     console.log("[DRAW_ENGINE] image load success!");
@@ -429,6 +430,11 @@ class DrawEngine extends Observer {
     const drawX = this.startX + blockSize * 14;
     let drawY = this.startY + blockSize * 14;
 
+    if (score > 1000000) {
+      console.log("Score is " + score);
+      score = 999999;
+    }
+
     do {
       _canvas.drawImage(button_image[code[score%10]], drawX - pos * imageSize, drawY, imageSize, imageSize);
       score = Math.floor(score / 10);
@@ -437,6 +443,11 @@ class DrawEngine extends Observer {
 
     pos = 0;
     drawY = this.startY + blockSize * 17;
+
+    if (high_score > 1000000) {
+      console.log("Score is " + high_score);
+      high_score = 999999;
+    }
 
     do {
       _canvas.drawImage(button_image[code[high_score%10]], drawX - pos * imageSize, drawY, imageSize, imageSize);

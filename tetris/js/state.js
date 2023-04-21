@@ -232,6 +232,9 @@ class PlayState extends State {
     }
 
     updateBoard() {
+        if (this._boardManager.isItemMode()) {
+            this.tetrisBoard.handleBoom();
+        }
         let removedLine = this.tetrisBoard.arrange();
         if (removedLine === 0) {
             return;

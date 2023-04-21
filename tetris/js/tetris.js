@@ -44,6 +44,8 @@ class Tetris {
   idle() {
     if (this._boardManager.isPuzzleMode()) {
       this._boardManager.updateBoard();
+    } else if (this._boardManager.isItemMode()) {
+      this._boardManager.updateBoard();
     } else {
       this.board.init();
     }
@@ -57,6 +59,11 @@ class Tetris {
       this.idle();
       return;
     }
+    if (this._boardManager.isItemMode()) {
+      this.idle();
+      return;
+    }
+
 
     this.board.set(gameInfo);
     this.playState.set(gameInfo);
@@ -160,6 +167,7 @@ class Tetris {
   }
 
   isPuzzleMode() { return this._boardManager.isPuzzleMode(); }
+  isItemMode() { return this._boardManager.isItemMode(); }
   isInitState() { return this.state.isInitState(); }
   isIdleState() { return this.state.isIdleState(); }
   isGameOverState() { return this.state.isGameOverState(); }

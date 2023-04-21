@@ -69,11 +69,11 @@ class EmptyBlock extends Tetrominos {
 class OBlock extends Tetrominos {
   constructor(bw, bh) {
     super(bw, bh);
-    this.block = [[[0, 1, 1, 0], [0, 1, 1, 0]]];
-    this.x = 3;
+    this.block = [[[1, 1], [1, 1]]];
+    this.x = 4;
     this.y = 0;
     this.r = 0;
-    this.w = 4;
+    this.w = 2;
     this.h = 2;
     this.type = 1;
     this.numOfBlockType = 1;

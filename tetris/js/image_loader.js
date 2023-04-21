@@ -51,6 +51,7 @@ class ImageLoader {
         this._images.orange_block = LoadImage("img/orange.png");
         this._images.red_block = LoadImage("img/red.png");
         this._images.yellow_block = LoadImage("img/yellow.png");
+        this._images.boom_block = LoadImage("img/boom.png");
 
         console.log("[ImageLoader] load images!");
     }
