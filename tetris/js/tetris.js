@@ -99,7 +99,11 @@ class Tetris {
     let result = this.state.moveDown();
     if (this.state.isSolve()) {
       console.log("[Tetris] Solved!");
-      this._score.add(1004);
+      if (this.isPuzzleMode()) {
+        this._score.add(1024);
+      } else if (this.isItemMode()) {
+        this._score.add(512);
+      }
       this._saveHighScore();
       this._boardManager.updateBoard();
       this.setState(this.idleState);
