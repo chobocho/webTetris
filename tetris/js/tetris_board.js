@@ -118,6 +118,18 @@ class ItemBoardManager extends BoardManager {
     }
     return this._board.isSolve();
   }
+
+  setMapData(board) {
+    this.mapData = [];
+    this.mapData.push(board[0]);
+    let tmpBoard = [];
+    for (let i = 1; i < board.length; i++) {
+      tmpBoard.push(board[i]);
+    }
+    tmpBoard.sort(() => Math.random() - 0.5);
+    tmpBoard.forEach( e => this.mapData.push(e));
+    console.log("[ItemBoardManager][isSolve]: setMapData> " + this.mapData.length);
+  }
 }
 
 
