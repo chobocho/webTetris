@@ -71,7 +71,7 @@ class OBlock extends Tetrominos {
     super(bw, bh);
     this.block = [
         [[1, 2], [3, 4]],
-        [[3, 1], [2, 4]],
+        [[3, 1], [4, 2]],
         [[4, 3], [2, 1]],
         [[2, 4], [1, 3]]];
     this.x = 4;
