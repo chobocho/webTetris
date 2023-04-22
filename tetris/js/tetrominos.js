@@ -298,15 +298,15 @@ class ItemTetrisBlockFactory extends TetrisBlockFactory {
 
     _addItem(block) {
         let item = [0, ];
-        let possibility = {'G': 0.012, 'BLUE': 0.05, 'R': 0.12};
+        let possibility = {'G': 0.012, 'BLUE': 0.0612, 'R': 0.88};
 
         for (let i = 0; i < 4; i++) {
             let value = Math.random();
             if (value < possibility['G']) {
                 item.push((11))
-            } else if (value < possibility['BLUE']) {
+            } else if (value > possibility['G'] && value < possibility['BLUE']) {
                 item.push((10))
-            } else if (value < possibility['R']) {
+            } else if (value > possibility['R']) {
                 item.push(12);
             } else {
                 item.push(1);

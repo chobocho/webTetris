@@ -115,7 +115,9 @@ class PlayDrawEngine extends PlayGameState {
         if (block.block[block.r][y][x] !== 0) {
           let bImg = block.type;
           if(tetris.isItemMode()) {
-             bImg = block.block[block.r][y][x];
+             if (block.block[block.r][y][x] >= 8) {
+               bImg = block.block[block.r][y][x];
+             }
           }
           _canvas.drawImage(block_image[bImg], x * blockSize + cb_startX, y * blockSize + cb_startY, blockSize, blockSize);
         }
@@ -135,7 +137,9 @@ class PlayDrawEngine extends PlayGameState {
         if (block1.block[block1.r][y][x] !== 0) {
           let bImg = block1.type;
           if(tetris.isItemMode()) {
-            bImg = block1.block[block1.r][y][x];
+            if (block1.block[block1.r][y][x] >= 8) {
+              bImg = block1.block[block1.r][y][x];
+            }
           }
           _canvas.drawImage(block_image[bImg], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
         }
@@ -148,7 +152,9 @@ class PlayDrawEngine extends PlayGameState {
         if (block2.block[block2.r][y][x] !== 0) {
           let bImg = block2.type;
           if(tetris.isItemMode()) {
-            bImg = block2.block[block2.r][y][x];
+            if (block2.block[block2.r][y][x] >= 8) {
+              bImg = block2.block[block2.r][y][x];
+            }
           }
           _canvas.drawImage(block_image[bImg], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
         }
@@ -165,7 +171,9 @@ class PlayDrawEngine extends PlayGameState {
         if (block.block[block.r][y][x] !== 0) {
           let bImg = block.type;
           if(tetris.isItemMode()) {
-            bImg = block.block[block.r][y][x];
+            if (block.block[block.r][y][x] >= 8) {
+              bImg = block.block[block.r][y][x];
+            }
           }
           _canvas.drawImage(block_image[bImg], x * (blockSize/2) + hb_startX, y * (blockSize/2) + hb_startY, blockSize/2, blockSize/2);
         }
