@@ -15,7 +15,7 @@ class Observer {
 }
 
 class Tetris {
-  constructor(width, height, scoreDB, boardManager) {
+  constructor(width, height, scoreDB, boardManager, blockFactory) {
     this.width = width;
     this.height = height;
 
@@ -27,7 +27,7 @@ class Tetris {
 
     this.initState = new InitState(this);
     this.idleState = new IdleState(this, this._boardManager);
-    this.playState = new PlayState(this, this.board, this._score, this._boardManager);
+    this.playState = new PlayState(this, this.board, this._score, this._boardManager, blockFactory);
     this.pauseState = new PauseState();
     this.gameoverState = new GameOverState();
 
@@ -129,7 +129,7 @@ class Tetris {
   }
 
   rotate() {
-    this.state.rotate();
+    return this.state.rotate();
   }
 
   hold() {

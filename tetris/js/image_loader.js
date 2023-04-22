@@ -52,7 +52,9 @@ class ImageLoader {
         this._images.red_block = LoadImage("img/red.png");
         this._images.yellow_block = LoadImage("img/yellow.png");
         this._images.boom_block = LoadImage("img/boom.png");
-
+        this._images.blue_boom_block = LoadImage("img/blue_boom.png");
+        this._images.green_boom_block = LoadImage("img/green_boom.png");
+        this._images.red_boom_block = LoadImage("img/red_boom.png");
         console.log("[ImageLoader] load images!");
     }
 }

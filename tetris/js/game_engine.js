@@ -62,11 +62,12 @@ class GameEngine extends Observer {
   }
 
   rotate() {
-    this.tetris.rotate();
-    if (this._max_move > 0) {
-      this._tick = 10;
+    if (this.tetris.rotate()) {
+      if (this._max_move > 0) {
+        this._tick = 10;
+      }
+      this._max_move--;
     }
-    this._max_move--;
   }
 
   hold() {

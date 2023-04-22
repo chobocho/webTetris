@@ -113,7 +113,11 @@ class PlayDrawEngine extends PlayGameState {
     for (let y = 0; y < block.h; ++y) {
       for (let x = 0; x < block.w; ++x) {
         if (block.block[block.r][y][x] !== 0) {
-          _canvas.drawImage(block_image[block.type], x * blockSize + cb_startX, y * blockSize + cb_startY, blockSize, blockSize);
+          let bImg = block.type;
+          if(tetris.isItemMode()) {
+             bImg = block.block[block.r][y][x];
+          }
+          _canvas.drawImage(block_image[bImg], x * blockSize + cb_startX, y * blockSize + cb_startY, blockSize, blockSize);
         }
       }
     }
@@ -129,7 +133,11 @@ class PlayDrawEngine extends PlayGameState {
     for (let y = 0; y < block1.h; ++y) {
       for (let x = 0; x < block1.w; ++x) {
         if (block1.block[block1.r][y][x] !== 0) {
-          _canvas.drawImage(block_image[block1.type], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
+          let bImg = block1.type;
+          if(tetris.isItemMode()) {
+            bImg = block1.block[block1.r][y][x];
+          }
+          _canvas.drawImage(block_image[bImg], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
         }
       }
     }
@@ -138,7 +146,11 @@ class PlayDrawEngine extends PlayGameState {
     for (let y = 0; y < block2.h; ++y) {
       for (let x = 0; x < block2.w; ++x) {
         if (block2.block[block2.r][y][x] !== 0) {
-          _canvas.drawImage(block_image[block2.type], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
+          let bImg = block2.type;
+          if(tetris.isItemMode()) {
+            bImg = block2.block[block2.r][y][x];
+          }
+          _canvas.drawImage(block_image[bImg], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
         }
       }
     }
@@ -151,7 +163,11 @@ class PlayDrawEngine extends PlayGameState {
     for (let y = 0; y < block.h; ++y) {
       for (let x = 0; x < block.w; ++x) {
         if (block.block[block.r][y][x] !== 0) {
-          _canvas.drawImage(block_image[block.type], x * (blockSize/2) + hb_startX, y * (blockSize/2) + hb_startY, blockSize/2, blockSize/2);
+          let bImg = block.type;
+          if(tetris.isItemMode()) {
+            bImg = block.block[block.r][y][x];
+          }
+          _canvas.drawImage(block_image[bImg], x * (blockSize/2) + hb_startX, y * (blockSize/2) + hb_startY, blockSize/2, blockSize/2);
         }
       }
     }
@@ -320,6 +336,9 @@ class DrawEngine extends Observer {
     this.red_block = this._image_res.red_block;
     this.yellow_block = this._image_res.yellow_block;
     this.boom_block = this._image_res.boom_block;
+    this.blue_boom_block = this._image_res.blue_boom_block;
+    this.green_boom_block = this._image_res.green_boom_block;
+    this.red_boom_block = this._image_res.red_boom_block;
 
     this.block_image = [];
     this.block_image.push(this.gray_block);
@@ -332,7 +351,17 @@ class DrawEngine extends Observer {
     this.block_image.push(this.yellow_block);
     this.block_image.push(this.gray_block); // 8
     this.block_image.push(this.boom_block); // 9
+    this.block_image.push(this.blue_boom_block); // 10
+    this.block_image.push(this.green_boom_block); // 11
+    this.block_image.push(this.red_boom_block); // 12
     this.block_image.push(this.gray_block);
+    this.block_image.push(this.gray_block);
+    this.block_image.push(this.gray_block); // 15
+    this.block_image.push(this.gray_block);
+    this.block_image.push(this.gray_block);
+    this.block_image.push(this.gray_block);
+    this.block_image.push(this.gray_block);
+    this.block_image.push(this.gray_block); // 20
 
     console.log("[DRAW_ENGINE] image load success!");
   }
@@ -387,7 +416,7 @@ class DrawEngine extends Observer {
 
     let board = this.tetris.getBoard();
 
-    bufCtx.globalAlpha = 0.3;
+    bufCtx.globalAlpha = 0.42;
     for (let y = 0; y < board_height; y++) {
       for (let x = 0; x < board_width; x++) {
         bufCtx.drawImage(this.back_block, this.startX + x * blockSize, y * blockSize + startY, blockSize, blockSize);

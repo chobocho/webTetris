@@ -172,7 +172,7 @@ class TetrisBoard {
         let line = data[i];
         for (let j = 0; j < this.width; j++) {
           this.board[i][j] = (line >> (j * 3)) & 0x7;
-          if (this.board[i][j] > 0 && Math.random() > 0.86) {
+          if (this.board[i][j] > 0 && Math.random() > 0.88) {
             this.board[i][j] = 9;
           }
         }
@@ -213,10 +213,11 @@ class TetrisBoard {
   addBlock(block) {
     for (let i = 0; i < block.h; i++) {
       for (let j = 0; j < block.w; j++) {
-        if (block.block[block.r][i][j] == 8) {
-          this.board[i + block.y][j + block.x] = 8;
+        // Check is it a item block
+        if (block.block[block.r][i][j] >= 9 && block.block[block.r][i][j] <= 12) {
+          this.board[i + block.y][j + block.x] = block.block[block.r][i][j];
         } else if (block.block[block.r][i][j] !== 0) {
-          this.board[i + block.y][j + block.x] = 10;
+          this.board[i + block.y][j + block.x] = FIXED_BLOCK;
         }
       }
     }
@@ -242,7 +243,7 @@ class TetrisBoard {
              continue;
            }
            for (let tx = 0; tx < this.width; tx++) {
-             if (this.board[ty][tx] !== 9) {
+             if (this.board[ty][tx] < 9 || this.board[ty][tx] > 12) {
                this.board[ty][tx] = 1;
              }
            }
@@ -281,11 +282,10 @@ class TetrisBoard {
   isSolve() {
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
-        if (this.board[i][j] === 0 || this.board[i][j] > 9) {
-          continue;
+        if (this.board[i][j] >= 1 && this.board[i][j] <= 7) {
+          console.log("[Board][isSolve] Fail: " + i + ", " + j);
+          return false;
         }
-        console.log("[Board][isSolve]" + i + ", " + j);
-        return false;
       }
     }
     return true;

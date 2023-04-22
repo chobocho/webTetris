@@ -36,6 +36,8 @@ let tetris;
 let drawEngine;
 let gameEngine;
 
+const FIXED_BLOCK = 20;
+
 let LoadImage = function (image_name) {
     let load_image = new Image();
     load_image.src = image_name;
