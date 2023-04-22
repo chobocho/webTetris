@@ -37,7 +37,7 @@ let drawEngine;
 let gameEngine;
 
 const START_BOOM = 9;
-const END_BOOM = 13;
+const END_BOOM = 14;
 const FIXED_BLOCK = 20;
 
 let LoadImage = function (image_name) {

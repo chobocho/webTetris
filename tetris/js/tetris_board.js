@@ -184,7 +184,7 @@ class TetrisBoard {
         let line = data[i];
         for (let j = 0; j < this.width; j++) {
           this.board[i][j] = (line >> (j * 3)) & 0x7;
-          if (this.board[i][j] > 0 && Math.random() > 0.88) {
+          if (this.board[i][j] > 0 && Math.random() > 0.92) {
             this.board[i][j] = 9;
           }
         }
@@ -240,6 +240,7 @@ class TetrisBoard {
     this._handleOrangeBoom();
     this._handleRedBoom();
     this._handleBlueBoom();
+    this._handleThunder();
     this._handleBlackBoom();
   }
 
@@ -250,10 +251,18 @@ class TetrisBoard {
     for (let y = this.height-1; y >= 0; y--) {
       hasBoom = false;
       let x = 0;
+
+      for (x = 0; x < this.width; x++) {
+        if (this.board[y][x] === 0) {
+          break;
+        }
+      }
+
+      let skipLine = (x === this.width);
+
       for (x = 0; x < this.width; x++) {
         if (this.board[y][x] === ORANGE) {
           this.board[y][x] = FIXED_BLOCK;
-          y++;
           hasBoom = true;
           break;
         }
@@ -264,6 +273,11 @@ class TetrisBoard {
           if (ty < 0 || ty >= this.height) {
             continue;
           }
+
+          if (skipLine && ty == y) {
+            continue;
+          }
+
           for (let tx = x-1; tx <= x+1; tx++) {
             if (tx < 0 || tx >= this.width) {
               continue;
@@ -273,11 +287,11 @@ class TetrisBoard {
             }
           }
         }
+        y--;
       }
     }
     //console.log("[handleBoom] " + this.board);
   }
-
 
   _handleGreenBoom() {
     let hasBoom = false;
@@ -294,9 +308,16 @@ class TetrisBoard {
       hasBoom = false;
       let x = 0;
       for (x = 0; x < this.width; x++) {
+        if (this.board[y][x] === 0) {
+          break;
+        }
+      }
+
+      let skipLine = (x === this.width);
+
+      for (x = 0; x < this.width; x++) {
         if (this.board[y][x] === GREEN) {
           this.board[y][x] = FIXED_BLOCK;
-          y++;
           hasBoom = true;
           break;
         }
@@ -305,6 +326,9 @@ class TetrisBoard {
       if (hasBoom) {
         for (let ty = y-2, j = 0; ty <= y+2; ty++, j++) {
           if (ty < 0 || ty >= this.height) {
+            continue;
+          }
+          if (skipLine && ty == y) {
             continue;
           }
           for (let tx = x-2, i = 0; tx <= x+2; tx++, i++) {
@@ -320,6 +344,7 @@ class TetrisBoard {
             }
           }
         }
+        y--;
       }
     }
     //console.log("[handleBoom] " + this.board);
@@ -335,7 +360,6 @@ class TetrisBoard {
       for (x = 0; x < this.width; x++) {
         if (this.board[y][x] === BLUE) {
           this.board[y][x] = FIXED_BLOCK;
-          y++;
           hasBoom = true;
           break;
         }
@@ -355,6 +379,7 @@ class TetrisBoard {
             }
           }
         }
+        y--;
       }
     }
     //console.log("[handleBoom] " + this.board);
@@ -368,7 +393,6 @@ class TetrisBoard {
       for (let x = 0; x < this.width; x++) {
         if (this.board[y][x] === RED) {
           this.board[y][x] = FIXED_BLOCK;
-          y++;
           hasBoom = true;
           break;
         }
@@ -377,7 +401,7 @@ class TetrisBoard {
       if (hasBoom) {
         for (let tx = 0; tx < this.width; tx++) {
           if (this.board[y][tx] < START_BOOM || this.board[y][tx] > END_BOOM) {
-            this.board[y][tx] = 1;
+            this.board[y][tx] = FIXED_BLOCK;
           }
         }
       }
@@ -413,6 +437,45 @@ class TetrisBoard {
       }
     }
     //console.log("[handleBoom] " + this.board);
+  }
+
+  _handleThunder() {
+    let hasBoom = false;
+    let hasThunder = false;
+    const BLACK = 9;
+    const THUNDER = 14;
+
+    for (let y = this.height - 1; !hasThunder && y >= 0; y--) {
+      for (let x = 0; x < this.width; x++) {
+        if (this.board[y][x] === THUNDER) {
+          this.board[y][x] = FIXED_BLOCK;
+          hasThunder = true;
+          break;
+        }
+      }
+    }
+
+    if (!hasThunder) {
+      return;
+    }
+
+    for (let y = this.height - 1; y >= 0; y--) {
+      hasBoom = false;
+      for (let x = 0; x < this.width; x++) {
+        if (this.board[y][x] === BLACK) {
+          hasBoom = true;
+          break;
+        }
+      }
+
+      if (hasBoom) {
+        for (let tx = 0; tx < this.width; tx++) {
+          if (this.board[y][tx] < START_BOOM || this.board[y][tx] > END_BOOM) {
+            this.board[y][tx] = FIXED_BLOCK;
+          }
+        }
+      }
+    }
   }
 
   arrange() {

@@ -57,6 +57,7 @@ class ImageLoader {
         this._images.green_boom_block = LoadImage("img/green_boom.png");
         this._images.orange_boom_block = LoadImage("img/orange_boom.png");
         this._images.red_boom_block = LoadImage("img/red_boom.png");
+        this._images.thunder_block = LoadImage("img/thunder.png");
         console.log("[ImageLoader] load images!");
     }
 }
