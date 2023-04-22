@@ -274,7 +274,7 @@ class TetrisBoard {
             continue;
           }
 
-          if (skipLine && ty == y) {
+          if (skipLine && ty === y) {
             continue;
           }
 
@@ -328,7 +328,7 @@ class TetrisBoard {
           if (ty < 0 || ty >= this.height) {
             continue;
           }
-          if (skipLine && ty == y) {
+          if (skipLine && ty === y) {
             continue;
           }
           for (let tx = x-2, i = 0; tx <= x+2; tx++, i++) {
