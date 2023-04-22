@@ -348,6 +348,7 @@ class DrawEngine extends Observer {
     this.boom_block = this._image_res.boom_block;
     this.blue_boom_block = this._image_res.blue_boom_block;
     this.green_boom_block = this._image_res.green_boom_block;
+    this.orange_boom_block = this._image_res.orange_boom_block;
     this.red_boom_block = this._image_res.red_boom_block;
 
     this.block_image = [];
@@ -364,7 +365,7 @@ class DrawEngine extends Observer {
     this.block_image.push(this.blue_boom_block); // 10
     this.block_image.push(this.green_boom_block); // 11
     this.block_image.push(this.red_boom_block); // 12
-    this.block_image.push(this.gray_block);
+    this.block_image.push(this.orange_boom_block); //13
     this.block_image.push(this.gray_block);
     this.block_image.push(this.gray_block); // 15
     this.block_image.push(this.gray_block);

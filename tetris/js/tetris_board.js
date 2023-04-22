@@ -226,7 +226,7 @@ class TetrisBoard {
     for (let i = 0; i < block.h; i++) {
       for (let j = 0; j < block.w; j++) {
         // Check is it a item block
-        if (block.block[block.r][i][j] >= 9 && block.block[block.r][i][j] <= 12) {
+        if (block.block[block.r][i][j] >= START_BOOM && block.block[block.r][i][j] <= END_BOOM) {
           this.board[i + block.y][j + block.x] = block.block[block.r][i][j];
         } else if (block.block[block.r][i][j] !== 0) {
           this.board[i + block.y][j + block.x] = FIXED_BLOCK;
@@ -237,10 +237,47 @@ class TetrisBoard {
 
   handleBoom() {
     this._handleGreenBoom();
+    this._handleOrangeBoom();
     this._handleRedBoom();
     this._handleBlueBoom();
     this._handleBlackBoom();
   }
+
+  _handleOrangeBoom() {
+    let hasBoom = false;
+    let ORANGE = 13;
+
+    for (let y = this.height-1; y >= 0; y--) {
+      hasBoom = false;
+      let x = 0;
+      for (x = 0; x < this.width; x++) {
+        if (this.board[y][x] === ORANGE) {
+          this.board[y][x] = FIXED_BLOCK;
+          y++;
+          hasBoom = true;
+          break;
+        }
+      }
+
+      if (hasBoom) {
+        for (let ty = y-1; ty <= y+1; ty++) {
+          if (ty < 0 || ty >= this.height) {
+            continue;
+          }
+          for (let tx = x-1; tx <= x+1; tx++) {
+            if (tx < 0 || tx >= this.width) {
+              continue;
+            }
+            if (this.board[ty][tx] < START_BOOM || this.board[ty][tx] > END_BOOM) {
+              this.board[ty][tx] = 0;
+            }
+          }
+        }
+      }
+    }
+    //console.log("[handleBoom] " + this.board);
+  }
+
 
   _handleGreenBoom() {
     let hasBoom = false;
@@ -274,7 +311,7 @@ class TetrisBoard {
             if (tx < 0 || tx >= this.width) {
               continue;
             }
-            if (this.board[ty][tx] < 9 || this.board[ty][tx] > 12) {
+            if (this.board[ty][tx] < START_BOOM || this.board[ty][tx] > END_BOOM) {
               if (pattern[j][i] === 1) {
                 this.board[ty][tx] = FIXED_BLOCK;
               } else {
@@ -298,6 +335,7 @@ class TetrisBoard {
       for (x = 0; x < this.width; x++) {
         if (this.board[y][x] === BLUE) {
           this.board[y][x] = FIXED_BLOCK;
+          y++;
           hasBoom = true;
           break;
         }
@@ -312,7 +350,7 @@ class TetrisBoard {
             if (tx < 0 || tx >= this.width) {
               continue;
             }
-            if (this.board[ty][tx] < 9 || this.board[ty][tx] > 12) {
+            if (this.board[ty][tx] < START_BOOM || this.board[ty][tx] > END_BOOM) {
               this.board[ty][tx] = FIXED_BLOCK;
             }
           }
@@ -329,7 +367,8 @@ class TetrisBoard {
       hasBoom = false;
       for (let x = 0; x < this.width; x++) {
         if (this.board[y][x] === RED) {
-          this.board[y][x] = 1;
+          this.board[y][x] = FIXED_BLOCK;
+          y++;
           hasBoom = true;
           break;
         }
@@ -337,7 +376,7 @@ class TetrisBoard {
 
       if (hasBoom) {
         for (let tx = 0; tx < this.width; tx++) {
-          if (this.board[y][tx] < 9 || this.board[y][tx] > 12) {
+          if (this.board[y][tx] < START_BOOM || this.board[y][tx] > END_BOOM) {
             this.board[y][tx] = 1;
           }
         }
@@ -347,6 +386,7 @@ class TetrisBoard {
 
   _handleBlackBoom() {
     let hasBoom = false;
+    const BOOM = 9;
     for (let y = this.height-1; y >= 0; y--) {
       let count = 0;
       hasBoom = false;
@@ -354,7 +394,7 @@ class TetrisBoard {
         if (this.board[y][x] !== 0) {
           count++;
         }
-        if (this.board[y][x] === 9) {
+        if (this.board[y][x] === BOOM) {
           hasBoom = true;
         }
       }
@@ -365,8 +405,8 @@ class TetrisBoard {
              continue;
            }
            for (let tx = 0; tx < this.width; tx++) {
-             if (this.board[ty][tx] < 9 || this.board[ty][tx] > 12) {
-               this.board[ty][tx] = 1;
+             if (this.board[ty][tx] < START_BOOM || this.board[ty][tx] > END_BOOM) {
+               this.board[ty][tx] = FIXED_BLOCK;
              }
            }
          }
