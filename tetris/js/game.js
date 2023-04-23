@@ -44,6 +44,15 @@ function processEvent(code) {
         gameEngine.init();
       }
       break;
+    case 73:
+      console.log("Start Item Mode");
+      if (tetris.isInitState()) {
+        tetris = itemTetris;
+        gameEngine = itemGameEngine;
+        drawEngine = itemDrawEngine;
+        gameEngine.init();
+      }
+      break;
     case 76:
       console.log("Load");
       gameEngine.load();
@@ -115,18 +124,28 @@ function InitValue() {
   let imageLoader = new ImageLoader();
   imageLoader.load();
 
-  arcadeModeDB = new LocalDB();
+  let itemBlockFactory = new ItemTetrisBlockFactory();
+  let blockFactory = new TetrisBlockFactory();
+
+  arcadeModeDB = new ArcadeDB();
   arcadeBoardManager = new BoardManager();
-  arcadeTetris = new Tetris(board_width, board_height, arcadeModeDB, arcadeBoardManager);
+  arcadeTetris = new Tetris(board_width, board_height, arcadeModeDB, arcadeBoardManager, blockFactory);
   arcadeDrawEngine = new DrawEngine(arcadeTetris, imageLoader);
   arcadeGameEngine = new GameEngine(arcadeTetris, arcadeModeDB);
 
   puzzleModeDB = new PuzzleDB();
   puzzleBoardManager = new PuzzleBoardManager();
   puzzleBoardManager.setMapData(boardMap);
-  puzzleTetris = new Tetris(board_width, board_height, puzzleModeDB, puzzleBoardManager);
+  puzzleTetris = new Tetris(board_width, board_height, puzzleModeDB, puzzleBoardManager, blockFactory);
   puzzleDrawEngine = new DrawEngine(puzzleTetris, imageLoader);
   puzzleGameEngine = new GameEngine(puzzleTetris, puzzleModeDB);
+
+  itemModeDB = new ItemTetrisDB();
+  itemBoardManager = new ItemBoardManager();
+  itemBoardManager.setMapData(boardMap);
+  itemTetris = new Tetris(board_width, board_height, itemModeDB, itemBoardManager, itemBlockFactory);
+  itemDrawEngine = new DrawEngine(itemTetris, imageLoader);
+  itemGameEngine = new GameEngine(itemTetris, itemModeDB);
 
   tetris = arcadeTetris;
   gameEngine = arcadeGameEngine;

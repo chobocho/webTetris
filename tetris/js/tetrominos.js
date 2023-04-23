@@ -69,18 +69,18 @@ class EmptyBlock extends Tetrominos {
 class OBlock extends Tetrominos {
   constructor(bw, bh) {
     super(bw, bh);
-    this.block = [[[0, 1, 1, 0], [0, 1, 1, 0]]];
-    this.x = 3;
+    this.block = [
+        [[1, 2], [3, 4]],
+        [[3, 1], [4, 2]],
+        [[4, 3], [2, 1]],
+        [[2, 4], [1, 3]]];
+    this.x = 4;
     this.y = 0;
     this.r = 0;
-    this.w = 4;
+    this.w = 2;
     this.h = 2;
     this.type = 1;
-    this.numOfBlockType = 1;
-  }
-
-  rotate() {
-    this.r = 0;
+    this.numOfBlockType = 4;
   }
 }
 
@@ -89,20 +89,20 @@ class IBlock extends Tetrominos {
         super(bw, bh);
         this.block = [
             [[0, 0, 0, 0],
-             [1, 1, 1, 1],
+             [1, 2, 3, 4],
              [0, 0, 0, 0],
              [0, 0, 0, 0]],
             [[0, 0, 1, 0],
-             [0, 0, 1, 0],
-             [0, 0, 1, 0],
-             [0, 0, 1, 0]],
+             [0, 0, 2, 0],
+             [0, 0, 3, 0],
+             [0, 0, 4, 0]],
             [[0, 0, 0, 0],
              [0, 0, 0, 0],
-             [1, 1, 1, 1],
+             [4, 3, 2, 1],
              [0, 0, 0, 0]],
-            [[0, 1, 0, 0],
-             [0, 1, 0, 0],
-             [0, 1, 0, 0],
+            [[0, 4, 0, 0],
+             [0, 3, 0, 0],
+             [0, 2, 0, 0],
              [0, 1, 0, 0]]];
         this.x = 3;
         this.y = 0;
@@ -119,17 +119,17 @@ class LBlock extends Tetrominos {
     super(bw, bh);
       this.block = [
           [[0, 0, 1],
-           [1, 1, 1],
+           [2, 3, 4],
            [0, 0, 0]],
-          [[0, 1, 0],
-           [0, 1, 0],
-           [0, 1, 1]],
+          [[0, 2, 0],
+           [0, 3, 0],
+           [0, 4, 1]],
           [[0, 0, 0],
-           [1, 1, 1],
+           [4, 3, 2],
            [1, 0, 0]],
-          [[1, 1, 0],
-           [0, 1, 0],
-           [0, 1, 0]],
+          [[1, 4, 0],
+           [0, 3, 0],
+           [0, 2, 0]],
       ];
     this.x = 4;
     this.y = 0;
@@ -146,17 +146,17 @@ class JBlock extends Tetrominos {
     super(bw, bh);
     this.block = [
       [[1, 0, 0],
-       [1, 1, 1],
+       [2, 3, 4],
        [0, 0, 0]],
-      [[0, 1, 1],
-       [0, 1, 0],
-       [0, 1, 0]],
+      [[0, 2, 1],
+       [0, 3, 0],
+       [0, 4, 0]],
       [[0, 0, 0],
-       [1, 1, 1],
+       [4, 3, 2],
        [0, 0, 1]],
-      [[0, 1, 0],
-       [0, 1, 0],
-       [1, 1, 0]],
+      [[0, 4, 0],
+       [0, 3, 0],
+       [1, 2, 0]],
     ];
     this.x = 4;
     this.y = 0;
@@ -173,17 +173,17 @@ class TBlock extends Tetrominos {
     super(bw, bh);
     this.block = [
       [[0, 1, 0],
-       [1, 1, 1],
+       [2, 3, 4],
        [0, 0, 0]],
-      [[0, 1, 0],
-       [0, 1, 1],
-       [0, 1, 0]],
+      [[0, 2, 0],
+       [0, 3, 1],
+       [0, 4, 0]],
       [[0, 0, 0],
-       [1, 1, 1],
+       [4, 3, 2],
        [0, 1, 0]],
-      [[0, 1, 0], 
-       [1, 1, 0],
-       [0, 1, 0]],
+      [[0, 4, 0],
+       [1, 3, 0],
+       [0, 2, 0]],
 ];
     this.x = 4;
     this.y = 0;
@@ -199,18 +199,18 @@ class SBlock extends Tetrominos {
   constructor(bw, bh) {
     super(bw, bh);
       this.block = [
-          [[0, 1, 1],
-           [1, 1, 0],
+          [[0, 1, 2],
+           [4, 3, 0],
            [0, 0, 0]],
-          [[0, 1, 0],
-           [0, 1, 1],
-           [0, 0, 1]],
+          [[0, 4, 0],
+           [0, 3, 1],
+           [0, 0, 2]],
           [[0, 0, 0],
-           [0, 1, 1],
-           [1, 1, 0]],
-          [[1, 0, 0],
-           [1, 1, 0],
-           [0, 1, 0]]
+           [0, 3, 4],
+           [2, 1, 0]],
+          [[2, 0, 0],
+           [1, 3, 0],
+           [0, 4, 0]]
       ];
     this.x = 4;
     this.y = 0;
@@ -226,17 +226,17 @@ class ZBlock extends Tetrominos {
   constructor(bw, bh) {
     super(bw, bh);
       this.block = [
-          [[1, 1, 0],
-           [0, 1, 1],
+          [[1, 2, 0],
+           [0, 3, 4],
            [0, 0, 0]],
           [[0, 0, 1],
-           [0, 1, 1],
-           [0, 1, 0]],
+           [0, 3, 2],
+           [0, 4, 0]],
           [[0, 0, 0],
-           [1, 1, 0],
-           [0, 1, 1]],
-          [[0, 1, 0],
-           [1, 1, 0],
+           [4, 3, 0],
+           [0, 2, 1]],
+          [[0, 4, 0],
+           [2, 3, 0],
            [1, 0, 0]]
       ];
     this.x = 4;
@@ -245,11 +245,11 @@ class ZBlock extends Tetrominos {
     this.w = 3;
     this.h = 3;
     this.type = 7;
-    this.numOfBlockType = 2;
+    this.numOfBlockType = 4;
   }
 }
 
-class TetrominosFactory {
+class TetrisBlockFactory {
   constructor () {
   }
   
@@ -276,7 +276,7 @@ class TetrominosFactory {
           case 7:
               return new ZBlock();
           default:
-              console.log("Tetrominos Create Error! Never come to here!");
+              console.log("Tetris Block Create Error! Never come to here!");
               return new ITetrominos();
       }
   }
@@ -284,4 +284,48 @@ class TetrominosFactory {
   getEmptyBlock() {
     return new EmptyBlock();
   }
+}
+
+class ItemTetrisBlockFactory extends TetrisBlockFactory {
+    constructor () {
+        super();
+    }
+
+    create() {
+        let block = this.getBlock (Math.floor(Math.random()*7)+1);
+        return this._addItem(block);
+    }
+
+    _addItem(block) {
+        let item = [0, ];
+        let possibility = {'G': 0.012, 'BLUE': 0.0512, 'O': 0.0812, 'R': 0.92, 'BLACK': 0.97, 'THUNDER':0.995};
+
+        for (let i = 0; i < 4; i++) {
+            let value = Math.random();
+            if (value < possibility['G']) {
+                item.push((11));
+            } else if (value > possibility['G'] && value < possibility['BLUE']) {
+                item.push((10));
+            } else if (value > possibility['BLUE'] && value < possibility['O']) {
+                item.push((13));
+            } else if (value > possibility['R'] && value < possibility['BLACK']) {
+                item.push(12);
+            } else if (value > possibility['BLACK'] && value < possibility['THUNDER']) {
+                item.push(9);
+            } else if (value > possibility['THUNDER']) {
+                item.push(14);
+            } else {
+                item.push(1);
+            }
+        }
+
+        for (let r = 0; r < 4; r++) {
+            for (let y = 0; y < block.h; y++) {
+                for (let x = 0; x < block.w; x++) {
+                    block.block[r][y][x] = item[block.block[r][y][x]];
+                }
+            }
+        }
+        return block;
+    }
 }

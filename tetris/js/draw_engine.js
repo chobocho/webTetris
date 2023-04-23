@@ -34,6 +34,7 @@ class InitDrawEngine extends InitGameState {
     this.buttons = [];
     this.buttons.push(new Button('arcade', 65, gStartX + blockSize * 2, gStartY + blockSize * 5, blockSize*6, blockSize*2, 1.0));
     this.buttons.push(new Button('puzzle', 85, gStartX + blockSize * 2, gStartY + blockSize * 9, blockSize*6, blockSize*2, 1.0));
+    this.buttons.push(new Button('item_mode', 73, gStartX + blockSize * 2, gStartY + blockSize * 13, blockSize*6, blockSize*2, 1.0));
   }
 
   OnDraw(canvas, tetris, block_image, button_image) {
@@ -112,7 +113,13 @@ class PlayDrawEngine extends PlayGameState {
     for (let y = 0; y < block.h; ++y) {
       for (let x = 0; x < block.w; ++x) {
         if (block.block[block.r][y][x] !== 0) {
-          _canvas.drawImage(block_image[block.type], x * blockSize + cb_startX, y * blockSize + cb_startY, blockSize, blockSize);
+          let bImg = block.type;
+          if(tetris.isItemMode()) {
+             if (block.block[block.r][y][x] >= 8) {
+               bImg = block.block[block.r][y][x];
+             }
+          }
+          _canvas.drawImage(block_image[bImg], x * blockSize + cb_startX, y * blockSize + cb_startY, blockSize, blockSize);
         }
       }
     }
@@ -128,7 +135,13 @@ class PlayDrawEngine extends PlayGameState {
     for (let y = 0; y < block1.h; ++y) {
       for (let x = 0; x < block1.w; ++x) {
         if (block1.block[block1.r][y][x] !== 0) {
-          _canvas.drawImage(block_image[block1.type], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
+          let bImg = block1.type;
+          if(tetris.isItemMode()) {
+            if (block1.block[block1.r][y][x] >= 8) {
+              bImg = block1.block[block1.r][y][x];
+            }
+          }
+          _canvas.drawImage(block_image[bImg], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
         }
       }
     }
@@ -137,7 +150,13 @@ class PlayDrawEngine extends PlayGameState {
     for (let y = 0; y < block2.h; ++y) {
       for (let x = 0; x < block2.w; ++x) {
         if (block2.block[block2.r][y][x] !== 0) {
-          _canvas.drawImage(block_image[block2.type], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
+          let bImg = block2.type;
+          if(tetris.isItemMode()) {
+            if (block2.block[block2.r][y][x] >= 8) {
+              bImg = block2.block[block2.r][y][x];
+            }
+          }
+          _canvas.drawImage(block_image[bImg], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
         }
       }
     }
@@ -150,7 +169,13 @@ class PlayDrawEngine extends PlayGameState {
     for (let y = 0; y < block.h; ++y) {
       for (let x = 0; x < block.w; ++x) {
         if (block.block[block.r][y][x] !== 0) {
-          _canvas.drawImage(block_image[block.type], x * (blockSize/2) + hb_startX, y * (blockSize/2) + hb_startY, blockSize/2, blockSize/2);
+          let bImg = block.type;
+          if(tetris.isItemMode()) {
+            if (block.block[block.r][y][x] >= 8) {
+              bImg = block.block[block.r][y][x];
+            }
+          }
+          _canvas.drawImage(block_image[bImg], x * (blockSize/2) + hb_startX, y * (blockSize/2) + hb_startY, blockSize/2, blockSize/2);
         }
       }
     }
@@ -237,6 +262,8 @@ class DrawEngine extends Observer {
   __LoadImage() {
     this.back_image = this._image_res.back;
     this.back2_image = this._image_res.back2;
+    this.back3_image = this._image_res.back3;
+
 
     this.left_image = this._image_res.left;
     this.right_image = this._image_res.right;
@@ -256,6 +283,7 @@ class DrawEngine extends Observer {
 
     this.start_image = this._image_res.start;
     this.arcade_image = this._image_res.arcade;
+    this.item_mode_image = this._image_res.item_mode;
     this.puzzle_image = this._image_res.puzzle;
     this.resume_image = this._image_res.resume;
     this.new_game_image = this._image_res.new_game;
@@ -291,6 +319,7 @@ class DrawEngine extends Observer {
 
     this.buttonImage['arcade'] = this.arcade_image;
     this.buttonImage['puzzle'] = this.puzzle_image;
+    this.buttonImage['item_mode'] = this.item_mode_image;
     this.buttonImage['start'] = this.start_image;
     this.buttonImage['resume'] = this.resume_image;
     this.buttonImage['new_game'] = this.new_game_image;
@@ -316,6 +345,12 @@ class DrawEngine extends Observer {
     this.orange_block = this._image_res.orange_block;
     this.red_block = this._image_res.red_block;
     this.yellow_block = this._image_res.yellow_block;
+    this.boom_block = this._image_res.boom_block;
+    this.blue_boom_block = this._image_res.blue_boom_block;
+    this.green_boom_block = this._image_res.green_boom_block;
+    this.orange_boom_block = this._image_res.orange_boom_block;
+    this.red_boom_block = this._image_res.red_boom_block;
+    this.thunder_block = this._image_res.thunder_block;
 
     this.block_image = [];
     this.block_image.push(this.gray_block);
@@ -323,12 +358,22 @@ class DrawEngine extends Observer {
     this.block_image.push(this.cyan_block);
     this.block_image.push(this.green_block);
     this.block_image.push(this.magenta_block);
-    this.block_image.push(this.orange_block);
+    this.block_image.push(this.orange_block); //5
     this.block_image.push(this.red_block);
     this.block_image.push(this.yellow_block);
+    this.block_image.push(this.gray_block); // 8
+    this.block_image.push(this.boom_block); // 9
+    this.block_image.push(this.blue_boom_block); // 10
+    this.block_image.push(this.green_boom_block); // 11
+    this.block_image.push(this.red_boom_block); // 12
+    this.block_image.push(this.orange_boom_block); //13
+    this.block_image.push(this.thunder_block); //14
+    this.block_image.push(this.gray_block); // 15
     this.block_image.push(this.gray_block);
     this.block_image.push(this.gray_block);
     this.block_image.push(this.gray_block);
+    this.block_image.push(this.gray_block);
+    this.block_image.push(this.gray_block); // 20
 
     console.log("[DRAW_ENGINE] image load success!");
   }
@@ -374,6 +419,8 @@ class DrawEngine extends Observer {
     bufCtx.beginPath();
     if (this.tetris.isPuzzleMode()) {
       bufCtx.drawImage(this.back2_image, 0, 0, gScreenX, gScreenY);
+    } else if (this.tetris.isItemMode()) {
+      bufCtx.drawImage(this.back3_image, 0, 0, gScreenX, gScreenY);
     } else {
       bufCtx.drawImage(this.back_image, 0, 0, gScreenX, gScreenY);
     }
@@ -383,7 +430,7 @@ class DrawEngine extends Observer {
 
     let board = this.tetris.getBoard();
 
-    bufCtx.globalAlpha = 0.3;
+    bufCtx.globalAlpha = 0.42;
     for (let y = 0; y < board_height; y++) {
       for (let x = 0; x < board_width; x++) {
         bufCtx.drawImage(this.back_block, this.startX + x * blockSize, y * blockSize + startY, blockSize, blockSize);
@@ -426,6 +473,11 @@ class DrawEngine extends Observer {
     const drawX = this.startX + blockSize * 14;
     let drawY = this.startY + blockSize * 14;
 
+    if (score > 1000000) {
+      console.log("Score is " + score);
+      score = 999999;
+    }
+
     do {
       _canvas.drawImage(button_image[code[score%10]], drawX - pos * imageSize, drawY, imageSize, imageSize);
       score = Math.floor(score / 10);
@@ -434,6 +486,11 @@ class DrawEngine extends Observer {
 
     pos = 0;
     drawY = this.startY + blockSize * 17;
+
+    if (high_score > 1000000) {
+      console.log("Score is " + high_score);
+      high_score = 999999;
+    }
 
     do {
       _canvas.drawImage(button_image[code[high_score%10]], drawX - pos * imageSize, drawY, imageSize, imageSize);

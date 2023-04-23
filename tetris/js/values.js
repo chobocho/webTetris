@@ -26,9 +26,19 @@ let puzzleGameEngine;
 let puzzleModeDB;
 let puzzleBoardManager;
 
+let itemTetris;
+let itemDrawEngine;
+let itemGameEngine;
+let itemModeDB;
+let itemBoardManager;
+
 let tetris;
 let drawEngine;
 let gameEngine;
+
+const START_BOOM = 9;
+const END_BOOM = 14;
+const FIXED_BLOCK = 20;
 
 let LoadImage = function (image_name) {
     let load_image = new Image();

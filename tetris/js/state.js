@@ -109,10 +109,10 @@ class IdleState extends State {
 }
 
 class PlayState extends State {
-    constructor(tetris, board, score, boardManager) {
+    constructor(tetris, board, score, boardManager, blockFactory) {
         super(tetris);
         this.state = 2;
-        this.blockFactory = new TetrominosFactory();
+        this.blockFactory = blockFactory;
         this.currentBlock = this.blockFactory.create();
         this.nextNextBlock = this.blockFactory.create();
         this.nextBlock = this.blockFactory.create();
@@ -179,7 +179,9 @@ class PlayState extends State {
         this.currentBlock.rotate();
         if (!this.tetrisBoard.isAcceptable(this.currentBlock)) {
             this.currentBlock.preRotate();
+            return false;
         }
+        return true;
     }
 
     moveLeft() {
@@ -232,7 +234,11 @@ class PlayState extends State {
     }
 
     updateBoard() {
-        let removedLine = this.tetrisBoard.arrange();
+        let removedLine = 0;
+        if (this._boardManager.isItemMode()) {
+            this.tetrisBoard.handleBoom();
+        }
+        removedLine += this.tetrisBoard.arrange();
         if (removedLine === 0) {
             return;
         }
