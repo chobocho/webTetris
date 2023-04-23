@@ -32,19 +32,39 @@ class BoardManager {
    isSolve(board) {
     return false;
    }
+
+  arrange(board) {
+    let removedLine = 0;
+
+    for (let y = board_height-1; y >= 0; y--) {
+      let count = 0;
+      for (let x = 0; x < board_width; x++) {
+        if (board[y][x] === 0) {
+          break;
+        }
+        count++;
+      }
+
+      if (count === board_width) {
+        removedLine++;
+        for (let x = 0; x < board_width; x++) {
+          let m = 0;
+          for (m = y; m > 0; m--) {
+            board[m][x] = board[m-1][x];
+          }
+          board[m][0] = 0;
+        }
+        y++;
+      }
+    }
+    return removedLine;
+  }
 }
 
 class PuzzleBoardManager extends BoardManager {
   constructor() {
     super();
     this._index = 0;
-  }
-
-  solve() {
-    if (this._board == NaN) {
-      return false;
-    }
-    return false;
   }
 
   updateBoard() {
@@ -85,13 +105,6 @@ class ItemBoardManager extends BoardManager {
   constructor() {
     super();
     this._index = 0;
-  }
-
-  solve() {
-    if (this._board == NaN) {
-      return false;
-    }
-    return false;
   }
 
   updateBoard() {
@@ -137,6 +150,40 @@ class ItemBoardManager extends BoardManager {
     tmpBoard.sort(() => Math.random() - 0.5);
     tmpBoard.forEach( e => this.mapData.push(e));
     console.log("[ItemBoardManager][isSolve]: setMapData> " + this.mapData.length);
+  }
+
+  arrange(board) {
+    let removedLine = 0;
+    const GREEN = 11;
+    const ORANGE = 13;
+
+    for (let y = board_height-1; y >= 0; y--) {
+      let count = 0;
+      for (let x = 0; x < board_width; x++) {
+        if (board[y][x] === 0) {
+          break;
+        }
+        if (board[y][x] >= START_BOOM && board[y][x] <= END_BOOM) {
+          if (board[y][x] !== GREEN && board[y][x] !== ORANGE) {
+            break;
+          }
+        }
+        count++;
+      }
+
+      if (count === board_width) {
+        removedLine++;
+        for (let x = 0; x < board_width; x++) {
+          let m = 0;
+          for (m = y; m > 0; m--) {
+            board[m][x] = board[m-1][x];
+          }
+          board[m][0] = 0;
+        }
+        y++;
+      }
+    }
+    return removedLine;
   }
 }
 
@@ -492,40 +539,10 @@ class TetrisBoard {
   }
 
   arrange() {
-    let removedLine = 0;
-    const GREEN = 11;
-    const ORANGE = 13;
-
-    for (let y = this.height-1; y >= 0; y--) {
-        let count = 0;
-        for (let x = 0; x < this.width; x++) {
-            if (this.board[y][x] === 0) {
-                break;
-            }
-            if (this.board[y][x] >= START_BOOM && this.board[y][x] <= END_BOOM) {
-              if (this.board[y][x] !== GREEN && this.board[y][x] !== ORANGE) {
-                break;
-              }
-            }
-            count++;
-        }
-
-        if (count === this.width) {
-          removedLine++;
-          for (let x = 0; x < this.width; x++) {
-              let m = 0;
-              for (m = y; m > 0; m--) {
-                  this.board[m][x] = this.board[m - 1][x];
-              }
-              this.board[m][0] = 0;
-          }
-          y++;
-        }
-    }
-    return removedLine;
+      return this._boardManager.arrange(this.board);
   }
 
   isSolve() {
-    return this._boardManager.isSolve(this.board);
+      return this._boardManager.isSolve(this.board);
   }
 }
