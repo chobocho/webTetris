@@ -29,7 +29,7 @@ class BoardManager {
     return false;
    }
 
-   isSolve() {
+   isSolve(board) {
     return false;
    }
 }
@@ -68,12 +68,16 @@ class PuzzleBoardManager extends BoardManager {
     return true;
   }
 
-  isSolve() {
-    if (this._board == NaN) {
-      console.log("PuzzleBoardManager [isSolve]: Board is Nan");
-      return false;
+  isSolve(board){
+    for (let i = 0; i < board_height; i++) {
+      for (let j = 0; j < board_width; j++) {
+        if (board[i][j] >= 1 && board[i][j] <= 7) {
+          console.log("[Board][isSolve] Fail: " + i + ", " + j);
+          return false;
+        }
+      }
     }
-    return this._board.isSolve();
+    return true;
   }
 }
 
@@ -111,12 +115,16 @@ class ItemBoardManager extends BoardManager {
     return true;
   }
 
-  isSolve() {
-    if (this._board == NaN) {
-      console.log("ItemBoardManager [isSolve]: Board is Nan");
-      return false;
+  isSolve(board) {
+    for (let i = 0; i < board_height; i++) {
+      for (let j = 0; j < board_width; j++) {
+        if (board[i][j] >= 1 && board[i][j] <= 7) {
+          console.log("[Board][isSolve] Fail: " + i + ", " + j);
+          return false;
+        }
+      }
     }
-    return this._board.isSolve();
+    return true;
   }
 
   setMapData(board) {
@@ -138,6 +146,7 @@ class TetrisBoard {
     this.board = [];
     this.width = width;
     this.height = height;
+    this._boardManager = boardManager;
 
     for (let i = 0; i < height; i++) {
       this.board.push(new Array(10).fill(0));
@@ -517,14 +526,6 @@ class TetrisBoard {
   }
 
   isSolve() {
-    for (let i = 0; i < this.height; i++) {
-      for (let j = 0; j < this.width; j++) {
-        if (this.board[i][j] >= 1 && this.board[i][j] <= 7) {
-          console.log("[Board][isSolve] Fail: " + i + ", " + j);
-          return false;
-        }
-      }
-    }
-    return true;
+    return this._boardManager.isSolve(this.board);
   }
 }

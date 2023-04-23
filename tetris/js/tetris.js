@@ -64,7 +64,6 @@ class Tetris {
       return;
     }
 
-
     this.board.set(gameInfo);
     this.playState.set(gameInfo);
     this.score = gameInfo['score'];

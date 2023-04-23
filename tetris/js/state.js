@@ -150,7 +150,7 @@ class PlayState extends State {
     }
 
     isSolve() {
-        return this._boardManager.isSolve();
+        return this.tetrisBoard.isSolve();
     }
 
     hold() {
