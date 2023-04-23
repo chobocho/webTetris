@@ -236,12 +236,14 @@ class TetrisBoard {
   }
 
   handleBoom() {
+    let removedLines = this.arrange();
     this._handleGreenBoom();
     this._handleOrangeBoom();
     this._handleRedBoom();
     this._handleBlueBoom();
     this._handleThunder();
     this._handleBlackBoom();
+    return removedLines;
   }
 
   _handleOrangeBoom() {
@@ -287,7 +289,7 @@ class TetrisBoard {
             }
           }
         }
-        y--;
+        y++;
       }
     }
     //console.log("[handleBoom] " + this.board);
@@ -344,7 +346,7 @@ class TetrisBoard {
             }
           }
         }
-        y--;
+        y++;
       }
     }
     //console.log("[handleBoom] " + this.board);
@@ -379,7 +381,7 @@ class TetrisBoard {
             }
           }
         }
-        y--;
+        y++;
       }
     }
     //console.log("[handleBoom] " + this.board);
@@ -394,7 +396,6 @@ class TetrisBoard {
         if (this.board[y][x] === RED) {
           this.board[y][x] = FIXED_BLOCK;
           hasBoom = true;
-          break;
         }
       }
 
@@ -431,6 +432,9 @@ class TetrisBoard {
            for (let tx = 0; tx < this.width; tx++) {
              if (this.board[ty][tx] < START_BOOM || this.board[ty][tx] > END_BOOM) {
                this.board[ty][tx] = FIXED_BLOCK;
+             }
+             if (ty === y && this.board[ty][tx] === BOOM) {
+               this.board[y][tx] = FIXED_BLOCK;
              }
            }
          }
@@ -480,13 +484,21 @@ class TetrisBoard {
 
   arrange() {
     let removedLine = 0;
+    const GREEN = 11;
+    const ORANGE = 13;
 
     for (let y = this.height-1; y >= 0; y--) {
         let count = 0;
-        for (let x = 0; x < 10; x++) {
-            if (this.board[y][x] !== 0) {
-                count++;
+        for (let x = 0; x < this.width; x++) {
+            if (this.board[y][x] === 0) {
+                break;
             }
+            if (this.board[y][x] >= START_BOOM && this.board[y][x] <= END_BOOM) {
+              if (this.board[y][x] !== GREEN && this.board[y][x] !== ORANGE) {
+                break;
+              }
+            }
+            count++;
         }
 
         if (count === this.width) {
