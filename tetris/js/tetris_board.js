@@ -68,10 +68,6 @@ class PuzzleBoardManager extends BoardManager {
   }
 
   updateBoard() {
-    if (this._board == NaN) {
-      console.log("[PuzzleBoardManager]: Board is Nan");
-      return false;
-    }
     this._board.setColorBoardWithInt(this.mapData[this._index]);
     this.nextBoard();
   }
@@ -299,12 +295,33 @@ class TetrisBoard {
     this._handleBlueBoom();
     this._handleThunder();
     this._handleBlackBoom();
+    removedLines += this.arrange();
+    let tmpRemoveLines = 1;
+    let maxCount = 100;
+    while (maxCount > 0 && tmpRemoveLines > 0) {
+      maxCount--;
+      this._handleBlackBoom();
+      tmpRemoveLines = this.arrange();
+      removedLines += tmpRemoveLines;
+    }
+    if (maxCount === 0) {
+      console.log("[BOARD][ITEM_MODE] Error maxCount is 0");
+    } else {
+      console.log("[BOARD][ITEM_MODE] maxCount is " + maxCount);
+    }
     return removedLines;
   }
 
   _handleOrangeBoom() {
     let hasBoom = false;
     let ORANGE = 13;
+    let pattern = [
+      [1,1,1,1,1],
+      [1,0,0,0,1],
+      [1,0,1,0,1],
+      [0,0,0,0,1],
+      [1,1,1,1,1]
+    ];
 
     for (let y = this.height-1; y >= 0; y--) {
       hasBoom = false;
@@ -327,20 +344,20 @@ class TetrisBoard {
       }
 
       if (hasBoom) {
-        for (let ty = y-1; ty <= y+1; ty++) {
+        for (let ty = y-2, j = 0; ty <= y+2; ty++, j++) {
           if (ty < 0 || ty >= this.height) {
             continue;
           }
-
           if (skipLine && ty === y) {
             continue;
           }
-
-          for (let tx = x-1; tx <= x+1; tx++) {
+          for (let tx = x-2, i = 0; tx <= x+2; tx++, i++) {
             if (tx < 0 || tx >= this.width) {
               continue;
             }
-            if (this.board[ty][tx] < START_BOOM || this.board[ty][tx] > END_BOOM) {
+            if (pattern[j][i] === 1) {
+              this.board[ty][tx] = FIXED_BLOCK;
+            } else {
               this.board[ty][tx] = 0;
             }
           }
@@ -393,12 +410,10 @@ class TetrisBoard {
             if (tx < 0 || tx >= this.width) {
               continue;
             }
-            if (this.board[ty][tx] < START_BOOM || this.board[ty][tx] > END_BOOM) {
-              if (pattern[j][i] === 1) {
-                this.board[ty][tx] = FIXED_BLOCK;
-              } else {
-                this.board[ty][tx] = 0;
-              }
+            if (pattern[j][i] === 1) {
+               this.board[ty][tx] = FIXED_BLOCK;
+            } else {
+               this.board[ty][tx] = 0;
             }
           }
         }
