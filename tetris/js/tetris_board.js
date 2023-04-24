@@ -104,10 +104,6 @@ class ItemBoardManager extends BoardManager {
   }
 
   updateBoard() {
-    if (this._board == NaN) {
-      console.log("[ItemBoardManager]: Board is Nan");
-      return false;
-    }
     this._board.setColorBoardWithItem(this.mapData[this._index]);
     this.nextBoard();
   }
@@ -151,7 +147,8 @@ class ItemBoardManager extends BoardManager {
   arrange(board) {
     let removedLine = 0;
     const GREEN = 11;
-    const ORANGE = 13;
+    const ORANGE_BOOM = 13;
+    const ORANGE_THUNDER = 16;
 
     for (let y = board_height-1; y >= 0; y--) {
       let count = 0;
@@ -160,7 +157,10 @@ class ItemBoardManager extends BoardManager {
           break;
         }
         if (board[y][x] >= START_BOOM && board[y][x] <= END_BOOM) {
-          if (board[y][x] !== GREEN && board[y][x] !== ORANGE) {
+          if (board[y][x] !== GREEN &&
+              board[y][x] !== ORANGE_BOOM &&
+              board[y][x] !== ORANGE_THUNDER
+          ) {
             break;
           }
         }
@@ -289,12 +289,16 @@ class TetrisBoard {
 
   handleBoom() {
     let removedLines = this.arrange();
+    this._handleBlackThunder();
+    this._handleOrangeThunder();
+    this._handleRedThunder();
     this._handleGreenBoom();
     this._handleOrangeBoom();
     this._handleRedBoom();
     this._handleBlueBoom();
     this._handleThunder();
     this._handleBlackBoom();
+
     removedLines += this.arrange();
     let tmpRemoveLines = 1;
     let maxCount = 100;
@@ -310,6 +314,98 @@ class TetrisBoard {
       console.log("[BOARD][ITEM_MODE] maxCount is " + maxCount);
     }
     return removedLines;
+  }
+
+  _handleRedThunder() {
+    let hasBoom = false;
+    const RED_THUNDER = 17;
+    for (let y = this.height - 1; y >= 0; y--) {
+      hasBoom = false;
+      let x = 0;
+      for (x = 0; x < this.width; x++) {
+        if (this.board[y][x] === RED_THUNDER) {
+          this.board[y][x] = 0;
+          hasBoom = true;
+          break;
+        }
+      }
+
+      if (hasBoom) {
+        for (let ty = 0; ty < this.height; ty++) {
+          for (let tx = x; tx < x+2; tx++) {
+            if (tx >= this.width) {
+              continue;
+            }
+            this.board[ty][tx] = 0;
+          }
+        }
+        y++;
+      }
+    }
+  }
+
+  _handleBlackThunder() {
+    let hasBoom = false;
+    const BLACK_THUNDER = 15;
+    for (let y = this.height - 1; y >= 0; y--) {
+      hasBoom = false;
+      let x = 0;
+      for (x = 0; x < this.width; x++) {
+        if (this.board[y][x] === BLACK_THUNDER) {
+          this.board[y][x] = FIXED_BLOCK;
+          hasBoom = true;
+        }
+      }
+
+      if (hasBoom) {
+        for (let ty = 0, boomCount = 0; ty < this.height && boomCount < 3; ty++) {
+          for (let tx = 0; tx < this.width; tx++) {
+            if (this.board[ty][tx] !== 0 &&
+                (this.board[ty][tx] < START_BOOM ||this.board[ty][tx] > END_BOOM)) {
+              if (Math.random() < 0.1 && boomCount < 3) {
+                this.board[ty][tx] = START_BOOM;
+                boomCount++;
+              }
+            }
+          }
+        }
+        y++;
+      }
+      // console.log("[BlackThunder] " + x + ',' + y);
+    }
+  }
+
+  _handleOrangeThunder() {
+    let hasBoom = false;
+    let ORANGE_THUNDER = 16;
+
+    for (let y = this.height-1; y >= 0; y--) {
+      hasBoom = false;
+      let x = 0;
+      for (x = 0; x < this.width; x++) {
+        if (this.board[y][x] === ORANGE_THUNDER) {
+          this.board[y][x] = FIXED_BLOCK;
+          hasBoom = true;
+          break;
+        }
+      }
+
+      if (hasBoom) {
+        for (let ty = y-1; ty <= y+1; ty++) {
+          if (ty < 0 || ty >= this.height) {
+            continue;
+          }
+          for (let tx = x-1; tx <= x+1; tx++) {
+            if (tx < 0 || tx >= this.width) {
+              continue;
+            }
+            this.board[ty][tx] = 0;
+          }
+        }
+        y++;
+      }
+    }
+    //console.log("[handleBoom] " + this.board);
   }
 
   _handleOrangeBoom() {

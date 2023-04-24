@@ -293,25 +293,39 @@ class ItemTetrisBlockFactory extends TetrisBlockFactory {
 
     create() {
         let block = this.getBlock (Math.floor(Math.random()*7)+1);
-        return this._addItem(block);
+        return Math.random() > 0.2 ? this._addItem(block) : block;
     }
 
     _addItem(block) {
         let item = [0, ];
-        let possibility = {'G': 0.012, 'BLUE': 0.0512, 'O': 0.0812, 'R': 0.92, 'BLACK': 0.97, 'THUNDER':0.995};
+        let possibility = {
+            'G': 12,
+            'BLUE': 512,
+            'O': 542,
+            'R': 9000,
+            'BLACK': 9550,
+            'BLACK_THUNDER': 9650,
+            'ORANGE_THUNDER': 9700,
+            'RED_THUNDER': 9710,
+            'THUNDER':9950
+        };
 
         for (let i = 0; i < 4; i++) {
-            let value = Math.random();
+            let value = Math.floor(Math.random() * 10000);
             if (value < possibility['G']) {
-                item.push((11));
+                item.push(11);
             } else if (value > possibility['G'] && value < possibility['BLUE']) {
-                item.push((10));
+                item.push(10);
             } else if (value > possibility['BLUE'] && value < possibility['O']) {
-                item.push((13));
+                item.push(13);
             } else if (value > possibility['R'] && value < possibility['BLACK']) {
                 item.push(12);
-            } else if (value > possibility['BLACK'] && value < possibility['THUNDER']) {
-                item.push(9);
+            } else if (value > possibility['BLACK'] && value < possibility['BLACK_THUNDER']) {
+                item.push(15);
+            } else if (value > possibility['BLACK_THUNDER'] && value < possibility['ORANGE_THUNDER']) {
+                item.push(16);
+            } else if (value > possibility['ORANGE_THUNDER'] && value < possibility['RED_THUNDER']) {
+                item.push(17);
             } else if (value > possibility['THUNDER']) {
                 item.push(14);
             } else {

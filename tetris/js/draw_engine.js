@@ -351,6 +351,9 @@ class DrawEngine extends Observer {
     this.orange_boom_block = this._image_res.orange_boom_block;
     this.red_boom_block = this._image_res.red_boom_block;
     this.thunder_block = this._image_res.thunder_block;
+    this.black_thunder_block = this._image_res.black_thunder_block;
+    this.orange_thunder_block = this._image_res.orange_thunder_block;
+    this.red_thunder_block = this._image_res.red_thunder_block;
 
     this.block_image = [];
     this.block_image.push(this.gray_block);
@@ -368,9 +371,9 @@ class DrawEngine extends Observer {
     this.block_image.push(this.red_boom_block); // 12
     this.block_image.push(this.orange_boom_block); //13
     this.block_image.push(this.thunder_block); //14
-    this.block_image.push(this.gray_block); // 15
-    this.block_image.push(this.gray_block);
-    this.block_image.push(this.gray_block);
+    this.block_image.push(this.black_thunder_block); // 15
+    this.block_image.push(this.orange_thunder_block); // 16
+    this.block_image.push(this.red_thunder_block); // 17
     this.block_image.push(this.gray_block);
     this.block_image.push(this.gray_block);
     this.block_image.push(this.gray_block); // 20
