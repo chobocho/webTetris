@@ -103,7 +103,7 @@ class GameEngine extends Observer {
   }
 
   load() {
-    if (!this.tetris.isPuzzleMode() || !this.tetris.isItemMode() || !this.tetris.isIdleState()) {
+    if (this.tetris.isArcadeMode() || !this.tetris.isIdleState()) {
       return;
     }
 

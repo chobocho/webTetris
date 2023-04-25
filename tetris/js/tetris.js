@@ -174,6 +174,8 @@ class Tetris {
 
   isPuzzleMode() { return this._boardManager.isPuzzleMode(); }
   isItemMode() { return this._boardManager.isItemMode(); }
+  isArcadeMode() { return this._boardManager.isArcadeMode(); }
+
   isInitState() { return this.state.isInitState(); }
   isIdleState() { return this.state.isIdleState(); }
   isGameOverState() { return this.state.isGameOverState(); }
