@@ -412,11 +412,9 @@ class TetrisBoard {
     let hasBoom = false;
     let ORANGE = 13;
     let pattern = [
-      [1,1,1,1,1],
-      [1,0,0,0,1],
-      [1,0,1,0,1],
-      [0,0,0,0,1],
-      [1,1,1,1,1]
+      [1,1,1],
+      [1,0,1],
+      [1,1,1],
     ];
 
     for (let y = this.height-1; y >= 0; y--) {
@@ -440,14 +438,14 @@ class TetrisBoard {
       }
 
       if (hasBoom) {
-        for (let ty = y-2, j = 0; ty <= y+2; ty++, j++) {
+        for (let ty = y-1, j = 0; ty <= y+1; ty++, j++) {
           if (ty < 0 || ty >= this.height) {
             continue;
           }
           if (skipLine && ty === y) {
             continue;
           }
-          for (let tx = x-2, i = 0; tx <= x+2; tx++, i++) {
+          for (let tx = x-1, i = 0; tx <= x+1; tx++, i++) {
             if (tx < 0 || tx >= this.width) {
               continue;
             }

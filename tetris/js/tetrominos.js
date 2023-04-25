@@ -293,7 +293,7 @@ class ItemTetrisBlockFactory extends TetrisBlockFactory {
 
     create() {
         let block = this.getBlock (Math.floor(Math.random()*7)+1);
-        return Math.random() > 0.2 ? this._addItem(block) : block;
+        return Math.random() > 0.12 ? this._addItem(block) : block;
     }
 
     _addItem(block) {
@@ -301,10 +301,10 @@ class ItemTetrisBlockFactory extends TetrisBlockFactory {
         let possibility = {
             'G': 12,
             'BLUE': 512,
-            'O': 542,
+            'O': 612,
             'R': 9000,
-            'BLACK': 9550,
-            'BLACK_THUNDER': 9650,
+            'BLACK': 9450,
+            'BLACK_THUNDER': 9500,
             'ORANGE_THUNDER': 9700,
             'RED_THUNDER': 9710,
             'THUNDER':9950
@@ -314,20 +314,28 @@ class ItemTetrisBlockFactory extends TetrisBlockFactory {
             let value = Math.floor(Math.random() * 10000);
             if (value < possibility['G']) {
                 item.push(11);
+                break;
             } else if (value > possibility['G'] && value < possibility['BLUE']) {
                 item.push(10);
+                break;
             } else if (value > possibility['BLUE'] && value < possibility['O']) {
                 item.push(13);
+                break;
             } else if (value > possibility['R'] && value < possibility['BLACK']) {
                 item.push(12);
+                break;
             } else if (value > possibility['BLACK'] && value < possibility['BLACK_THUNDER']) {
                 item.push(15);
+                break;
             } else if (value > possibility['BLACK_THUNDER'] && value < possibility['ORANGE_THUNDER']) {
                 item.push(16);
+                break;
             } else if (value > possibility['ORANGE_THUNDER'] && value < possibility['RED_THUNDER']) {
                 item.push(17);
+                break;
             } else if (value > possibility['THUNDER']) {
                 item.push(14);
+                break;
             } else {
                 item.push(1);
             }
