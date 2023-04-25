@@ -293,7 +293,7 @@ class ItemTetrisBlockFactory extends TetrisBlockFactory {
 
     create() {
         let block = this.getBlock (Math.floor(Math.random()*7)+1);
-        return Math.random() > 0.12 ? this._addItem(block) : block;
+        return Math.random() > 0.08 ? this._addItem(block) : block;
     }
 
     _addItem(block) {
@@ -301,7 +301,7 @@ class ItemTetrisBlockFactory extends TetrisBlockFactory {
         let possibility = {
             'G': 12,
             'BLUE': 512,
-            'O': 612,
+            'O': 1112, //612
             'R': 9000,
             'BLACK': 9450,
             'BLACK_THUNDER': 9500,

@@ -96,6 +96,9 @@ class Tetris {
       return false;
     }
     let result = this.state.moveDown();
+    if (this.state.isClear()) {
+      this._score.add(1023);
+    }
     if (this.state.isSolve()) {
       console.log("[Tetris] Solved!");
       if (this.isPuzzleMode()) {

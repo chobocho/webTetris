@@ -50,6 +50,10 @@ class State {
         return false;
     }
 
+    isClear() {
+        return false;
+    }
+
     isSolve() {
         return false;
     }
@@ -149,6 +153,10 @@ class PlayState extends State {
         return !this.tetrisBoard.isAcceptable(this.currentBlock);
     }
 
+    isClear() {
+        return this.tetrisBoard.isClear();
+    }
+
     isSolve() {
         return this.tetrisBoard.isSolve();
     }
@@ -215,7 +223,9 @@ class PlayState extends State {
         this.fixCurrentBlock();
         this.updateBoard();
         this.updateBlock();
-        this.Tetris.saveGame();
+        if (this._boardManager.isArcadeMode()) {
+            this.Tetris.saveGame();
+        }
         return false;
     }
 
@@ -234,12 +244,7 @@ class PlayState extends State {
     }
 
     updateBoard() {
-        let removedLine = 0;
-        if (this._boardManager.isItemMode()) {
-            removedLine += this.tetrisBoard.handleBoom();
-        } else {
-            removedLine += this.tetrisBoard.arrange();
-        }
+        let removedLine = this.tetrisBoard.arrange();
         if (removedLine === 0) {
             return;
         }
