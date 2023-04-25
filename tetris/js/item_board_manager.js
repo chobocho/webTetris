@@ -276,7 +276,6 @@ class ItemBoardManager extends BoardManager {
     //console.log("[handleBoom] " + board);
   }
 
-
   _handleOrangeBoom(board) {
     const height = board_height;
     const width = board_width;
