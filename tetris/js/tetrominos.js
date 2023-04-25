@@ -297,7 +297,7 @@ class ItemTetrisBlockFactory extends TetrisBlockFactory {
     }
 
     _addItem(block) {
-        let item = [0, ];
+        let item = [0, 1, 1, 1, 1];
         let possibility = {
             'G': 12,
             'BLUE': 512,
@@ -310,34 +310,34 @@ class ItemTetrisBlockFactory extends TetrisBlockFactory {
             'THUNDER':9950
         };
 
-        for (let i = 0; i < 4; i++) {
+        for (let i = 1; i <= 4; i++) {
             let value = Math.floor(Math.random() * 10000);
             if (value < possibility['G']) {
-                item.push(11);
+                item[i] = 11;
                 break;
             } else if (value > possibility['G'] && value < possibility['BLUE']) {
-                item.push(10);
+                item[i] = 10;
                 break;
             } else if (value > possibility['BLUE'] && value < possibility['O']) {
-                item.push(13);
+                item[i] = 13;
                 break;
             } else if (value > possibility['R'] && value < possibility['BLACK']) {
-                item.push(12);
+                item[i] = 12;
                 break;
             } else if (value > possibility['BLACK'] && value < possibility['BLACK_THUNDER']) {
-                item.push(15);
+                item[i] = 15;
                 break;
             } else if (value > possibility['BLACK_THUNDER'] && value < possibility['ORANGE_THUNDER']) {
-                item.push(16);
+                item[i] = 16;
                 break;
             } else if (value > possibility['ORANGE_THUNDER'] && value < possibility['RED_THUNDER']) {
-                item.push(17);
+                item[i] = 17;
                 break;
             } else if (value > possibility['THUNDER']) {
-                item.push(14);
+                item[i] = 14;
                 break;
             } else {
-                item.push(1);
+                // Do nothing
             }
         }
 
