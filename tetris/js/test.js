@@ -1,5 +1,5 @@
 function test_Tetrominos() {
-  let block = new Tetrominos();
+  let block = new DefaultBlock();
   block.moveLeft();
 }
 

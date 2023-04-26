@@ -1,4 +1,4 @@
-class Tetrominos {
+class DefaultBlock {
   constructor(bw, bh) {
     this.block = [];
     this.x = 0;
@@ -59,14 +59,14 @@ class Tetrominos {
   }
 }
 
-class EmptyBlock extends Tetrominos {
+class EmptyBlock extends DefaultBlock {
   constructor(bw, bh) {
     super(bw, bh);
     this.type = 0;
   }
 }
 
-class OBlock extends Tetrominos {
+class OBlock extends DefaultBlock {
   constructor(bw, bh) {
     super(bw, bh);
     this.block = [
@@ -84,7 +84,7 @@ class OBlock extends Tetrominos {
   }
 }
 
-class IBlock extends Tetrominos {
+class IBlock extends DefaultBlock {
     constructor(bw, bh) {
         super(bw, bh);
         this.block = [
@@ -114,7 +114,7 @@ class IBlock extends Tetrominos {
     }
 }
 
-class LBlock extends Tetrominos {
+class LBlock extends DefaultBlock {
   constructor(bw, bh) {
     super(bw, bh);
       this.block = [
@@ -141,7 +141,7 @@ class LBlock extends Tetrominos {
   }
 }
 
-class JBlock extends Tetrominos {
+class JBlock extends DefaultBlock {
   constructor(bw, bh) {
     super(bw, bh);
     this.block = [
@@ -168,7 +168,7 @@ class JBlock extends Tetrominos {
   }
 }
 
-class TBlock extends Tetrominos {
+class TBlock extends DefaultBlock {
   constructor(bw, bh) {
     super(bw, bh);
     this.block = [
@@ -195,7 +195,7 @@ class TBlock extends Tetrominos {
   }
 }
 
-class SBlock extends Tetrominos {
+class SBlock extends DefaultBlock {
   constructor(bw, bh) {
     super(bw, bh);
       this.block = [
@@ -222,7 +222,7 @@ class SBlock extends Tetrominos {
   }
 }
 
-class ZBlock extends Tetrominos {
+class ZBlock extends DefaultBlock {
   constructor(bw, bh) {
     super(bw, bh);
       this.block = [
@@ -251,10 +251,33 @@ class ZBlock extends Tetrominos {
 
 class TetrisBlockFactory {
   constructor () {
+      this._index = 0;
+      this._nextBlock = [];
+
+      for (let i = 1; i <= 14; i++) {
+          let b = [1, 2, 3, 4, 5, 6, 7];
+          b.sort(() => Math.random() - 0.5);
+          this._nextBlock.push(...b);
+      }
+      //printf(">> [DefaultBlock]", this._nextBlock);
   }
-  
+
+  initBlock() {
+      this._index = 0;
+      this._nextBlock.sort( () => Math.random() - 0.5);
+  }
+
+  increaseIndex() {
+      this._index++;
+      if (this._index >= this._nextBlock.length) {
+          this.initBlock();
+      }
+  }
+
   create() {
-     return this.getBlock (Math.floor(Math.random()*7)+1);
+      let block = this.getBlock(this._nextBlock[this._index]);
+      this.increaseIndex();
+      return block;
   }
 
   getBlock(type) {
@@ -276,8 +299,8 @@ class TetrisBlockFactory {
           case 7:
               return new ZBlock();
           default:
-              console.log("Tetris Block Create Error! Never come to here!");
-              return new ITetrominos();
+              console.log(">> Tetris Block Create Error! Never come to here!");
+              return new IBlock();
       }
   }
 
@@ -292,7 +315,8 @@ class ItemTetrisBlockFactory extends TetrisBlockFactory {
     }
 
     create() {
-        let block = this.getBlock (Math.floor(Math.random()*7)+1);
+        let block = this.getBlock(this._nextBlock[this._index]);
+        this.increaseIndex();
         return Math.random() > 0.08 ? this._addItem(block) : block;
     }
 
@@ -337,7 +361,7 @@ class ItemTetrisBlockFactory extends TetrisBlockFactory {
                 item[i] = 14;
                 break;
             } else {
-                // Do nothing
+
             }
         }
 
