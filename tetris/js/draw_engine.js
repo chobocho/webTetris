@@ -132,13 +132,13 @@ class PlayDrawEngine extends PlayGameState {
     let nb_startX = gStartX + (board_width + 2) * blockSize;
     let nb_startY = gStartY + blockSize + small_block_size * 0.5;
 
-    for (let y = 0; y < block1.h; ++y) {
-      for (let x = 0; x < block1.w; ++x) {
-        if (block1.block[block1.r][y][x] !== 0) {
-          let bImg = block1.type;
+    for (let y = 0; y < block2.h; ++y) {
+      for (let x = 0; x < block2.w; ++x) {
+        if (block2.block[block2.r][y][x] !== 0) {
+          let bImg = block2.type;
           if(tetris.isItemMode()) {
-            if (block1.block[block1.r][y][x] >= 8) {
-              bImg = block1.block[block1.r][y][x];
+            if (block2.block[block2.r][y][x] >= 8) {
+              bImg = block2.block[block2.r][y][x];
             }
           }
           _canvas.drawImage(block_image[bImg], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
@@ -147,13 +147,13 @@ class PlayDrawEngine extends PlayGameState {
     }
 
     nb_startY = gStartY + blockSize + small_block_size * 5.5;
-    for (let y = 0; y < block2.h; ++y) {
-      for (let x = 0; x < block2.w; ++x) {
-        if (block2.block[block2.r][y][x] !== 0) {
-          let bImg = block2.type;
+    for (let y = 0; y < block1.h; ++y) {
+      for (let x = 0; x < block1.w; ++x) {
+        if (block1.block[block1.r][y][x] !== 0) {
+          let bImg = block1.type;
           if(tetris.isItemMode()) {
-            if (block2.block[block2.r][y][x] >= 8) {
-              bImg = block2.block[block2.r][y][x];
+            if (block1.block[block1.r][y][x] >= 8) {
+              bImg = block1.block[block1.r][y][x];
             }
           }
           _canvas.drawImage(block_image[bImg], x * (small_block_size) + nb_startX, y * (small_block_size) + nb_startY, small_block_size, small_block_size);
