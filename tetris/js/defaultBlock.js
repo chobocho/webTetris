@@ -10,6 +10,24 @@ class DefaultBlock {
     this.numOfBlockType = 0;
     this.board_width = bw;
     this.board_height = bh;
+    this.itemIndex = 0;
+    this.itemType = 0;
+  }
+
+  getItemIndex() {
+      return this.itemIndex;
+  }
+
+  setItemIndex(index) {
+      this.itemIndex = index;
+  }
+
+  getItemType() {
+      return this.itemType;
+  }
+
+  setItemType(type) {
+      this.itemType = type;
   }
 
   getType() {
@@ -321,11 +339,10 @@ class ItemTetrisBlockFactory extends TetrisBlockFactory {
     }
 
     _addItem(block) {
-        let item = [0, 1, 1, 1, 1];
         let possibility = {
             'G': 12,
             'BLUE': 512,
-            'O': 1112, //612
+            'O': 1012, //612
             'R': 9000,
             'BLACK': 9450,
             'BLACK_THUNDER': 9500,
@@ -337,34 +354,49 @@ class ItemTetrisBlockFactory extends TetrisBlockFactory {
         for (let i = 1; i <= 4; i++) {
             let value = Math.floor(Math.random() * 10000);
             if (value < possibility['G']) {
-                item[i] = 11;
+                this.itemIndex = i;
+                this.itemType = 11;
                 break;
             } else if (value > possibility['G'] && value < possibility['BLUE']) {
-                item[i] = 10;
+                this.itemIndex = i;
+                this.itemType = 10;
                 break;
             } else if (value > possibility['BLUE'] && value < possibility['O']) {
-                item[i] = 13;
+                this.itemIndex = i;
+                this.itemType = 13;
                 break;
             } else if (value > possibility['R'] && value < possibility['BLACK']) {
-                item[i] = 12;
+                this.itemIndex = i;
+                this.itemType = 12;
                 break;
             } else if (value > possibility['BLACK'] && value < possibility['BLACK_THUNDER']) {
-                item[i] = 15;
+                this.itemIndex = i;
+                this.itemType = 15;
                 break;
             } else if (value > possibility['BLACK_THUNDER'] && value < possibility['ORANGE_THUNDER']) {
-                item[i] = 16;
+                this.itemIndex = i;
+                this.itemType = 16;
                 break;
             } else if (value > possibility['ORANGE_THUNDER'] && value < possibility['RED_THUNDER']) {
-                item[i] = 17;
+                this.itemIndex = i;
+                this.itemType = 17;
                 break;
             } else if (value > possibility['THUNDER']) {
-                item[i] = 14;
+                this.itemIndex = i;
+                this.itemType = 14;
                 break;
             } else {
 
             }
         }
 
+        this.setItem(this.itemIndex, this.itemType, block);
+        return block;
+    }
+
+    setItem(index, type, block) {
+        let item = [0, 1, 1, 1, 1];
+        item[index] = type;
         for (let r = 0; r < 4; r++) {
             for (let y = 0; y < block.h; y++) {
                 for (let x = 0; x < block.w; x++) {
@@ -372,6 +404,5 @@ class ItemTetrisBlockFactory extends TetrisBlockFactory {
                 }
             }
         }
-        return block;
     }
 }

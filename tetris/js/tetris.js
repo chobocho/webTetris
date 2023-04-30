@@ -57,8 +57,8 @@ class Tetris {
 
   resumeGame(gameInfo) {
     if (this._boardManager.isItemMode()) {
-      this.idle();
-      return;
+      //this.idle();
+      //return;
     }
 
     this.board.set(gameInfo);
