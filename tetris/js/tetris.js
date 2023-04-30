@@ -38,6 +38,7 @@ class Tetris {
   init() {
     this.board.init();
     this._score.init();
+    this._boardManager.init();
     this.setState(this.initState);
   }
 
@@ -55,16 +56,13 @@ class Tetris {
   }
 
   resumeGame(gameInfo) {
-    if (this._boardManager.isPuzzleMode()) {
-      this.idle();
-      return;
-    }
     if (this._boardManager.isItemMode()) {
       this.idle();
       return;
     }
 
     this.board.set(gameInfo);
+    this._boardManager.setIndex(gameInfo['index']);
     this.playState.set(gameInfo);
     this.score = gameInfo['score'];
     this.setState(this.pauseState);
@@ -108,6 +106,7 @@ class Tetris {
       }
       this._saveHighScore();
       this._boardManager.updateBoard();
+      this.saveGame();
       this.setState(this.idleState);
       result = true;
     }
@@ -210,6 +209,7 @@ class Tetris {
 
   getGameInfo() {
     return {
+      'version' : 2,
       'gameSate': 3,
       'score': this.score,
       'next_next_block': this.playState.nextNextBlock.getType(),
@@ -219,7 +219,8 @@ class Tetris {
       'x': this.playState.currentBlock.getX(),
       'y': this.playState.currentBlock.getY(),
       'r': this.playState.currentBlock.getR(),
-      'board': this.board.getBoard()
+      'board': this.board.getBoard(),
+      'index': this._boardManager.getIndex(),
     };
   }
 

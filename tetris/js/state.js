@@ -223,7 +223,7 @@ class PlayState extends State {
         this.fixCurrentBlock();
         this.updateBoard();
         this.updateBlock();
-        if (this._boardManager.isArcadeMode()) {
+        if (this._boardManager.isArcadeMode() || this._boardManager.isPuzzleMode()) {
             this.Tetris.saveGame();
         }
         return false;

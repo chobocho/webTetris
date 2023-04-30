@@ -76,7 +76,7 @@ class GameEngine extends Observer {
 
   init() {
     if (this.state.state === 0) {
-      const savedGame = arcadeModeDB.getBoard();
+      const savedGame = this._scoreDB.getBoard();
       if (savedGame['gameSate'] === 3) {
         tetris.resumeGame(savedGame);
       } else {

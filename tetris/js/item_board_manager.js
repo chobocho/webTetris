@@ -1,7 +1,6 @@
 class ItemBoardManager extends BoardManager {
   constructor() {
     super();
-    this._index = 0;
   }
 
   updateBoard() {
