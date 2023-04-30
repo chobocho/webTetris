@@ -114,6 +114,12 @@ class OBlock extends DefaultBlock {
         this.h = 2;
         this.type = 1;
         this.numOfBlockType = 4;
+        this.wallKick = [
+            [[0, 0]],
+            [[0, 0]],
+            [[0, 0]],
+            [[0, 0]]
+        ];
     }
 }
 
