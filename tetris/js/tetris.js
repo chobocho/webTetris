@@ -56,11 +56,6 @@ class Tetris {
   }
 
   resumeGame(gameInfo) {
-    if (this._boardManager.isItemMode()) {
-      //this.idle();
-      //return;
-    }
-
     this.board.set(gameInfo);
     this._boardManager.setIndex(gameInfo['index']);
     this.playState.set(gameInfo);
@@ -209,13 +204,21 @@ class Tetris {
 
   getGameInfo() {
     return {
-      'version' : 2,
+      'version' : 5,
       'gameSate': 3,
       'score': this.score,
       'next_next_block': this.playState.nextNextBlock.getType(),
+      'nnb_item_index': this.playState.nextNextBlock.getItemIndex(),
+      'nnb_item_type': this.playState.nextNextBlock.getItemType(),
       'next_block': this.playState.nextBlock.getType(),
+      'nb_item_index': this.playState.nextBlock.getItemIndex(),
+      'nb_item_type': this.playState.nextBlock.getItemType(),
       'hold_block': this.playState.holdBlock.getType(),
+      'hold_item_index': this.playState.holdBlock.getItemIndex(),
+      'hold_item_type': this.playState.holdBlock.getItemType(),
       'current_block': this.playState.currentBlock.getType(),
+      'current_item_index': this.playState.currentBlock.getItemIndex(),
+      'current_item_type': this.playState.currentBlock.getItemType(),
       'x': this.playState.currentBlock.getX(),
       'y': this.playState.currentBlock.getY(),
       'r': this.playState.currentBlock.getR(),

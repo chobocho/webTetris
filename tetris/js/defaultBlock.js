@@ -18,16 +18,8 @@ class DefaultBlock {
         return this.itemIndex;
     }
 
-    setItemIndex(index) {
-        this.itemIndex = index;
-    }
-
     getItemType() {
         return this.itemType;
-    }
-
-    setItemType(type) {
-        this.itemType = type;
     }
 
     getType() {
@@ -77,6 +69,10 @@ class DefaultBlock {
     }
 
     setItem(index, type) {
+        if (index === 0) {
+            return;
+        }
+
         this.itemIndex = index;
         this.itemType = type;
 

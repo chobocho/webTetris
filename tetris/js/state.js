@@ -134,14 +134,25 @@ class PlayState extends State {
     }
 
     set(gameInfo) {
-        if ('next_next_block' in gameInfo) {
-            this.nextNextBlock = this.blockFactory.getBlock(gameInfo['next_next_block']);
-        } else {
-            this.nextNextBlock = this.blockFactory.create();
-        }
+        this.nextNextBlock = this.blockFactory.getBlock(gameInfo['next_next_block']);
+        let item = gameInfo['nnb_item_index'];
+        let item_type = gameInfo['nnb_item_type'];
+        this.nextNextBlock.setItem(item, item_type);
+
         this.nextBlock = this.blockFactory.getBlock(gameInfo['next_block']);
+        item = gameInfo['nb_item_index'];
+        item_type = gameInfo['nb_item_type'];
+        this.nextBlock.setItem(item, item_type);
+
         this.holdBlock = this.blockFactory.getBlock(gameInfo['hold_block']);
+        item = gameInfo['hold_item_index'];
+        item_type = gameInfo['hold_item_type'];
+        this.holdBlock.setItem(item, item_type);
+
         this.currentBlock = this.blockFactory.getBlock(gameInfo['current_block']);
+        item = gameInfo['current_item_index'];
+        item_type = gameInfo['current_item_type'];
+        this.currentBlock.setItem(item, item_type);
         this.currentBlock.set(gameInfo['x'], gameInfo['y'], gameInfo['r']);
     }
 

@@ -10,13 +10,21 @@ function getRandomInt(min, max) {
 
 function createEmptyBoard() {
     return {
-        'version': 2,
+        'version': 5,
         'gameState': 0,
         'score': 0,
         'next_next_block': 1,
+        'nnb_item_index': 0,
+        'nnb_item_type': 0,
         'next_block': 1,
+        'nb_item_index': 0,
+        'nb_item_type': 0,
         'hold_block': 0,
+        'hold_item_index': 0,
+        'hold_item_type': 0,
         'current_block': 1,
+        'current_item_index': 0,
+        'current_item_type': 0,
         'x': 4,
         'y': 0,
         'r': 0,
@@ -49,7 +57,7 @@ class LocalDB {
         if (savedBoardData !== null) {
             let savedBoard = JSON.parse(savedBoardData);
             console.log("Load Saved Game>> ", savedBoard);
-            if (savedBoard['version'] !== 2) {
+            if (savedBoard['version'] !== 5) {
                 console.log("Load Saved Game>> it is old game!", savedBoard['version']);
                 return createEmptyBoard();
             }
