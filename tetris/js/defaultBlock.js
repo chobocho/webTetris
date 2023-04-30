@@ -347,62 +347,51 @@ class ItemTetrisBlockFactory extends TetrisBlockFactory {
         return Math.random() > 0.12 ? this._addItem(block) : block;
     }
 
+    generateItemType(value, possibility) {
+        if (value < possibility['GREEN']) {
+            return 11;
+        } else if (value < possibility['BLUE']) {
+            return 10;
+        } else if (value < possibility['ORANGE']) {
+            return 13;
+        } else if (value < possibility['RED']) {
+            return 12;
+        } else if (value < possibility['BLACK']) {
+            return 9;
+        } else if (value < possibility['BLACK_THUNDER']) {
+            return 15;
+        } else if (value < possibility['ORANGE_THUNDER']) {
+            return 16;
+        } else if (value < possibility['RED_THUNDER']) {
+            return 17;
+        } else if (value < possibility['THUNDER']) {
+            return 14;
+        }
+        return 0;
+    }
+
     _addItem(block) {
-        let possibility = {
-            'GREEN': 12,
+        const possibility = {
+            'GREEN': 32,
             'BLUE': 512,
-            'ORANGE': 912, //612
-            'RED': 9050,
-            'BLACK': 9450,
-            'BLACK_THUNDER': 9550,
-            'ORANGE_THUNDER': 9700,
-            'RED_THUNDER': 9850,
-            'THUNDER': 9950
+            'ORANGE': 912,
+            'RED': 1312,
+            'BLACK': 1412,
+            'BLACK_THUNDER': 1512,
+            'ORANGE_THUNDER': 1662,
+            'RED_THUNDER': 1762,
+            'THUNDER': 1812
         };
 
         let itemIndex = 0;
         let itemType = 0;
 
         for (let i = 1; i <= 4; i++) {
-            let value = Math.floor(Math.random() * 10000);
-            if (value < possibility['GREEN']) {
+            const value = Math.floor(Math.random() * 10000);
+            itemType = this.generateItemType(value, possibility);
+            if (itemType > 0) {
                 itemIndex = i;
-                itemType = 11;
                 break;
-            } else if (value > possibility['GREEN'] && value < possibility['BLUE']) {
-                itemIndex = i;
-                itemType = 10;
-                break;
-            } else if (value > possibility['BLUE'] && value < possibility['ORANGE']) {
-                itemIndex = i;
-                itemType = 13;
-                break;
-            } else if (value > possibility['RED'] && value < possibility['BLACK']) {
-                itemIndex = i;
-                itemType = 12;
-                break;
-            } else if (value > possibility['BLACK'] && value < possibility['BLACK_THUNDER']) {
-                itemIndex = i;
-                itemType = 9;
-                break;
-            } else if (value > possibility['BLACK_THUNDER'] && value < possibility['ORANGE_THUNDER']) {
-                itemIndex = i;
-                itemType = 15;
-                break;
-            } else if (value > possibility['ORANGE_THUNDER'] && value < possibility['RED_THUNDER']) {
-                itemIndex = i;
-                itemType = 16;
-                break;
-            } else if (value > possibility['RED_THUNDER'] && value < possibility['THUNDER']) {
-                itemIndex = i;
-                itemType = 17;
-                break;
-            } else if (value > possibility['THUNDER']) {
-                itemIndex = i;
-                itemType = 14;
-                break;
-            } else {
-
             }
         }
 
