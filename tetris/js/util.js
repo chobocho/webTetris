@@ -49,7 +49,7 @@ class LocalDB {
         if (savedBoardData !== null) {
             let savedBoard = JSON.parse(savedBoardData);
             console.log("Load Saved Game>> ", savedBoard);
-            if (savedBoard['version'] != 2) {
+            if (savedBoard['version'] !== 2) {
                 console.log("Load Saved Game>> it is old game!", savedBoard['version']);
                 return createEmptyBoard();
             }
