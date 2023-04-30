@@ -16,10 +16,6 @@ class BoardManager {
       this._index = index;
   }
 
-  solve() {
-     return false;
-   }
-
    setBoard(board) {
     this._board = board;
    }
