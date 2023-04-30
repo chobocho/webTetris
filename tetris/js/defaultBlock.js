@@ -10,6 +10,7 @@ class DefaultBlock {
         this.numOfBlockType = 0;
         this.itemIndex = 0;
         this.itemType = 0;
+        this.wallKick = [];
     }
 
     getItemIndex() {
@@ -84,6 +85,11 @@ class DefaultBlock {
             }
         }
     }
+
+    applyWallKick(bx, by, wallKickIdx) {
+        this.x = bx + this.wallKick[this.r][wallKickIdx][0];
+        this.y = by + this.wallKick[this.r][wallKickIdx][1];
+    }
 }
 
 class EmptyBlock extends DefaultBlock {
@@ -138,6 +144,12 @@ class IBlock extends DefaultBlock {
         this.h = 4;
         this.type = 2;
         this.numOfBlockType = 4;
+        this.wallKick = [
+            [[0, 0], [-2, 0], [+1, 0], [-2, -1], [+1, +2]],
+            [[0, 0], [-1, 0], [+2, 0], [-1, +2], [+2, -1]],
+            [[0, 0], [+2, 0], [-1, 0], [+2, +1], [-1, -2]],
+            [[0, 0], [+1, 0], [-2, 0], [+1, -2], [-2, +1]]
+        ];
     }
 }
 
@@ -165,6 +177,12 @@ class LBlock extends DefaultBlock {
         this.h = 3;
         this.type = 3;
         this.numOfBlockType = 4;
+        this.wallKick = [
+            [[0, 0], [-1, 0], [-1, +1], [0, -2], [-1, -2]],
+            [[0, 0], [+1, 0], [+1, -1], [0, +2], [+1, +2]],
+            [[0, 0], [+1, 0], [+1, +1], [0, -2], [+1, -2]],
+            [[0, 0], [-1, 0], [-1, -1], [0, +2], [-1, +2]],
+        ];
     }
 }
 
@@ -192,6 +210,12 @@ class JBlock extends DefaultBlock {
         this.h = 3;
         this.type = 4;
         this.numOfBlockType = 4;
+        this.wallKick = [
+            [[0, 0], [-1, 0], [-1, +1], [0, -2], [-1, -2]],
+            [[0, 0], [+1, 0], [+1, -1], [0, +2], [+1, +2]],
+            [[0, 0], [+1, 0], [+1, +1], [0, -2], [+1, -2]],
+            [[0, 0], [-1, 0], [-1, -1], [0, +2], [-1, +2]],
+        ];
     }
 }
 
@@ -219,6 +243,12 @@ class TBlock extends DefaultBlock {
         this.h = 3;
         this.type = 5;
         this.numOfBlockType = 4;
+        this.wallKick = [
+            [[0, 0], [-1, 0], [-1, +1], [0, -2], [-1, -2]],
+            [[0, 0], [+1, 0], [+1, -1], [0, +2], [+1, +2]],
+            [[0, 0], [+1, 0], [+1, +1], [0, -2], [+1, -2]],
+            [[0, 0], [-1, 0], [-1, -1], [0, +2], [-1, +2]],
+        ];
     }
 }
 
@@ -246,6 +276,12 @@ class SBlock extends DefaultBlock {
         this.h = 3;
         this.type = 6;
         this.numOfBlockType = 4;
+        this.wallKick = [
+            [[0, 0], [-1, 0], [-1, +1], [0, -2], [-1, -2]],
+            [[0, 0], [+1, 0], [+1, -1], [0, +2], [+1, +2]],
+            [[0, 0], [+1, 0], [+1, +1], [0, -2], [+1, -2]],
+            [[0, 0], [-1, 0], [-1, -1], [0, +2], [-1, +2]],
+        ];
     }
 }
 
@@ -273,6 +309,12 @@ class ZBlock extends DefaultBlock {
         this.h = 3;
         this.type = 7;
         this.numOfBlockType = 4;
+        this.wallKick = [
+            [[0, 0], [-1, 0], [-1, +1], [0, -2], [-1, -2]],
+            [[0, 0], [+1, 0], [+1, -1], [0, +2], [+1, +2]],
+            [[0, 0], [+1, 0], [+1, +1], [0, -2], [+1, -2]],
+            [[0, 0], [-1, 0], [-1, -1], [0, +2], [-1, +2]],
+        ];
     }
 }
 

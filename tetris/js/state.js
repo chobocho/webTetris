@@ -196,11 +196,18 @@ class PlayState extends State {
 
     rotate() {
         this.currentBlock.rotate();
-        if (!this.tetrisBoard.isAcceptable(this.currentBlock)) {
-            this.currentBlock.preRotate();
-            return false;
+        let x = this.currentBlock.x;
+        let y = this.currentBlock.y;
+        for (let i = 0; i < this.currentBlock.wallKick.length; i++) {
+            this.currentBlock.applyWallKick(x, y, i);
+            if (this.tetrisBoard.isAcceptable(this.currentBlock)) {
+                return true;
+            }
         }
-        return true;
+        this.currentBlock.x = x;
+        this.currentBlock.y = y;
+        this.currentBlock.preRotate();
+        return false;
     }
 
     moveLeft() {
