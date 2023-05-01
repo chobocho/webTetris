@@ -2,20 +2,23 @@ function printf(tag, log) {
     console.log(tag, log);
 }
 
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-
 function createEmptyBoard() {
     return {
+        'version': 5,
         'gameState': 0,
         'score': 0,
         'next_next_block': 1,
+        'nnb_item_index': 0,
+        'nnb_item_type': 0,
         'next_block': 1,
+        'nb_item_index': 0,
+        'nb_item_type': 0,
         'hold_block': 0,
+        'hold_item_index': 0,
+        'hold_item_type': 0,
         'current_block': 1,
+        'current_item_index': 0,
+        'current_item_type': 0,
         'x': 4,
         'y': 0,
         'r': 0,
@@ -48,6 +51,13 @@ class LocalDB {
         if (savedBoardData !== null) {
             let savedBoard = JSON.parse(savedBoardData);
             console.log("Load Saved Game>> ", savedBoard);
+            if (savedBoard['version'] !== 5) {
+                console.log("Load Saved Game>> it is old game!", savedBoard['version']);
+                return createEmptyBoard();
+            }
+            if (!savedBoard.hasOwnProperty('index')) {
+                savedBoard['index'] = 0;
+            }
             return savedBoard;
         }
         return createEmptyBoard();

@@ -1,13 +1,20 @@
 class BoardManager {
   constructor() {
-    this.level = 0;
-    this.highLevel = 0;
     this._board = NaN;
+    this._index = 0;
   }
 
-  solve() {
-     return false;
-   }
+  init() {
+      this._index = 0;
+  }
+
+  getIndex() {
+      return this._index;
+  }
+
+  setIndex(index) {
+      this._index = index;
+  }
 
    setBoard(board) {
     this._board = board;
@@ -68,7 +75,6 @@ class BoardManager {
 class PuzzleBoardManager extends BoardManager {
   constructor() {
     super();
-    this._index = 0;
   }
 
   updateBoard() {

@@ -18,10 +18,10 @@ function test_Score() {
 }
 
 function test_TetrisBoard() {
-  board = new TetrisBoard(board_width, board_height);
+  let board = new TetrisBoard(board_width, board_height);
   board.init();
 
-  block = new IBlock(board_width, board_height);
+  let block = new IBlock(board_width, board_height);
   console.assert(board.isAcceptable(block) == true, "Error");
 }
 

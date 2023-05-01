@@ -1,87 +1,126 @@
 class DefaultBlock {
-  constructor(bw, bh) {
-    this.block = [];
-    this.x = 0;
-    this.y = 0;
-    this.r = 0;
-    this.w = 0;
-    this.h = 0;
-    this.type = 0;
-    this.numOfBlockType = 0;
-    this.board_width = bw;
-    this.board_height = bh;
-  }
+    constructor(bw, bh) {
+        this.block = [];
+        this.x = 0;
+        this.y = 0;
+        this.r = 0;
+        this.w = 0;
+        this.h = 0;
+        this.type = 0;
+        this.numOfBlockType = 0;
+        this.itemIndex = 0;
+        this.itemType = 0;
+        this.wallKick = [];
+    }
 
-  getType() {
-      return this.type;
-  }
+    getItemIndex() {
+        return this.itemIndex;
+    }
 
-  getX(){
-      return this.x;
-  }
+    getItemType() {
+        return this.itemType;
+    }
 
-  getY(){
-      return this.y;
-  }
+    getType() {
+        return this.type;
+    }
 
-  getR() {
-      return this.r;
-  }
+    getX() {
+        return this.x;
+    }
 
-  set(x, y, r) {
-      this.x = x;
-      this.y = y;
-      this.r = r;
-  }
+    getY() {
+        return this.y;
+    }
 
-  rotate() {
-    this.r = (this.r + 1) % this.numOfBlockType;
-  }
+    getR() {
+        return this.r;
+    }
 
-  preRotate() {
-    this.r = (this.r - 1 + this.numOfBlockType) % this.numOfBlockType;
-  }
+    set(x, y, r) {
+        this.x = x;
+        this.y = y;
+        this.r = r;
+    }
 
-  moveLeft() {
-    this.x--;
-  }
+    rotate() {
+        this.r = (this.r + 1) % this.numOfBlockType;
+    }
 
-  moveRight() {
-    this.x++;
-  }
+    preRotate() {
+        this.r = (this.r - 1 + this.numOfBlockType) % this.numOfBlockType;
+    }
 
-  moveDown() {
-    this.y++;
-  }
+    moveLeft() {
+        this.x--;
+    }
 
-  moveUp() {
-    this.y--;
-  }
+    moveRight() {
+        this.x++;
+    }
+
+    moveDown() {
+        this.y++;
+    }
+
+    moveUp() {
+        this.y--;
+    }
+
+    setItem(index, type) {
+        if (index === 0) {
+            return;
+        }
+
+        this.itemIndex = index;
+        this.itemType = type;
+
+        let item = [0, 1, 1, 1, 1];
+        item[index] = type;
+        for (let r = 0; r < 4; r++) {
+            for (let y = 0; y < this.h; y++) {
+                for (let x = 0; x < this.w; x++) {
+                    this.block[r][y][x] = item[this.block[r][y][x]];
+                }
+            }
+        }
+    }
+
+    applyWallKick(bx, by, wallKickIdx) {
+        this.x = bx + this.wallKick[this.r][wallKickIdx][0];
+        this.y = by + this.wallKick[this.r][wallKickIdx][1];
+    }
 }
 
 class EmptyBlock extends DefaultBlock {
-  constructor(bw, bh) {
-    super(bw, bh);
-    this.type = 0;
-  }
+    constructor(bw, bh) {
+        super(bw, bh);
+        this.type = 0;
+    }
 }
 
 class OBlock extends DefaultBlock {
-  constructor(bw, bh) {
-    super(bw, bh);
-    this.block = [
-        [[1, 2], [3, 4]],
-        [[3, 1], [4, 2]],
-        [[4, 3], [2, 1]],
-        [[2, 4], [1, 3]]];
-    this.x = 4;
-    this.y = 0;
-    this.r = 0;
-    this.w = 2;
-    this.h = 2;
-    this.type = 1;
-    this.numOfBlockType = 4;
-  }
+    constructor(bw, bh) {
+        super(bw, bh);
+        this.block = [
+            [[1, 2], [3, 4]],
+            [[3, 1], [4, 2]],
+            [[4, 3], [2, 1]],
+            [[2, 4], [1, 3]]];
+        this.x = 4;
+        this.y = 0;
+        this.r = 0;
+        this.w = 2;
+        this.h = 2;
+        this.type = 1;
+        this.numOfBlockType = 4;
+        this.wallKick = [
+            [[0, 0]],
+            [[0, 0]],
+            [[0, 0]],
+            [[0, 0]]
+        ];
+    }
 }
 
 class IBlock extends DefaultBlock {
@@ -89,21 +128,21 @@ class IBlock extends DefaultBlock {
         super(bw, bh);
         this.block = [
             [[0, 0, 0, 0],
-             [1, 2, 3, 4],
-             [0, 0, 0, 0],
-             [0, 0, 0, 0]],
+                [1, 2, 3, 4],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0]],
             [[0, 0, 1, 0],
-             [0, 0, 2, 0],
-             [0, 0, 3, 0],
-             [0, 0, 4, 0]],
+                [0, 0, 2, 0],
+                [0, 0, 3, 0],
+                [0, 0, 4, 0]],
             [[0, 0, 0, 0],
-             [0, 0, 0, 0],
-             [4, 3, 2, 1],
-             [0, 0, 0, 0]],
+                [0, 0, 0, 0],
+                [4, 3, 2, 1],
+                [0, 0, 0, 0]],
             [[0, 4, 0, 0],
-             [0, 3, 0, 0],
-             [0, 2, 0, 0],
-             [0, 1, 0, 0]]];
+                [0, 3, 0, 0],
+                [0, 2, 0, 0],
+                [0, 1, 0, 0]]];
         this.x = 3;
         this.y = 0;
         this.r = 0;
@@ -111,267 +150,300 @@ class IBlock extends DefaultBlock {
         this.h = 4;
         this.type = 2;
         this.numOfBlockType = 4;
+        this.wallKick = [
+            [[0, 0], [-2, 0], [+1, 0], [-2, -1], [+1, +2]],
+            [[0, 0], [-1, 0], [+2, 0], [-1, +2], [+2, -1]],
+            [[0, 0], [+2, 0], [-1, 0], [+2, +1], [-1, -2]],
+            [[0, 0], [+1, 0], [-2, 0], [+1, -2], [-2, +1]]
+        ];
     }
 }
 
 class LBlock extends DefaultBlock {
-  constructor(bw, bh) {
-    super(bw, bh);
-      this.block = [
-          [[0, 0, 1],
-           [2, 3, 4],
-           [0, 0, 0]],
-          [[0, 2, 0],
-           [0, 3, 0],
-           [0, 4, 1]],
-          [[0, 0, 0],
-           [4, 3, 2],
-           [1, 0, 0]],
-          [[1, 4, 0],
-           [0, 3, 0],
-           [0, 2, 0]],
-      ];
-    this.x = 4;
-    this.y = 0;
-    this.r = 0;
-    this.w = 3;
-    this.h = 3;
-    this.type = 3;
-    this.numOfBlockType = 4;
-  }
+    constructor(bw, bh) {
+        super(bw, bh);
+        this.block = [
+            [[0, 0, 1],
+                [2, 3, 4],
+                [0, 0, 0]],
+            [[0, 2, 0],
+                [0, 3, 0],
+                [0, 4, 1]],
+            [[0, 0, 0],
+                [4, 3, 2],
+                [1, 0, 0]],
+            [[1, 4, 0],
+                [0, 3, 0],
+                [0, 2, 0]],
+        ];
+        this.x = 4;
+        this.y = 0;
+        this.r = 0;
+        this.w = 3;
+        this.h = 3;
+        this.type = 3;
+        this.numOfBlockType = 4;
+        this.wallKick = [
+            [[0, 0], [-1, 0], [-1, +1], [0, -2], [-1, -2]],
+            [[0, 0], [+1, 0], [+1, -1], [0, +2], [+1, +2]],
+            [[0, 0], [+1, 0], [+1, +1], [0, -2], [+1, -2]],
+            [[0, 0], [-1, 0], [-1, -1], [0, +2], [-1, +2]],
+        ];
+    }
 }
 
 class JBlock extends DefaultBlock {
-  constructor(bw, bh) {
-    super(bw, bh);
-    this.block = [
-      [[1, 0, 0],
-       [2, 3, 4],
-       [0, 0, 0]],
-      [[0, 2, 1],
-       [0, 3, 0],
-       [0, 4, 0]],
-      [[0, 0, 0],
-       [4, 3, 2],
-       [0, 0, 1]],
-      [[0, 4, 0],
-       [0, 3, 0],
-       [1, 2, 0]],
-    ];
-    this.x = 4;
-    this.y = 0;
-    this.r = 0;
-    this.w = 3;
-    this.h = 3;
-    this.type = 4;
-    this.numOfBlockType = 4;
-  }
+    constructor(bw, bh) {
+        super(bw, bh);
+        this.block = [
+            [[1, 0, 0],
+                [2, 3, 4],
+                [0, 0, 0]],
+            [[0, 2, 1],
+                [0, 3, 0],
+                [0, 4, 0]],
+            [[0, 0, 0],
+                [4, 3, 2],
+                [0, 0, 1]],
+            [[0, 4, 0],
+                [0, 3, 0],
+                [1, 2, 0]],
+        ];
+        this.x = 4;
+        this.y = 0;
+        this.r = 0;
+        this.w = 3;
+        this.h = 3;
+        this.type = 4;
+        this.numOfBlockType = 4;
+        this.wallKick = [
+            [[0, 0], [-1, 0], [-1, +1], [0, -2], [-1, -2]],
+            [[0, 0], [+1, 0], [+1, -1], [0, +2], [+1, +2]],
+            [[0, 0], [+1, 0], [+1, +1], [0, -2], [+1, -2]],
+            [[0, 0], [-1, 0], [-1, -1], [0, +2], [-1, +2]],
+        ];
+    }
 }
 
 class TBlock extends DefaultBlock {
-  constructor(bw, bh) {
-    super(bw, bh);
-    this.block = [
-      [[0, 1, 0],
-       [2, 3, 4],
-       [0, 0, 0]],
-      [[0, 2, 0],
-       [0, 3, 1],
-       [0, 4, 0]],
-      [[0, 0, 0],
-       [4, 3, 2],
-       [0, 1, 0]],
-      [[0, 4, 0],
-       [1, 3, 0],
-       [0, 2, 0]],
-];
-    this.x = 4;
-    this.y = 0;
-    this.r = 0;
-    this.w = 3;
-    this.h = 3;
-    this.type = 5;
-    this.numOfBlockType = 4;
-  }
+    constructor(bw, bh) {
+        super(bw, bh);
+        this.block = [
+            [[0, 1, 0],
+                [2, 3, 4],
+                [0, 0, 0]],
+            [[0, 2, 0],
+                [0, 3, 1],
+                [0, 4, 0]],
+            [[0, 0, 0],
+                [4, 3, 2],
+                [0, 1, 0]],
+            [[0, 4, 0],
+                [1, 3, 0],
+                [0, 2, 0]],
+        ];
+        this.x = 4;
+        this.y = 0;
+        this.r = 0;
+        this.w = 3;
+        this.h = 3;
+        this.type = 5;
+        this.numOfBlockType = 4;
+        this.wallKick = [
+            [[0, 0], [-1, 0], [-1, +1], [0, -2], [-1, -2]],
+            [[0, 0], [+1, 0], [+1, -1], [0, +2], [+1, +2]],
+            [[0, 0], [+1, 0], [+1, +1], [0, -2], [+1, -2]],
+            [[0, 0], [-1, 0], [-1, -1], [0, +2], [-1, +2]],
+        ];
+    }
 }
 
 class SBlock extends DefaultBlock {
-  constructor(bw, bh) {
-    super(bw, bh);
-      this.block = [
-          [[0, 1, 2],
-           [4, 3, 0],
-           [0, 0, 0]],
-          [[0, 4, 0],
-           [0, 3, 1],
-           [0, 0, 2]],
-          [[0, 0, 0],
-           [0, 3, 4],
-           [2, 1, 0]],
-          [[2, 0, 0],
-           [1, 3, 0],
-           [0, 4, 0]]
-      ];
-    this.x = 4;
-    this.y = 0;
-    this.r = 0;
-    this.w = 3;
-    this.h = 3;
-    this.type = 6;
-    this.numOfBlockType = 4;
-  }
+    constructor(bw, bh) {
+        super(bw, bh);
+        this.block = [
+            [[0, 1, 2],
+                [4, 3, 0],
+                [0, 0, 0]],
+            [[0, 4, 0],
+                [0, 3, 1],
+                [0, 0, 2]],
+            [[0, 0, 0],
+                [0, 3, 4],
+                [2, 1, 0]],
+            [[2, 0, 0],
+                [1, 3, 0],
+                [0, 4, 0]]
+        ];
+        this.x = 4;
+        this.y = 0;
+        this.r = 0;
+        this.w = 3;
+        this.h = 3;
+        this.type = 6;
+        this.numOfBlockType = 4;
+        this.wallKick = [
+            [[0, 0], [-1, 0], [-1, +1], [0, -2], [-1, -2]],
+            [[0, 0], [+1, 0], [+1, -1], [0, +2], [+1, +2]],
+            [[0, 0], [+1, 0], [+1, +1], [0, -2], [+1, -2]],
+            [[0, 0], [-1, 0], [-1, -1], [0, +2], [-1, +2]],
+        ];
+    }
 }
 
 class ZBlock extends DefaultBlock {
-  constructor(bw, bh) {
-    super(bw, bh);
-      this.block = [
-          [[1, 2, 0],
-           [0, 3, 4],
-           [0, 0, 0]],
-          [[0, 0, 1],
-           [0, 3, 2],
-           [0, 4, 0]],
-          [[0, 0, 0],
-           [4, 3, 0],
-           [0, 2, 1]],
-          [[0, 4, 0],
-           [2, 3, 0],
-           [1, 0, 0]]
-      ];
-    this.x = 4;
-    this.y = 0;
-    this.r = 0;
-    this.w = 3;
-    this.h = 3;
-    this.type = 7;
-    this.numOfBlockType = 4;
-  }
+    constructor(bw, bh) {
+        super(bw, bh);
+        this.block = [
+            [[1, 2, 0],
+                [0, 3, 4],
+                [0, 0, 0]],
+            [[0, 0, 1],
+                [0, 3, 2],
+                [0, 4, 0]],
+            [[0, 0, 0],
+                [4, 3, 0],
+                [0, 2, 1]],
+            [[0, 4, 0],
+                [2, 3, 0],
+                [1, 0, 0]]
+        ];
+        this.x = 4;
+        this.y = 0;
+        this.r = 0;
+        this.w = 3;
+        this.h = 3;
+        this.type = 7;
+        this.numOfBlockType = 4;
+        this.wallKick = [
+            [[0, 0], [-1, 0], [-1, +1], [0, -2], [-1, -2]],
+            [[0, 0], [+1, 0], [+1, -1], [0, +2], [+1, +2]],
+            [[0, 0], [+1, 0], [+1, +1], [0, -2], [+1, -2]],
+            [[0, 0], [-1, 0], [-1, -1], [0, +2], [-1, +2]],
+        ];
+    }
 }
 
 class TetrisBlockFactory {
-  constructor () {
-      this._index = 0;
-      this._nextBlock = [];
+    constructor() {
+        this._index = 0;
+        this._nextBlock = [];
 
-      for (let i = 1; i <= 14; i++) {
-          let b = [1, 2, 3, 4, 5, 6, 7];
-          b.sort(() => Math.random() - 0.5);
-          this._nextBlock.push(...b);
-      }
-      //printf(">> [DefaultBlock]", this._nextBlock);
-  }
+        for (let i = 1; i <= 14; i++) {
+            let b = [1, 2, 3, 4, 5, 6, 7];
+            b.sort(() => Math.random() - 0.5);
+            this._nextBlock.push(...b);
+        }
+        //printf(">> [DefaultBlock]", this._nextBlock);
+    }
 
-  initBlock() {
-      this._index = 0;
-      this._nextBlock.sort( () => Math.random() - 0.5);
-  }
+    initBlock() {
+        this._index = 0;
+        this._nextBlock.sort(() => Math.random() - 0.5);
+    }
 
-  increaseIndex() {
-      this._index++;
-      if (this._index >= this._nextBlock.length) {
-          this.initBlock();
-      }
-  }
+    increaseIndex() {
+        this._index++;
+        if (this._index >= this._nextBlock.length) {
+            this.initBlock();
+        }
+    }
 
-  create() {
-      let block = this.getBlock(this._nextBlock[this._index]);
-      this.increaseIndex();
-      return block;
-  }
+    create() {
+        let block = this.getBlock(this._nextBlock[this._index]);
+        this.increaseIndex();
+        return block;
+    }
 
-  getBlock(type) {
-      switch(type) {
-          case 0:
-              return new EmptyBlock();
-          case 1:
-              return new OBlock();
-          case 2:
-              return new IBlock();
-          case 3:
-              return new LBlock();
-          case 4:
-              return new JBlock();
-          case 5:
-              return new TBlock();
-          case 6:
-              return new SBlock();
-          case 7:
-              return new ZBlock();
-          default:
-              console.log(">> Tetris Block Create Error! Never come to here!");
-              return new IBlock();
-      }
-  }
+    getBlock(type) {
+        switch (type) {
+            case 0:
+                return new EmptyBlock();
+            case 1:
+                return new OBlock();
+            case 2:
+                return new IBlock();
+            case 3:
+                return new LBlock();
+            case 4:
+                return new JBlock();
+            case 5:
+                return new TBlock();
+            case 6:
+                return new SBlock();
+            case 7:
+                return new ZBlock();
+            default:
+                console.log(">> Tetris Block Create Error! Never come to here!");
+                return new IBlock();
+        }
+    }
 
-  getEmptyBlock() {
-    return new EmptyBlock();
-  }
+    getEmptyBlock() {
+        return new EmptyBlock();
+    }
 }
 
 class ItemTetrisBlockFactory extends TetrisBlockFactory {
-    constructor () {
+    constructor() {
         super();
     }
 
     create() {
         let block = this.getBlock(this._nextBlock[this._index]);
         this.increaseIndex();
-        return Math.random() > 0.08 ? this._addItem(block) : block;
+        return Math.random() > 0.12 ? this._addItem(block) : block;
+    }
+
+    generateItemType(value, possibility) {
+        if (value < possibility['GREEN']) {
+            return 11;
+        } else if (value < possibility['BLUE']) {
+            return 10;
+        } else if (value < possibility['ORANGE']) {
+            return 13;
+        } else if (value < possibility['RED']) {
+            return 12;
+        } else if (value < possibility['BLACK']) {
+            return 9;
+        } else if (value < possibility['BLACK_THUNDER']) {
+            return 15;
+        } else if (value < possibility['ORANGE_THUNDER']) {
+            return 16;
+        } else if (value < possibility['RED_THUNDER']) {
+            return 17;
+        } else if (value < possibility['THUNDER']) {
+            return 14;
+        }
+        return 0;
     }
 
     _addItem(block) {
-        let item = [0, 1, 1, 1, 1];
-        let possibility = {
-            'G': 12,
+        const possibility = {
+            'GREEN': 32,
             'BLUE': 512,
-            'O': 1112, //612
-            'R': 9000,
-            'BLACK': 9450,
-            'BLACK_THUNDER': 9500,
-            'ORANGE_THUNDER': 9700,
-            'RED_THUNDER': 9710,
-            'THUNDER':9950
+            'ORANGE': 912,
+            'RED': 1312,
+            'BLACK': 1412,
+            'BLACK_THUNDER': 1512,
+            'ORANGE_THUNDER': 1662,
+            'RED_THUNDER': 1762,
+            'THUNDER': 1812
         };
 
+        let itemIndex = 0;
+        let itemType = 0;
+
         for (let i = 1; i <= 4; i++) {
-            let value = Math.floor(Math.random() * 10000);
-            if (value < possibility['G']) {
-                item[i] = 11;
+            const value = Math.floor(Math.random() * 10000);
+            itemType = this.generateItemType(value, possibility);
+            if (itemType > 0) {
+                itemIndex = i;
                 break;
-            } else if (value > possibility['G'] && value < possibility['BLUE']) {
-                item[i] = 10;
-                break;
-            } else if (value > possibility['BLUE'] && value < possibility['O']) {
-                item[i] = 13;
-                break;
-            } else if (value > possibility['R'] && value < possibility['BLACK']) {
-                item[i] = 12;
-                break;
-            } else if (value > possibility['BLACK'] && value < possibility['BLACK_THUNDER']) {
-                item[i] = 15;
-                break;
-            } else if (value > possibility['BLACK_THUNDER'] && value < possibility['ORANGE_THUNDER']) {
-                item[i] = 16;
-                break;
-            } else if (value > possibility['ORANGE_THUNDER'] && value < possibility['RED_THUNDER']) {
-                item[i] = 17;
-                break;
-            } else if (value > possibility['THUNDER']) {
-                item[i] = 14;
-                break;
-            } else {
-
             }
         }
 
-        for (let r = 0; r < 4; r++) {
-            for (let y = 0; y < block.h; y++) {
-                for (let x = 0; x < block.w; x++) {
-                    block.block[r][y][x] = item[block.block[r][y][x]];
-                }
-            }
-        }
+        block.setItem(itemIndex, itemType);
         return block;
     }
 }

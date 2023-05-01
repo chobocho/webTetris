@@ -28,7 +28,7 @@ class TetrisBoard {
     for (let i = 0; i < this.height; i++) {
       let line = gameInfo['board'][i];
       for (let j = 0; j < this.width; j++) {
-        this.board[i][j] = (line >> j) & 0x1;
+        this.board[i][j] = line[j];
       }
     }
   }
@@ -59,13 +59,11 @@ class TetrisBoard {
   }
 
   getBoard() {
-    let result = [];
+    let result= [];
     for (let i = 0; i < this.height; i++) {
-      let line = 0;
+      let line = Array(10).fill(0);
       for (let j = 0; j < this.width; j++) {
-        if (this.board[i][j] > 0) {
-          line |= (1 << j);
-        }
+        line[j] = this.board[i][j];
       }
       result.push(line);
     }
@@ -91,7 +89,7 @@ class TetrisBoard {
   addBlock(block) {
     for (let i = 0; i < block.h; i++) {
       for (let j = 0; j < block.w; j++) {
-        // Check is it a item block
+        // Check is it an item block
         if (block.block[block.r][i][j] >= START_BOOM && block.block[block.r][i][j] <= END_BOOM) {
           this.board[i + block.y][j + block.x] = block.block[block.r][i][j];
         } else if (block.block[block.r][i][j] !== 0) {
