@@ -85,6 +85,16 @@ class GameEngine extends Observer {
     }
   }
 
+  main_menu() {
+    if (this.tetris.isPauseState()) {
+      let confirmNewGame = confirm("Do you want to quit game?");
+
+      if (confirmNewGame) {
+        this.tetris.init();
+      }
+    }
+  }
+
   start() {
     if (this.tetris.isInitState()) {
       return;

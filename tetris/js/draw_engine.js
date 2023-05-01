@@ -204,6 +204,7 @@ class PauseDrawEngine extends PauseGameState {
     this.buttons.push(new Button('play', 83, gStartX + btn_w * 3 + blockSize * 3, gStartY + blockSize * (board_height+1), image_size, image_size, 1.0));
     this.buttons.push(new Button('resume', 83, gStartX + blockSize * 2, gStartY + blockSize * 5, blockSize*6, blockSize*2, 1.0));
     this.buttons.push(new Button('new_game', 78, gStartX + blockSize * 2, gStartY + blockSize * 9, blockSize*6, blockSize*2, 1.0));
+    this.buttons.push(new Button('main_menu', 77, gStartX + blockSize * 2, gStartY + blockSize * 13, blockSize*6, blockSize*2, 1.0));
   }
 
   OnDraw(canvas, tetris, block_image, button_image) {
@@ -281,6 +282,7 @@ class DrawEngine extends Observer {
     this.score_image = this._image_res.score;
     this.high_score_image = this._image_res.high_score;
 
+    this.main_menu_image = this._image_res.main_menu;
     this.start_image = this._image_res.start;
     this.arcade_image = this._image_res.arcade;
     this.item_mode_image = this._image_res.item_mode;
@@ -317,6 +319,7 @@ class DrawEngine extends Observer {
     this.buttonImage['score'] = this.score_image;
     this.buttonImage['high_score'] = this.high_score_image;
 
+    this.buttonImage['main_menu'] = this.main_menu_image;
     this.buttonImage['arcade'] = this.arcade_image;
     this.buttonImage['puzzle'] = this.puzzle_image;
     this.buttonImage['item_mode'] = this.item_mode_image;

@@ -24,6 +24,7 @@ class ImageLoader {
         this._images.score = LoadImage("img/score.png");
         this._images.high_score = LoadImage("img/high_score.png");
 
+        this._images.main_menu = LoadImage("img/main_menu.png");
         this._images.start = LoadImage("img/start.png");
         this._images.arcade = LoadImage("img/arcade_mode.png");
         this._images.puzzle = LoadImage("img/puzzle_mode.png");

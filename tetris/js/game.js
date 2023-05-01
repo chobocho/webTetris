@@ -46,6 +46,10 @@ function processEvent(code) {
       console.log("Load");
       gameEngine.load();
       break;
+    case 77:
+      console.log("Go to Main Menu");
+      gameEngine.main_menu();
+      break;
     case 78:
       console.log("NewGame");
       gameEngine.newGame();
