@@ -100,10 +100,31 @@ class PlayDrawEngine extends PlayGameState {
   }
 
   OnDraw(canvas, tetris, block_image, button_image) {
+    this._drawBoard(canvas, tetris.getBoard(), block_image);
     this.__drawCurrentBlock(canvas, tetris.getCurrentBlock(), block_image);
     this.__drawNextBlock(canvas, tetris.getNextNextBlock(), tetris.getNextBlock(), block_image);
     this.__drawHoldBlock(canvas, tetris.getHoldBlock(), block_image);
     this.__drawKeypad(canvas, button_image);
+  }
+
+  _drawBoard(canvas, board, block_image) {
+    bufCtx.beginPath();
+    let startY = gStartY;
+
+    bufCtx.globalAlpha = 1.0;
+
+    for (let y = 0; y < board_height; y++) {
+      for (let x = 0; x < board_width; x++) {
+        if (board[y][x] === 0) {
+          continue;
+        }
+        const color = board[y][x];
+        bufCtx.drawImage(block_image[color], gStartX + x * blockSize , y * blockSize + startY, blockSize, blockSize);
+      }
+    }
+
+    bufCtx.closePath();
+    bufCtx.stroke();
   }
 
   __drawCurrentBlock(canvas_, block, block_image) {
@@ -236,7 +257,28 @@ class GameoverDrawEngine extends GameoverGameState {
   }
 
   OnDraw(canvas, tetris, block_image, button_image) {
+    this._drawBoard(canvas, tetris.getBoard(), block_image);
     this.__drawKeypad(canvas, button_image);
+  }
+
+  _drawBoard(canvas, board, block_image){
+    bufCtx.beginPath();
+    let startY = gStartY;
+
+    bufCtx.globalAlpha = 1.0;
+
+    for (let y = 0; y < board_height; y++) {
+      for (let x = 0; x < board_width; x++) {
+        if (board[y][x] === 0) {
+          continue;
+        }
+        const color = board[y][x];
+        bufCtx.drawImage(block_image[color], gStartX + x * blockSize , y * blockSize + startY, blockSize, blockSize);
+      }
+    }
+
+    bufCtx.closePath();
+    bufCtx.stroke();
   }
 
   __drawKeypad(canvas_, button_image) {
@@ -434,23 +476,10 @@ class DrawEngine extends Observer {
     let startY = this.startY;
     let blockSize = 40;
 
-    let board = this.tetris.getBoard();
-
     bufCtx.globalAlpha = 0.42;
     for (let y = 0; y < board_height; y++) {
       for (let x = 0; x < board_width; x++) {
         bufCtx.drawImage(this.back_block, this.startX + x * blockSize, y * blockSize + startY, blockSize, blockSize);
-      }
-    }
-    bufCtx.globalAlpha = 1.0;
-
-    for (let y = 0; y < board_height; y++) {
-      for (let x = 0; x < board_width; x++) {
-        if (board[y][x] === 0) {
-          continue;
-        }
-        const color = board[y][x];
-        bufCtx.drawImage(this.block_image[color], this.startX + x * blockSize , y * blockSize + startY, blockSize, blockSize);
       }
     }
 
