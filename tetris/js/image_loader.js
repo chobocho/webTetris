@@ -14,6 +14,7 @@ class ImageLoader {
         this._images.bottom = LoadImage("img/bottom.png");
 
         this._images.rotate = LoadImage("img/rotate.png");
+        this._images.left_rotate = LoadImage("img/left_rotate.png");
         this._images.play = LoadImage("img/play.png");
         this._images.pause = LoadImage("img/pause.png");
         this._images.hold = LoadImage("img/hold.png");

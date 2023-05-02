@@ -97,7 +97,7 @@ class Tetris {
       if (this.isPuzzleMode()) {
         this._score.add(1024);
       } else if (this.isItemMode()) {
-        this._score.add(512);
+        this._score.add(256);
       }
       this._saveHighScore();
       this._boardManager.updateBoard();
@@ -127,6 +127,11 @@ class Tetris {
   rotate() {
     return this.state.rotate();
   }
+
+  left_rotate() {
+    return this.state.left_rotate();
+  }
+
 
   hold() {
     this.state.hold();

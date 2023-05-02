@@ -74,7 +74,8 @@ class TetrisBoard {
     for (let i = 0; i < block.h; i++) {
       for (let j = 0; j < block.w; j++) {
         if (block.block[block.r][i][j] !== 0) {
-          if (block.x + j < 0 || (block.x + j) > (this.width - 1) || (block.y + i) > (this.height - 1)) {
+          if (block.x + j < 0 || (block.x + j) > (this.width - 1) ||
+              block.y + i < 0 || (block.y + i) > (this.height - 1)) {
             return false;
           }
           if (this.board[block.y + i][block.x + j] !== 0) {

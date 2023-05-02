@@ -67,7 +67,28 @@ class IdleDrawEngine extends IdleGameState {
   }
 
   OnDraw(canvas, tetris, block_image, button_image) {
+    this.#drawBoard(canvas, tetris.getBoard(), block_image);
     this.__drawKeypad(canvas, button_image);
+  }
+
+  #drawBoard(canvas, board, block_image){
+    canvas.beginPath();
+    let startY = gStartY;
+
+    canvas.globalAlpha = 1.0;
+
+    for (let y = 0; y < board_height; y++) {
+      for (let x = 0; x < board_width; x++) {
+        if (board[y][x] === 0) {
+          continue;
+        }
+        const color = board[y][x];
+        canvas.drawImage(block_image[color], gStartX + x * blockSize , y * blockSize + startY, blockSize, blockSize);
+      }
+    }
+
+    canvas.closePath();
+    canvas.stroke();
   }
 
   __drawKeypad(canvas_, button_image) {
@@ -90,28 +111,29 @@ class PlayDrawEngine extends PlayGameState {
     let image_size = btn_h - 3;
 
     this.buttons = [];
-    this.buttons.push(new Button('left', 37, gStartX, gStartY + blockSize * (board_height + 5), image_size, image_size, 1.0));
-    this.buttons.push(new Button('down', 40, gStartX + btn_w + blockSize * 0.5, gStartY+ blockSize * (board_height + 5), image_size, image_size, 1.0));
-    this.buttons.push(new Button('right', 39, gStartX + btn_w * 2 + blockSize * 2.5, gStartY + blockSize * (board_height + 5), image_size, image_size, 1.0));
+    this.buttons.push(new Button('left', 37, gStartX, gStartY + blockSize * (board_height + 1), image_size, image_size, 1.0));
+    this.buttons.push(new Button('down', 40, gStartX + btn_w + blockSize * 0.5, gStartY+ blockSize * (board_height + 1), image_size, image_size, 1.0));
+    this.buttons.push(new Button('right', 39, gStartX + btn_w * 2 + blockSize * 2.5, gStartY + blockSize * (board_height + 1), image_size, image_size, 1.0));
+    this.buttons.push(new Button('rotate', 90, gStartX + btn_w * 2 + blockSize * 2.5, gStartY + blockSize * (board_height + 5), image_size, image_size, 1.0));
     this.buttons.push(new Button('up', 38, gStartX + btn_w * 3 + blockSize * 3, gStartY + blockSize * (board_height + 5), image_size, image_size, 1.0));
-    this.buttons.push(new Button('bottom', 32, gStartX+ btn_w + blockSize * 0.5, gStartY + blockSize * (board_height + 1), image_size, image_size, 1.0));
-    this.buttons.push(new Button('hold', 17, gStartX, gStartY + blockSize * (board_height+1), image_size, image_size, 1.0));
+    this.buttons.push(new Button('bottom', 32, gStartX+ btn_w + blockSize * 0.5, gStartY + blockSize * (board_height + 5), image_size, image_size, 1.0));
+    this.buttons.push(new Button('hold', 17, gStartX, gStartY + blockSize * (board_height + 5), image_size, image_size, 1.0));
     this.buttons.push(new Button('pause', 80, gStartX + btn_w * 3 + blockSize * 3, gStartY + blockSize * (board_height+1), image_size, image_size, 1.0));
   }
 
   OnDraw(canvas, tetris, block_image, button_image) {
-    this._drawBoard(canvas, tetris.getBoard(), block_image);
+    this.#drawBoard(canvas, tetris.getBoard(), block_image);
     this.__drawCurrentBlock(canvas, tetris.getCurrentBlock(), block_image);
     this.__drawNextBlock(canvas, tetris.getNextNextBlock(), tetris.getNextBlock(), block_image);
     this.__drawHoldBlock(canvas, tetris.getHoldBlock(), block_image);
     this.__drawKeypad(canvas, button_image);
   }
 
-  _drawBoard(canvas, board, block_image) {
-    bufCtx.beginPath();
+  #drawBoard(canvas, board, block_image){
+    canvas.beginPath();
     let startY = gStartY;
 
-    bufCtx.globalAlpha = 1.0;
+    canvas.globalAlpha = 1.0;
 
     for (let y = 0; y < board_height; y++) {
       for (let x = 0; x < board_width; x++) {
@@ -119,12 +141,12 @@ class PlayDrawEngine extends PlayGameState {
           continue;
         }
         const color = board[y][x];
-        bufCtx.drawImage(block_image[color], gStartX + x * blockSize , y * blockSize + startY, blockSize, blockSize);
+        canvas.drawImage(block_image[color], gStartX + x * blockSize , y * blockSize + startY, blockSize, blockSize);
       }
     }
 
-    bufCtx.closePath();
-    bufCtx.stroke();
+    canvas.closePath();
+    canvas.stroke();
   }
 
   __drawCurrentBlock(canvas_, block, block_image) {
@@ -257,15 +279,15 @@ class GameoverDrawEngine extends GameoverGameState {
   }
 
   OnDraw(canvas, tetris, block_image, button_image) {
-    this._drawBoard(canvas, tetris.getBoard(), block_image);
+    this.#drawBoard(canvas, tetris.getBoard(), block_image);
     this.__drawKeypad(canvas, button_image);
   }
 
-  _drawBoard(canvas, board, block_image){
-    bufCtx.beginPath();
+  #drawBoard(canvas, board, block_image){
+    canvas.beginPath();
     let startY = gStartY;
 
-    bufCtx.globalAlpha = 1.0;
+    canvas.globalAlpha = 1.0;
 
     for (let y = 0; y < board_height; y++) {
       for (let x = 0; x < board_width; x++) {
@@ -273,14 +295,13 @@ class GameoverDrawEngine extends GameoverGameState {
           continue;
         }
         const color = board[y][x];
-        bufCtx.drawImage(block_image[color], gStartX + x * blockSize , y * blockSize + startY, blockSize, blockSize);
+        canvas.drawImage(block_image[color], gStartX + x * blockSize , y * blockSize + startY, blockSize, blockSize);
       }
     }
 
-    bufCtx.closePath();
-    bufCtx.stroke();
+    canvas.closePath();
+    canvas.stroke();
   }
-
   __drawKeypad(canvas_, button_image) {
     let _canvas = canvas_;
 
@@ -314,6 +335,7 @@ class DrawEngine extends Observer {
     this.bottom_image = this._image_res.bottom;
 
     this.rotate_image = this._image_res.rotate;
+    this.left_rotate_image = this._image_res.left_rotate;
     this.play_image = this._image_res.play;
     this.pause_image = this._image_res.pause;
     this.hold_image = this._image_res.hold;
@@ -350,6 +372,7 @@ class DrawEngine extends Observer {
     this.buttonImage['down'] = this.down_image;
     this.buttonImage['bottom'] = this.bottom_image;
     this.buttonImage['up'] = this.rotate_image;
+    this.buttonImage['rotate'] = this.left_rotate_image;
 
     this.buttonImage['hold'] = this.hold_image;
     this.buttonImage['play'] = this.play_image;
@@ -446,11 +469,12 @@ class DrawEngine extends Observer {
     this.startY = gStartY;
 
     this.buttons = [];
-    this.buttons.push(new Button('left', 0, this.startX, this.startY + blockSize * (board_height + 5), image_size, image_size, 0.3));
-    this.buttons.push(new Button('down', 0, this.startX + btn_w + blockSize * 0.5, this.startY + blockSize * (board_height + 5), image_size, image_size, 0.3));
-    this.buttons.push(new Button('right', 0, this.startX + btn_w * 2 + blockSize * 2.5, this.startY + blockSize * (board_height + 5), image_size, image_size, 0.3));
+    this.buttons.push(new Button('left', 0, this.startX, this.startY + blockSize * (board_height + 1), image_size, image_size, 0.3));
+    this.buttons.push(new Button('down', 0, this.startX + btn_w + blockSize * 0.5, this.startY + blockSize * (board_height + 1), image_size, image_size, 0.3));
+    this.buttons.push(new Button('right', 0, this.startX + btn_w * 2 + blockSize * 2.5, this.startY + blockSize * (board_height + 1), image_size, image_size, 0.3));
+    this.buttons.push(new Button('rotate', 0, this.startX + btn_w * 2 + blockSize * 2.5, this.startY + blockSize * (board_height + 5), image_size, image_size, 0.3));
     this.buttons.push(new Button('up', 0, this.startX + btn_w * 3 + blockSize * 3, this.startY + blockSize * (board_height + 5), image_size, image_size, 0.3));
-    this.buttons.push(new Button('bottom', 0, this.startX + btn_w + blockSize * 0.5, this.startY + blockSize * (board_height + 1), image_size, image_size, 0.3));
+    this.buttons.push(new Button('bottom', 0, this.startX + btn_w + blockSize * 0.5, this.startY + blockSize * (board_height + 5), image_size, image_size, 0.3));
 
     this.buttons.push(new Button('next',  0, this.startX + blockSize * 11, this.startY, blockSize*4, blockSize, 1.0));
     this.buttons.push(new Button('blank', 0, this.startX + blockSize * 11, this.startY+blockSize, blockSize*4, blockSize*6, 0.5));

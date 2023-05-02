@@ -4,6 +4,7 @@ function processEvent(code) {
       console.log("hold");
       gameEngine.hold();
       break;
+    case 88:
     case 32:
       console.log("Bottom");
       gameEngine.moveBottom();
@@ -76,6 +77,10 @@ function processEvent(code) {
         drawEngine = puzzleDrawEngine;
         gameEngine.init();
       }
+      break;
+    case 90:
+      console.log("left_rotate");
+      gameEngine.left_rotate();
       break;
     default:
       break;

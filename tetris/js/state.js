@@ -20,6 +20,11 @@ class State {
         return false;
     }
 
+    left_rotate() {
+        // TODO implement here
+        return false;
+    }
+
     moveLeft() {
         // TODO implement here
         return false;
@@ -195,9 +200,9 @@ class PlayState extends State {
     }
 
     rotate() {
-        this.currentBlock.rotate();
         let x = this.currentBlock.x;
         let y = this.currentBlock.y;
+        this.currentBlock.rotate();
         for (let i = 0; i < this.currentBlock.wallKick.length; i++) {
             this.currentBlock.applyWallKick(x, y, i);
             if (this.tetrisBoard.isAcceptable(this.currentBlock)) {
@@ -209,6 +214,23 @@ class PlayState extends State {
         this.currentBlock.preRotate();
         return false;
     }
+
+    left_rotate() {
+        let x = this.currentBlock.x;
+        let y = this.currentBlock.y;
+        this.currentBlock.preRotate();
+        for (let i = 0; i < this.currentBlock.leftWallKick.length; i++) {
+            this.currentBlock.applyLeftWallKick(x, y, i);
+            if (this.tetrisBoard.isAcceptable(this.currentBlock)) {
+                return true;
+            }
+        }
+        this.currentBlock.x = x;
+        this.currentBlock.y = y;
+        this.currentBlock.rotate();
+        return false;
+    }
+
 
     moveLeft() {
         this.currentBlock.moveLeft();
