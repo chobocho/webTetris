@@ -126,6 +126,7 @@ class PlayState extends State {
         this.nextNextBlock = this.blockFactory.create();
         this.nextBlock = this.blockFactory.create();
         this.holdBlock = this.blockFactory.getEmptyBlock();
+        this.shadowBlock = this.blockFactory.getBlock(this.currentBlock.getType());
         this.tetrisBoard = board;
         this.score = score;
         this._boardManager = boardManager;
@@ -136,6 +137,7 @@ class PlayState extends State {
         this.nextNextBlock = this.blockFactory.create();
         this.nextBlock = this.blockFactory.create();
         this.holdBlock = this.blockFactory.getEmptyBlock();
+        this.resetShadowBlock();
     }
 
     set(gameInfo) {
@@ -159,6 +161,28 @@ class PlayState extends State {
         item_type = gameInfo['current_item_type'];
         this.currentBlock.setItem(item, item_type);
         this.currentBlock.set(gameInfo['x'], gameInfo['y'], gameInfo['r']);
+
+        this.resetShadowBlock();
+    }
+
+    resetShadowBlock() {
+        this.shadowBlock = this.blockFactory.getBlock(this.currentBlock.getType());
+        this.shadowBlock.r = this.currentBlock.r;
+        this.shadowBlock.x = this.currentBlock.x;
+        this.updateShadowBlock();
+    }
+
+    updateShadowBlock() {
+        this.shadowBlock.x = this.currentBlock.x;
+        this.shadowBlock.y = this.currentBlock.y;
+        this.shadowBlock.r = this.currentBlock.r;
+        while (this.tetrisBoard.isAcceptable(this.shadowBlock)) {
+            this.shadowBlock.moveDown();
+        }
+        if (!this.tetrisBoard.isAcceptable(this.shadowBlock)) {
+            this.shadowBlock.moveUp();
+        }
+        console.log(">>shadow ", this.shadowBlock.x, this.shadowBlock.y);
     }
 
     isPlayState() {
@@ -191,6 +215,7 @@ class PlayState extends State {
         if (this.tetrisBoard.isAcceptable(this.currentBlock)) {
             this.holdBlock = tmpBlock;
             console.log("Hold");
+            this.resetShadowBlock();
         } else {
             this.currentBlock = tmpBlock;
             console.log("UnHold");
@@ -206,6 +231,7 @@ class PlayState extends State {
         for (let i = 0; i < this.currentBlock.wallKick.length; i++) {
             this.currentBlock.applyWallKick(x, y, i);
             if (this.tetrisBoard.isAcceptable(this.currentBlock)) {
+                this.updateShadowBlock();
                 return true;
             }
         }
@@ -222,6 +248,7 @@ class PlayState extends State {
         for (let i = 0; i < this.currentBlock.leftWallKick.length; i++) {
             this.currentBlock.applyLeftWallKick(x, y, i);
             if (this.tetrisBoard.isAcceptable(this.currentBlock)) {
+                this.updateShadowBlock();
                 return true;
             }
         }
@@ -238,6 +265,7 @@ class PlayState extends State {
             this.currentBlock.moveRight();
             return false;
         }
+        this.updateShadowBlock();
         return true;
     }
 
@@ -247,6 +275,7 @@ class PlayState extends State {
             this.currentBlock.moveLeft();
             return false;
         }
+        this.updateShadowBlock();
         return true;
     }
 
@@ -294,6 +323,7 @@ class PlayState extends State {
         this.currentBlock = this.nextBlock;
         this.nextBlock = this.nextNextBlock;
         this.nextNextBlock = this.blockFactory.create();
+        this.resetShadowBlock();
     }
 
     fixCurrentBlock() {
@@ -317,7 +347,11 @@ class PlayState extends State {
     }
 
     getShadowBlock() {
-        return new EmptyBlock(0, 0);
+        if ((this.shadowBlock.y - this.currentBlock.y) >= this.currentBlock.h) {
+            return this.shadowBlock;
+        } else {
+            return new EmptyBlock(0, 0);
+        }
     }
 }
 

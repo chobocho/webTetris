@@ -124,7 +124,8 @@ class PlayDrawEngine extends PlayGameState {
 
   OnDraw(canvas, tetris, block_image, button_image) {
     this.#drawBoard(canvas, tetris.getBoard(), block_image);
-    this.__drawCurrentBlock(canvas, tetris.getCurrentBlock(), block_image);
+    this.#drawCurrentBlock(canvas, tetris.getCurrentBlock(), block_image);
+    this.#drawShadowBlock(canvas, tetris.getShadowBlock(), block_image);
     this.__drawNextBlock(canvas, tetris.getNextNextBlock(), tetris.getNextBlock(), block_image);
     this.__drawHoldBlock(canvas, tetris.getHoldBlock(), block_image);
     this.__drawKeypad(canvas, button_image);
@@ -150,7 +151,7 @@ class PlayDrawEngine extends PlayGameState {
     canvas.stroke();
   }
 
-  __drawCurrentBlock(canvas_, block, block_image) {
+  #drawCurrentBlock(canvas_, block, block_image) {
     let _canvas = canvas_;
     let cb_startX = gStartX + block.x * blockSize;
     let cb_startY = gStartY + block.y * blockSize;
@@ -168,6 +169,24 @@ class PlayDrawEngine extends PlayGameState {
       }
     }
   }
+
+  #drawShadowBlock(canvas_, block, block_image) {
+    let _canvas = canvas_;
+    let cb_startX = gStartX + block.x * blockSize;
+    let cb_startY = gStartY + block.y * blockSize;
+    for (let y = 0; y < block.h; ++y) {
+      for (let x = 0; x < block.w; ++x) {
+        if (block.block[block.r][y][x] !== 0) {
+          let bImg = block.type;
+          _canvas.globalAlpha = 0.3;
+          _canvas.drawImage(block_image[bImg], x * blockSize + cb_startX, y * blockSize + cb_startY, blockSize, blockSize);
+          _canvas.globalAlpha = 1.0;
+        }
+      }
+    }
+  }
+
+
 
   __drawNextBlock(canvas_, block1, block2, block_image) {
     let _canvas = canvas_;
