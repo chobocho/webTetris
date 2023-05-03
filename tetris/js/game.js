@@ -6,8 +6,8 @@ function processEvent(code) {
       break;
     case 88:
     case 32:
-      console.log("Bottom");
-      gameEngine.moveBottom();
+      console.log("Bottom And Fix");
+      gameEngine.moveBottomAndFix();
       break;
     case 37:
       console.log("Left");
@@ -23,7 +23,7 @@ function processEvent(code) {
       break;
     case 40:
       console.log("Down");
-      gameEngine.moveDown();
+      gameEngine.moveBottom();
       break;
     case 65:
       if (tetris.isInitState()) {

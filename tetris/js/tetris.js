@@ -124,6 +124,17 @@ class Tetris {
     }
   }
 
+  moveBottomAndFix() {
+    if (this.state.gameOver()) {
+      this.setState(this.gameoverState);
+      return false;
+    } else {
+      this.state.moveBottom();
+      return this.moveDown();
+    }
+  }
+
+
   rotate() {
     return this.state.rotate();
   }
