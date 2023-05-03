@@ -110,15 +110,13 @@ class PlayDrawEngine extends PlayGameState {
     let btn_h = blockSize * 2.5;
     let image_size = btn_h - 3;
 
-
-
     this.buttons = [];
-    this.buttons.push(new Button('left', 37, gStartX, gStartY + blockSize * (board_height + 4), image_size, image_size, 1.0));
-    this.buttons.push(new Button('down', 40, gStartX + btn_w + blockSize * 0.5, gStartY+ blockSize * (board_height + 4), image_size, image_size, 1.0));
-    this.buttons.push(new Button('right', 39, gStartX + btn_w * 2 + blockSize, gStartY + blockSize * (board_height + 4), image_size, image_size, 1.0));
-    this.buttons.push(new Button('rotate', 90, gStartX + btn_w * 3 + blockSize * 2.5, gStartY + blockSize * (board_height + 4), image_size, image_size, 1.0));
+    this.buttons.push(new Button('rotate', 90, gStartX, gStartY + blockSize * (board_height + 4), image_size, image_size, 1.0));
+    this.buttons.push(new Button('left', 37, gStartX + btn_w + blockSize * 0.5, gStartY+ blockSize * (board_height + 4), image_size, image_size, 1.0));
+    this.buttons.push(new Button('down', 40, gStartX + btn_w * 2 + blockSize, gStartY + blockSize * (board_height + 4), image_size, image_size, 1.0));
+    this.buttons.push(new Button('right', 39, gStartX + btn_w * 3 + blockSize * 2.5, gStartY + blockSize * (board_height + 4), image_size, image_size, 1.0));
     this.buttons.push(new Button('up', 38, gStartX + btn_w * 4 + blockSize * 3, gStartY + blockSize * (board_height + 4), image_size, image_size, 1.0));
-    this.buttons.push(new Button('bottom', 32, gStartX+ btn_w + blockSize * 0.5, gStartY + blockSize * (board_height + 1), image_size, image_size, 1.0));
+    this.buttons.push(new Button('bottom', 32, gStartX + btn_w + blockSize * 0.5, gStartY + blockSize * (board_height + 1), image_size, image_size, 1.0));
     this.buttons.push(new Button('hold', 17, gStartX, gStartY + blockSize * (board_height + 1), image_size, image_size, 1.0));
     this.buttons.push(new Button('pause', 80, gStartX + btn_w * 4 + blockSize * 3, gStartY + blockSize * (board_height+1), image_size, image_size, 1.0));
   }
@@ -471,10 +469,10 @@ class DrawEngine extends Observer {
     this.startY = gStartY;
 
     this.buttons = [];
-    this.buttons.push(new Button('left', 0, this.startX, this.startY + blockSize * (board_height + 4), image_size, image_size, 0.3));
-    this.buttons.push(new Button('down', 0, this.startX + btn_w + blockSize * 0.5, this.startY + blockSize * (board_height + 4), image_size, image_size, 0.3));
-    this.buttons.push(new Button('right', 0, this.startX + btn_w * 2 + blockSize, this.startY + blockSize * (board_height + 4), image_size, image_size, 0.3));
-    this.buttons.push(new Button('rotate', 0, this.startX + btn_w * 3 + blockSize * 2.5, this.startY + blockSize * (board_height + 4), image_size, image_size, 0.3));
+    this.buttons.push(new Button('rotate', 0, this.startX, this.startY + blockSize * (board_height + 4), image_size, image_size, 0.3));
+    this.buttons.push(new Button('left', 0, this.startX + btn_w + blockSize * 0.5, this.startY + blockSize * (board_height + 4), image_size, image_size, 0.3));
+    this.buttons.push(new Button('down', 0, this.startX + btn_w * 2 + blockSize, this.startY + blockSize * (board_height + 4), image_size, image_size, 0.3));
+    this.buttons.push(new Button('right', 0, this.startX + btn_w * 3 + blockSize * 2.5, this.startY + blockSize * (board_height + 4), image_size, image_size, 0.3));
     this.buttons.push(new Button('up', 0, this.startX + btn_w * 4 + blockSize * 3, this.startY + blockSize * (board_height + 4), image_size, image_size, 0.3));
     this.buttons.push(new Button('bottom', 0, this.startX + btn_w + blockSize * 0.5, this.startY + blockSize * (board_height + 1), image_size, image_size, 0.3));
 
