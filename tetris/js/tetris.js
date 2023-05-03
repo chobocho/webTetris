@@ -89,7 +89,7 @@ class Tetris {
       return false;
     }
     let result = this.state.moveDown();
-    if (this.state.isClear()) {
+    if (!result && this.state.isClear()) {
       this._score.add(1023);
     }
     if (this.state.isSolve()) {
