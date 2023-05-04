@@ -167,8 +167,6 @@ class PlayState extends State {
 
     resetShadowBlock() {
         this.shadowBlock = this.blockFactory.getBlock(this.currentBlock.getType());
-        this.shadowBlock.r = this.currentBlock.r;
-        this.shadowBlock.x = this.currentBlock.x;
         this.updateShadowBlock();
     }
 
@@ -281,7 +279,11 @@ class PlayState extends State {
 
     moveDown() {
         this.currentBlock.moveDown();
-        this.Tetris._score.add(1);
+        let point = 1;
+        if (this._boardManager.isArcadeMode()) {
+            point = Math.floor(Math.random() * 5 + 1);
+        }
+        this.Tetris._score.add(point);
         if (this.tetrisBoard.isAcceptable(this.currentBlock)) {
             console.log("Accept");
             return true;
@@ -315,6 +317,9 @@ class PlayState extends State {
         let removedLine = this.tetrisBoard.arrange();
         if (removedLine === 0) {
             return;
+        }
+        if (this._boardManager.isArcadeMode()) {
+            removedLine *= 4;
         }
         this.score.increase(removedLine);
     }
