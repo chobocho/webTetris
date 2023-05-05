@@ -550,9 +550,9 @@ class DrawEngine extends Observer {
     _canvas.beginPath();
 
     let pos = 0;
-    let imageSize = blockSize * 0.7;
-    const drawX = this.startX + blockSize * 14;
-    let drawY = this.startY + blockSize * 14;
+    let imageSize = blockSize * 0.65;
+    const drawX = this.startX + blockSize * 14.4;
+    let drawY = this.startY + blockSize * 14.1;
 
     if (score > 1000000) {
       console.log("Score is " + score);
@@ -566,7 +566,7 @@ class DrawEngine extends Observer {
     } while (score > 0);
 
     pos = 0;
-    drawY = this.startY + blockSize * 17;
+    drawY = this.startY + blockSize * 17.2;
 
     if (high_score > 1000000) {
       console.log("Score is " + high_score);

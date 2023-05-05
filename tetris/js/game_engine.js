@@ -26,6 +26,7 @@ class GameEngine extends Observer {
         speed = Math.min(this.tetris.score * 25 / 10000, 25);
       }
       if (this._tick > (50-speed)) {
+        this.tetris.addScore(1);
         this.moveDown();
         this._tick = 0;
         this._max_move = 12;

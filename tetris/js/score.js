@@ -2,7 +2,7 @@ class Score {
   constructor(prev_high_score) {
     this._score = 0;
     this.highscore = prev_high_score;
-    this.scoreTable = [0, 5, 10, 50, 100, 110, 130, 170, 210, 270, 340, 420, 500, 510, 520, 530, 540, 550, 600, 700, 800, 900];
+    this.scoreTable = [0, 30, 100, 150, 400, 500, 600, 700, 777, 888, 900, 999, 1000, 1088, 1100, 1111, 1200, 1216, 1300, 1400, 1500, 1600, 1700];
     this._prev_high_score = prev_high_score;
   }
 

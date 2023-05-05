@@ -68,6 +68,12 @@ class Tetris {
     observer.update(this.state.get());
   }
 
+  addScore(score) {
+    if (this.isPlayState()) {
+      this._score.add(score);
+    }
+  }
+
   notify() {
     this.observer.forEach( e => {
       e.update(this.state.get())
@@ -97,7 +103,7 @@ class Tetris {
       if (this.isPuzzleMode()) {
         this._score.add(1024);
       } else if (this.isItemMode()) {
-        this._score.add(256);
+        this._score.add(512);
       }
       this._saveHighScore();
       this._boardManager.updateBoard();

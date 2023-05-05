@@ -279,11 +279,6 @@ class PlayState extends State {
 
     moveDown() {
         this.currentBlock.moveDown();
-        let point = 1;
-        if (this._boardManager.isArcadeMode()) {
-            point = Math.floor(Math.random() * 5 + 1);
-        }
-        this.Tetris._score.add(point);
         if (this.tetrisBoard.isAcceptable(this.currentBlock)) {
             console.log("Accept");
             return true;
@@ -319,7 +314,9 @@ class PlayState extends State {
             return;
         }
         if (this._boardManager.isArcadeMode()) {
-            removedLine *= 4;
+            if (removedLine > 1) {
+                removedLine *= 3;
+            }
         }
         this.score.increase(removedLine);
     }
