@@ -223,6 +223,10 @@ class PlayState extends State {
     }
 
     rotate() {
+        if (this.tetrisBoard.hasEffect()) {
+            return;
+        }
+
         let x = this.currentBlock.x;
         let y = this.currentBlock.y;
         this.currentBlock.rotate();
@@ -240,6 +244,10 @@ class PlayState extends State {
     }
 
     left_rotate() {
+        if (this.tetrisBoard.hasEffect()) {
+            return;
+        }
+
         let x = this.currentBlock.x;
         let y = this.currentBlock.y;
         this.currentBlock.preRotate();
@@ -258,6 +266,10 @@ class PlayState extends State {
 
 
     moveLeft() {
+        if (this.tetrisBoard.hasEffect()) {
+            return;
+        }
+
         this.currentBlock.moveLeft();
         if (!this.tetrisBoard.isAcceptable(this.currentBlock)) {
             this.currentBlock.moveRight();
@@ -268,6 +280,10 @@ class PlayState extends State {
     }
 
     moveRight() {
+        if (this.tetrisBoard.hasEffect()) {
+            return;
+        }
+
         this.currentBlock.moveRight();
         if (!this.tetrisBoard.isAcceptable(this.currentBlock)) {
             this.currentBlock.moveLeft();
@@ -278,6 +294,10 @@ class PlayState extends State {
     }
 
     moveDown() {
+        if (this.tetrisBoard.hasEffect()) {
+            return;
+        }
+
         this.currentBlock.moveDown();
         if (this.tetrisBoard.isAcceptable(this.currentBlock)) {
             console.log("Accept");
@@ -295,6 +315,10 @@ class PlayState extends State {
     }
 
     moveBottom() {
+        if (this.tetrisBoard.hasEffect()) {
+            return;
+        }
+
         if (!this.moveDown()) {
             return false;
         }

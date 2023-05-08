@@ -124,8 +124,10 @@ class PlayDrawEngine extends PlayGameState {
 
   OnDraw(canvas, tetris, block_image, button_image) {
     this.#drawBoard(canvas, tetris.getBoard(), block_image);
-    this.#drawCurrentBlock(canvas, tetris.getCurrentBlock(), block_image);
-    this.#drawShadowBlock(canvas, tetris.getShadowBlock(), block_image);
+    if (!tetris.board.hasEffect()) {
+      this.#drawCurrentBlock(canvas, tetris.getCurrentBlock(), block_image);
+      this.#drawShadowBlock(canvas, tetris.getShadowBlock(), block_image);
+    }
     this.__drawNextBlock(canvas, tetris.getNextNextBlock(), tetris.getNextBlock(), block_image);
     this.__drawHoldBlock(canvas, tetris.getHoldBlock(), block_image);
     this.__drawKeypad(canvas, button_image);

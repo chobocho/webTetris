@@ -82,6 +82,9 @@ class ItemBoardManager extends BoardManager {
     const width = board_width;
     const RED = 12;
     let hasBoom = false;
+    let boomCount = 0;
+
+    this._board.insertEffect();
 
     for (let y = height - 1; y >= 0; y--) {
       hasBoom = false;
@@ -89,6 +92,7 @@ class ItemBoardManager extends BoardManager {
         if (board[y][x] === RED) {
           board[y][x] = FIXED_BLOCK;
           hasBoom = true;
+          boomCount++;
         }
       }
 
@@ -100,6 +104,10 @@ class ItemBoardManager extends BoardManager {
         }
       }
     }
+
+    if (boomCount === 0) {
+      this._board.popEffect();
+    }
   }
 
   _handleBlackBoom(board) {
@@ -107,6 +115,9 @@ class ItemBoardManager extends BoardManager {
     const width = board_width;
     const BOOM = 9;
     let hasBoom = false;
+    let boomCount = 0;
+
+    this._board.insertEffect();
 
     for (let y = height-1; y >= 0; y--) {
       let count = 0;
@@ -121,6 +132,8 @@ class ItemBoardManager extends BoardManager {
       }
 
       if ((count === width) && hasBoom) {
+        boomCount++;
+
         for (let ty = y-1; ty <= y+1; ty++) {
           if (ty < 0 || ty >= height) {
             continue;
@@ -136,6 +149,10 @@ class ItemBoardManager extends BoardManager {
         }
       }
     }
+
+    if (boomCount === 0) {
+      this._board.popEffect();
+    }
     //console.log("[handleBoom] " + board);
   }
 
@@ -146,6 +163,9 @@ class ItemBoardManager extends BoardManager {
     const THUNDER = 14;
     let hasBoom = false;
     let hasThunder = false;
+    let boomCount = 0;
+
+    this._board.insertEffect();
 
     for (let y = height - 1; !hasThunder && y >= 0; y--) {
       for (let x = 0; x < width; x++) {
@@ -166,6 +186,7 @@ class ItemBoardManager extends BoardManager {
       for (let x = 0; x < width; x++) {
         if (board[y][x] === BLACK) {
           hasBoom = true;
+          boomCount++;
           break;
         }
       }
@@ -178,6 +199,11 @@ class ItemBoardManager extends BoardManager {
         }
       }
     }
+
+    if (boomCount === 0) {
+      this._board.popEffect();
+    }
+
   }
 
   _handleBlueBoom(board) {
@@ -185,6 +211,9 @@ class ItemBoardManager extends BoardManager {
     const width = board_width;
     const BLUE = 10;
     let hasBoom = false;
+    let boomCount = 0;
+
+    this._board.insertEffect();
 
     for (let y = height-1; y >= 0; y--) {
       hasBoom = false;
@@ -193,6 +222,7 @@ class ItemBoardManager extends BoardManager {
         if (board[y][x] === BLUE) {
           board[y][x] = FIXED_BLOCK;
           hasBoom = true;
+          boomCount++;
           break;
         }
       }
@@ -214,6 +244,10 @@ class ItemBoardManager extends BoardManager {
         y++;
       }
     }
+
+    if (boomCount === 0) {
+      this._board.popEffect();
+    }
     //console.log("[handleBoom] " + board);
   }
 
@@ -223,6 +257,7 @@ class ItemBoardManager extends BoardManager {
     const width = board_width;
     const GREEN = 11;
     let hasBoom = false;
+    let boomCount = 0;
     const pattern = [
       [0,0,1,0,0],
       [0,1,0,1,0],
@@ -230,6 +265,8 @@ class ItemBoardManager extends BoardManager {
       [0,1,0,1,0],
       [0,0,1,0,0]
     ];
+
+    this._board.insertEffect();
 
     for (let y = height-1; y >= 0; y--) {
       hasBoom = false;
@@ -246,6 +283,7 @@ class ItemBoardManager extends BoardManager {
         if (board[y][x] === GREEN) {
           board[y][x] = FIXED_BLOCK;
           hasBoom = true;
+          boomCount++;
           break;
         }
       }
@@ -272,6 +310,11 @@ class ItemBoardManager extends BoardManager {
         y++;
       }
     }
+
+    if (boomCount === 0) {
+      this._board.popEffect();
+    }
+
     //console.log("[handleBoom] " + board);
   }
 
@@ -280,11 +323,14 @@ class ItemBoardManager extends BoardManager {
     const width = board_width;
     const ORANGE = 13;
     let hasBoom = false;
+    let boomCount = 0;
     let pattern = [
       [1,1,1],
       [1,0,1],
       [1,1,1],
     ];
+
+    this._board.insertEffect();
 
     for (let y = height-1; y >= 0; y--) {
       hasBoom = false;
@@ -302,6 +348,7 @@ class ItemBoardManager extends BoardManager {
         if (board[y][x] === ORANGE) {
           board[y][x] = FIXED_BLOCK;
           hasBoom = true;
+          boomCount++;
           break;
         }
       }
@@ -328,6 +375,10 @@ class ItemBoardManager extends BoardManager {
         y++;
       }
     }
+
+    if (boomCount === 0) {
+      this._board.popEffect();
+    }
     //console.log("[handleBoom] " + board);
   }
 
@@ -336,6 +387,9 @@ class ItemBoardManager extends BoardManager {
     const width = board_width;
     const BLACK_THUNDER = 15;
     let hasBoom = false;
+    let boomCount = 0;
+
+    this._board.insertEffect();
 
     for (let y = height - 1; y >= 0; y--) {
       hasBoom = false;
@@ -363,6 +417,10 @@ class ItemBoardManager extends BoardManager {
       }
       // console.log("[BlackThunder] " + x + ',' + y);
     }
+
+    if (boomCount === 0) {
+      this._board.popEffect();
+    }
   }
 
 
@@ -371,6 +429,9 @@ class ItemBoardManager extends BoardManager {
     const width = board_width;
     const RED_THUNDER = 17;
     let hasBoom = false;
+    let boomCount = 0;
+
+    this._board.insertEffect();
 
     for (let y = height - 1; y >= 0; y--) {
       hasBoom = false;
@@ -379,6 +440,7 @@ class ItemBoardManager extends BoardManager {
         if (board[y][x] === RED_THUNDER) {
           board[y][x] = 0;
           hasBoom = true;
+          boomCount++;
           break;
         }
       }
@@ -395,6 +457,10 @@ class ItemBoardManager extends BoardManager {
         y++;
       }
     }
+
+    if (boomCount === 0) {
+      this._board.popEffect();
+    }
   }
 
   _handleOrangeThunder(board) {
@@ -402,6 +468,9 @@ class ItemBoardManager extends BoardManager {
     const width = board_width;
     const ORANGE_THUNDER = 16;
     let hasBoom = false;
+    let boomCount = 0;
+
+    this._board.insertEffect();
 
     for (let y = height-1; y >= 0; y--) {
       hasBoom = false;
@@ -410,6 +479,7 @@ class ItemBoardManager extends BoardManager {
         if (board[y][x] === ORANGE_THUNDER) {
           board[y][x] = FIXED_BLOCK;
           hasBoom = true;
+          boomCount++;
           break;
         }
       }
@@ -429,6 +499,10 @@ class ItemBoardManager extends BoardManager {
         y++;
       }
     }
+
+    if (boomCount === 0) {
+      this._board.popEffect();
+    }
     //console.log("[handleBoom] " + board);
   }
 
@@ -439,6 +513,7 @@ class ItemBoardManager extends BoardManager {
     const ORANGE_BOOM = 13;
     const ORANGE_THUNDER = 16;
 
+    this._board.insertEffect();
     for (let y = board_height-1; y >= 0; y--) {
       let count = 0;
       for (let x = 0; x < board_width; x++) {
@@ -467,6 +542,10 @@ class ItemBoardManager extends BoardManager {
         }
         y++;
       }
+    }
+
+    if (removedLine === 0) {
+      this._board._effect.pop();
     }
     return removedLine;
   }

@@ -12,18 +12,28 @@ class GameEngine extends Observer {
     this.gameoverState = new GameoverGameState();
     this.state = this.initState;
     this._tick = 0;
+    this._effect = 0;
     this._max_move = 16;
   }
 
   tick() {
       this._tick++;
+      this._effect++;
       let speed = 0;
       if (this.tetris.isPuzzleMode()) {
-        speed = Math.min(this.tetris.score * 25 / 100000, 10);
+        speed = Math.min(this.tetris.score * 25 / 100000, 25);
       } else if (this.tetris.isItemMode()) {
         speed = Math.min(this.tetris.score * 25 / 100000, 25);
       } else {
-        speed = Math.min(this.tetris.score * 25 / 10000, 25);
+        speed = Math.min(this.tetris.score * 25 / 50000, 25);
+      }
+      if (this._effect > 15 && this.tetris.board.hasEffect()) {
+        this.tetris.board._effect.shift();
+        //console.log(">>>", Date.now(),  this.tetris.board._effect.length);
+        this._effect = 0;
+      }
+      if (!this.tetris.board.hasEffect()) {
+        this._effect = 0;
       }
       if (this._tick > (50-speed)) {
         this.tetris.addScore(1);

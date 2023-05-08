@@ -1,6 +1,7 @@
 class TetrisBoard {
   constructor(width, height, boardManager) {
     this.board = [];
+    this._effect = [];
     this.width = width;
     this.height = height;
     this._boardManager = boardManager;
@@ -13,6 +14,8 @@ class TetrisBoard {
   }
 
   init() {
+    this.clearEffect();
+
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
         this.board[i][j] = 0;
@@ -24,7 +27,34 @@ class TetrisBoard {
     return this.board;
   }
 
+  hasEffect() {
+    return this._effect.length !== 0;
+  }
+
+  clearEffect() {
+    this._effect = [];
+  }
+
+  getEffect() {
+    const effectBoard = this._effect[0];
+    return effectBoard;
+  }
+
+  insertEffect() {
+    const effect = JSON.parse(JSON.stringify(this.board));
+    this._effect.push(effect);
+    //console.log(">>>", effect, this._effect.length, Date.now());
+  }
+
+  popEffect() {
+    if (this._effect.length > 0) {
+      this._effect.pop();
+    }
+  }
+
   set(gameInfo) {
+    this.clearEffect();
+
     for (let i = 0; i < this.height; i++) {
       let line = gameInfo['board'][i];
       for (let j = 0; j < this.width; j++) {
