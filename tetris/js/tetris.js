@@ -28,8 +28,9 @@ class Tetris {
         this.initState = new InitState(this);
         this.idleState = new IdleState(this, this._boardManager);
         this.playState = new PlayState(this, this.board, this._score, this._boardManager, blockFactory);
-        this.pauseState = new PauseState();
-        this.gameoverState = new GameOverState();
+        this.pauseState = new PauseState(this);
+        this.gameoverState = new GameOverState(this);
+        this.solveGameState = new SolveState(this);
 
         this.state = this.initState;
         this.observer = []
@@ -55,12 +56,27 @@ class Tetris {
         this.setState(this.idleState);
     }
 
+    solve() {
+        if (this._boardManager.isPuzzleMode()) {
+            this._boardManager.updateBoard();
+        } else if (this._boardManager.isItemMode()) {
+            this._boardManager.updateBoard();
+        }
+        this.playState.init();
+        this.setState(this.idleState);
+    }
+
     resumeGame(gameInfo) {
         this.board.set(gameInfo);
         this._boardManager.setIndex(gameInfo['index']);
         this.playState.set(gameInfo);
         this.score = gameInfo['score'];
-        this.setState(this.pauseState);
+
+        if ((this.isPuzzleMode() || this.isItemMode()) && this.board.isSolve()) {
+            this.setState(this.solveGameState);
+        } else {
+            this.setState(this.pauseState);
+        }
     }
 
     register(observer) {
@@ -107,16 +123,16 @@ class Tetris {
                 this._score.add(512);
             }
             this._saveHighScore();
-            this._boardManager.updateBoard();
             this.saveGame();
             if (this.isItemMode()) {
+                let delay = this.board.hasEffect() ? 600 : 0;
                 setTimeout(() => {
                         this.board.clearEffect();
-                        this.setState(this.idleState);
+                        this.setState(this.solveGameState);
                     }
-                    , 700);
+                    , delay);
             } else {
-                this.setState(this.idleState);
+                this.setState(this.solveGameState);
             }
             result = true;
         }
@@ -165,6 +181,7 @@ class Tetris {
 
     start() {
         console.log("Start");
+        this.board.clearEffect();
         this.setState(this.playState);
     }
 
@@ -227,6 +244,10 @@ class Tetris {
 
     isPauseState() {
         return this.state.isPauseState();
+    }
+
+    isSolveGameState() {
+        return this.state.isSolveGameState();
     }
 
     getCurrentBlock() {

@@ -10,6 +10,7 @@ class GameEngine extends Observer {
     this.playState = new PlayGameState();
     this.pauseState = new PauseGameState();
     this.gameoverState = new GameoverGameState();
+    this.solveGameState = new SolveGameState();
     this.state = this.initState;
     this._tick = 0;
     this._effect = 0;
@@ -110,7 +111,7 @@ class GameEngine extends Observer {
   }
 
   main_menu() {
-    if (this.tetris.isPauseState()) {
+    if (this.tetris.isPauseState() || this.tetris.isSolveGameState()) {
       let confirmNewGame = confirm("Do you want to quit game?");
 
       if (confirmNewGame) {
@@ -122,8 +123,9 @@ class GameEngine extends Observer {
   start() {
     if (this.tetris.isInitState()) {
       return;
-    }
-    if (this.tetris.isGameOverState()) {
+    } else if (this.tetris.isSolveGameState()) {
+      this.tetris.solve();
+    } else if (this.tetris.isGameOverState()) {
       this.tetris.init();
     } else if (this.tetris.isIdleState() || this.tetris.isPauseState()) {
       this.tetris.start();
@@ -157,7 +159,7 @@ class GameEngine extends Observer {
   }
 
   newGame() {
-    if (this.tetris.isPauseState()) {
+    if (this.tetris.isPauseState() || this.tetris.isSolveGameState()) {
       let confirmNewGame = confirm("Do you want to start new game?");
 
       if (confirmNewGame) {
@@ -189,10 +191,13 @@ class GameEngine extends Observer {
       case 4:
         this.state = this.gameoverState;
         if (this.tetris._score.needToSave()) {
-          console.log("[GameEngine] SaveState> ", "SaveScore");
+          console.log("[GameEngine] GameOverState> ", "SaveScore");
           this._scoreDB.setScore(this.tetris.getHighScore());
         }
         this._scoreDB.clear();
+        break;
+      case 5:
+        this.state = this.solveGameState;
         break;
       default:
         console.log("Error: Unknown state ", state);

@@ -33,6 +33,7 @@ class ImageLoader {
         this._images.resume = LoadImage("img/resume.png");
         this._images.new_game = LoadImage("img/new_game.png");
         this._images.gameover = LoadImage("img/gameover.png");
+        this._images.success = LoadImage("img/success.png");
 
         this._images.n0 = LoadImage("img/sn00.png");
         this._images.n1 = LoadImage("img/sn01.png");

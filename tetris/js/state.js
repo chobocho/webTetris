@@ -92,6 +92,8 @@ class State {
     isGameOverState() { return false; }
     isPlayState() { return false; }
     isPauseState() { return false; }
+
+    isSolveGameState() { return false; }
 }
 
 class InitState extends State {
@@ -399,6 +401,16 @@ class GameOverState extends State {
     isGameOverState() { return true; }
 }
 
+class SolveState extends State {
+    constructor(tetris) {
+        super(tetris);
+        this.state = 5;
+    }
+
+    isSolveGameState() { return true; }
+}
+
+
 class GameState {
     constructor() {
     }
@@ -406,7 +418,7 @@ class GameState {
     OnDraw(canvas, tetris, block_image, button_image) {
 
     }
-  }
+}
   
   class InitGameState extends GameState {
     constructor() {
@@ -442,3 +454,10 @@ class GameState {
       this.state = 4;
     }
   }
+
+class SolveGameState extends GameState {
+    constructor() {
+        super();
+        this.state = 5;
+    }
+}

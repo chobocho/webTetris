@@ -335,6 +335,61 @@ class GameoverDrawEngine extends GameoverGameState {
   }
 }
 
+
+class SolveGameDrawEngine extends SolveGameState {
+  constructor() {
+    super();
+
+    let btn_w = blockSize * 2.5;
+    let btn_h = blockSize * 2.5;
+    let image_size = btn_h - 3;
+
+    this.buttons = [];
+    this.buttons.push(new Button('success', 83, gStartX + blockSize * 2, gStartY + blockSize * 5, blockSize*6, blockSize*2, 1.0));
+    this.buttons.push(new Button('new_game', 78, gStartX + blockSize * 2, gStartY + blockSize * 9, blockSize*6, blockSize*2, 0.5));
+    this.buttons.push(new Button('main_menu', 77, gStartX + blockSize * 2, gStartY + blockSize * 13, blockSize*6, blockSize*2, 0.5));
+    this.buttons.push(new Button('play', 83, gStartX + btn_w * 4 + blockSize * 3, gStartY + blockSize * (board_height+1), image_size, image_size, 1.0));
+  }
+
+  OnDraw(canvas, tetris, block_image, button_image) {
+    this.#drawBoard(canvas, tetris.getBoard(), block_image);
+    this.__drawKeypad(canvas, button_image);
+  }
+
+  #drawBoard(canvas, board, block_image){
+    canvas.beginPath();
+    let startY = gStartY;
+
+    canvas.globalAlpha = 1.0;
+
+    for (let y = 0; y < board_height; y++) {
+      for (let x = 0; x < board_width; x++) {
+        if (board[y][x] === 0) {
+          continue;
+        }
+        const color = board[y][x];
+        canvas.drawImage(block_image[color], gStartX + x * blockSize , y * blockSize + startY, blockSize, blockSize);
+      }
+    }
+
+    canvas.closePath();
+    canvas.stroke();
+  }
+
+  __drawKeypad(canvas_, button_image) {
+    let _canvas = canvas_;
+
+    _canvas.beginPath();
+    this.buttons.forEach(e => {
+      _canvas.globalAlpha = e.alpha;
+      _canvas.drawImage(button_image[e.name], e.x1, e.y1, e.x2-e.x1, e.y2-e.y1);
+      _canvas.globalAlpha = 1.0;
+    });
+    _canvas.closePath();
+  }
+}
+
+
 class DrawEngine extends Observer {
   constructor(tetris, images) {
     super();
@@ -376,6 +431,7 @@ class DrawEngine extends Observer {
     this.resume_image = this._image_res.resume;
     this.new_game_image = this._image_res.new_game;
     this.gameover_image = this._image_res.gameover;
+    this.success_image = this._image_res.success;
 
     this.n0 = this._image_res.n0;
     this.n1 = this._image_res.n1;
@@ -414,6 +470,7 @@ class DrawEngine extends Observer {
     this.buttonImage['resume'] = this.resume_image;
     this.buttonImage['new_game'] = this.new_game_image;
     this.buttonImage['gameover'] = this.gameover_image;
+    this.buttonImage['success'] = this.success_image;
     
     this.buttonImage['0'] = this.n0;
     this.buttonImage['1'] = this.n1;
@@ -480,7 +537,8 @@ class DrawEngine extends Observer {
     this.idleState = new IdleDrawEngine();
     this.playState = new PlayDrawEngine();
     this.pauseState = new PauseDrawEngine();
-    this.gameoverState = new GameoverDrawEngine(); 
+    this.gameoverState = new GameoverDrawEngine();
+    this.solveGameState = new SolveGameDrawEngine();
     this.state = this.initState;
 
     let btn_w = blockSize * 2.5;
@@ -625,6 +683,9 @@ class DrawEngine extends Observer {
         break;
       case 4:
         this.state = this.gameoverState;
+        break;
+      case 5:
+        this.state = this.solveGameState;
         break;
       default:
         console.log("Error: Unknown state ", state);

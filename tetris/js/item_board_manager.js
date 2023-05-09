@@ -147,6 +147,7 @@ class ItemBoardManager extends BoardManager {
             }
           }
         }
+        this._board.insertEffect();
       }
     }
 
@@ -451,6 +452,16 @@ class ItemBoardManager extends BoardManager {
             if (tx >= width) {
               continue;
             }
+            board[ty][tx] = FIXED_BLOCK;
+          }
+        }
+        this._board.insertEffect();
+
+        for (let ty = 0; ty < height; ty++) {
+          for (let tx = x; tx < x+2; tx++) {
+            if (tx >= width) {
+              continue;
+            }
             board[ty][tx] = 0;
           }
         }
@@ -493,6 +504,19 @@ class ItemBoardManager extends BoardManager {
             if (tx < 0 || tx >= width) {
               continue;
             }
+            board[ty][tx] = FIXED_BLOCK;
+          }
+        }
+        this._board.insertEffect();
+
+        for (let ty = y-1; ty <= y+1; ty++) {
+          if (ty < 0 || ty >= height) {
+            continue;
+          }
+          for (let tx = x-1; tx <= x+1; tx++) {
+            if (tx < 0 || tx >= width) {
+              continue;
+            }
             board[ty][tx] = 0;
           }
         }
@@ -513,7 +537,6 @@ class ItemBoardManager extends BoardManager {
     const ORANGE_BOOM = 13;
     const ORANGE_THUNDER = 16;
 
-    this._board.insertEffect();
     for (let y = board_height-1; y >= 0; y--) {
       let count = 0;
       for (let x = 0; x < board_width; x++) {
@@ -544,9 +567,6 @@ class ItemBoardManager extends BoardManager {
       }
     }
 
-    if (removedLine === 0) {
-      this._board._effect.pop();
-    }
     return removedLine;
   }
 }
