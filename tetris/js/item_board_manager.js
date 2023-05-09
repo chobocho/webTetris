@@ -261,11 +261,11 @@ class ItemBoardManager extends BoardManager {
         let boomCount = 0;
 
         const boomPattern = [
-          [0, 0, 1, 0, 0],
-          [0, 1, 1, 1, 0],
-          [1, 1, 1, 1, 1],
-          [0, 1, 1, 1, 0],
-          [0, 0, 1, 0, 0]
+            [0, 0, 1, 0, 0],
+            [0, 1, 1, 1, 0],
+            [1, 1, 1, 1, 1],
+            [0, 1, 1, 1, 0],
+            [0, 0, 1, 0, 0]
         ];
 
         const pattern = [
@@ -276,31 +276,31 @@ class ItemBoardManager extends BoardManager {
             [0, 0, 1, 0, 0]
         ];
 
-      function applyPattern(y, skipLine, x, pattern) {
-        for (let ty = y - 2, j = 0; ty <= y + 2; ty++, j++) {
-          if (ty < 0 || ty >= height) {
-            continue;
-          }
-          if (skipLine && ty === y) {
-            continue;
-          }
-          for (let tx = x - 2, i = 0; tx <= x + 2; tx++, i++) {
-            if (tx < 0 || tx >= width) {
-              continue;
+        function applyPattern(y, skipLine, x, pattern) {
+            for (let ty = y - 2, j = 0; ty <= y + 2; ty++, j++) {
+                if (ty < 0 || ty >= height) {
+                    continue;
+                }
+                if (skipLine && ty === y) {
+                    continue;
+                }
+                for (let tx = x - 2, i = 0; tx <= x + 2; tx++, i++) {
+                    if (tx < 0 || tx >= width) {
+                        continue;
+                    }
+                    if (pattern[j][i] === 1) {
+                        board[ty][tx] = FIXED_BLOCK;
+                    } else {
+                        board[ty][tx] = 0;
+                    }
+                }
             }
-            if (pattern[j][i] === 1) {
-              board[ty][tx] = FIXED_BLOCK;
-            } else {
-              board[ty][tx] = 0;
-            }
-          }
         }
-      }
 
 
-      this._board.insertEffect();
+        this._board.insertEffect();
 
-       for (let y = height - 1; y >= 0; y--) {
+        for (let y = height - 1; y >= 0; y--) {
             hasBoom = false;
             let x = 0;
             for (x = 0; x < width; x++) {
@@ -321,10 +321,10 @@ class ItemBoardManager extends BoardManager {
             }
 
             if (hasBoom) {
-              applyPattern(y, skipLine, x, boomPattern);
-              this._board.insertEffect();
-              applyPattern(y, skipLine, x, pattern);
-              y++;
+                applyPattern(y, skipLine, x, boomPattern);
+                this._board.insertEffect();
+                applyPattern(y, skipLine, x, pattern);
+                y++;
             }
         }
 
@@ -341,6 +341,12 @@ class ItemBoardManager extends BoardManager {
         const ORANGE = 13;
         let hasBoom = false;
         let boomCount = 0;
+        let boomPattern = [
+            [0, 1, 0],
+            [1, 0, 1],
+            [0, 1, 0],
+        ];
+
         let pattern = [
             [1, 1, 1],
             [1, 0, 1],
@@ -348,6 +354,27 @@ class ItemBoardManager extends BoardManager {
         ];
 
         this._board.insertEffect();
+
+        function applyPattern(y, skipLine, x, pattern) {
+            for (let ty = y - 1, j = 0; ty <= y + 1; ty++, j++) {
+                if (ty < 0 || ty >= height) {
+                    continue;
+                }
+                if (skipLine && ty === y) {
+                    continue;
+                }
+                for (let tx = x - 1, i = 0; tx <= x + 1; tx++, i++) {
+                    if (tx < 0 || tx >= width) {
+                        continue;
+                    }
+                    if (pattern[j][i] === 1) {
+                        board[ty][tx] = FIXED_BLOCK;
+                    } else {
+                        board[ty][tx] = 0;
+                    }
+                }
+            }
+        }
 
         for (let y = height - 1; y >= 0; y--) {
             hasBoom = false;
@@ -371,24 +398,9 @@ class ItemBoardManager extends BoardManager {
             }
 
             if (hasBoom) {
-                for (let ty = y - 1, j = 0; ty <= y + 1; ty++, j++) {
-                    if (ty < 0 || ty >= height) {
-                        continue;
-                    }
-                    if (skipLine && ty === y) {
-                        continue;
-                    }
-                    for (let tx = x - 1, i = 0; tx <= x + 1; tx++, i++) {
-                        if (tx < 0 || tx >= width) {
-                            continue;
-                        }
-                        if (pattern[j][i] === 1) {
-                            board[ty][tx] = FIXED_BLOCK;
-                        } else {
-                            board[ty][tx] = 0;
-                        }
-                    }
-                }
+                applyPattern(y, skipLine, x, boomPattern);
+                this._board.insertEffect();
+                applyPattern(y, skipLine, x, pattern);
                 y++;
             }
         }
