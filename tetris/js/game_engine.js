@@ -111,7 +111,7 @@ class GameEngine extends Observer {
   }
 
   main_menu() {
-    if (this.tetris.isPauseState() || this.tetris.isSolveGameState()) {
+    if (this.tetris.isPauseState() || this.tetris.isIdleState() || this.tetris.isSolveGameState()) {
       let confirmNewGame = confirm("Do you want to quit game?");
 
       if (confirmNewGame) {
@@ -126,7 +126,7 @@ class GameEngine extends Observer {
     } else if (this.tetris.isSolveGameState()) {
       this.tetris.solve();
     } else if (this.tetris.isGameOverState()) {
-      this.tetris.init();
+      this.tetris.idle();
     } else if (this.tetris.isIdleState() || this.tetris.isPauseState()) {
       this.tetris.start();
     }
@@ -163,8 +163,7 @@ class GameEngine extends Observer {
       let confirmNewGame = confirm("Do you want to start new game?");
 
       if (confirmNewGame) {
-        this._scoreDB.clear();
-        this.tetris.init();
+        this.tetris.idle();
       }
     }
   }

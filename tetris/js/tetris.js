@@ -44,6 +44,7 @@ class Tetris {
     }
 
     idle() {
+        this._boardManager.init();
         if (this._boardManager.isPuzzleMode()) {
             this._boardManager.updateBoard();
         } else if (this._boardManager.isItemMode()) {
@@ -71,12 +72,7 @@ class Tetris {
         this._boardManager.setIndex(gameInfo['index']);
         this.playState.set(gameInfo);
         this.score = gameInfo['score'];
-
-        if ((this.isPuzzleMode() || this.isItemMode()) && this.board.isSolve()) {
-            this.setState(this.solveGameState);
-        } else {
-            this.setState(this.pauseState);
-        }
+        this.setState(this.pauseState);
     }
 
     register(observer) {
@@ -123,16 +119,17 @@ class Tetris {
                 this._score.add(512);
             }
             this._saveHighScore();
+            this._boardManager.updateBoard();
             this.saveGame();
             if (this.isItemMode()) {
                 let delay = this.board.hasEffect() ? 600 : 0;
                 setTimeout(() => {
                         this.board.clearEffect();
-                        this.setState(this.solveGameState);
+                        this.setState(this.idleState);
                     }
                     , delay);
             } else {
-                this.setState(this.solveGameState);
+                this.setState(this.idleState);
             }
             result = true;
         }

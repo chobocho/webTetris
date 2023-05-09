@@ -6,8 +6,14 @@ function processEvent(code) {
       break;
     case 88:
     case 32:
-      console.log("Bottom And Fix");
-      gameEngine.moveBottomAndFix();
+      if (tetris.isInitState() || tetris.isIdleState()) {
+        // Do nothing
+      } else if (tetris.isPlayState()) {
+        console.log("Bottom And Fix");
+        gameEngine.moveBottomAndFix();
+      } else {
+        gameEngine.start();
+      }
       break;
     case 37:
       console.log("Left");
@@ -23,6 +29,7 @@ function processEvent(code) {
       break;
     case 40:
       console.log("Down");
+      // FOR NHK
       gameEngine.moveDown();
       break;
     case 65:

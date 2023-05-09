@@ -6,7 +6,7 @@ function processEvent(code) {
       break;
     case 88:
     case 32:
-      if (tetris.isInitState()) {
+      if (tetris.isInitState() || tetris.isIdleState()) {
         // Do nothing
       } else if (tetris.isPlayState()) {
         console.log("Bottom And Fix");

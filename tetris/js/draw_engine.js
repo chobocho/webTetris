@@ -62,6 +62,7 @@ class IdleDrawEngine extends IdleGameState {
 
     this.buttons = [];
     this.buttons.push(new Button('start', 83, gStartX + blockSize * 2, gStartY + blockSize * 5, blockSize*6, blockSize*2, 1.0));
+    this.buttons.push(new Button('main_menu', 77, gStartX + blockSize * 2, gStartY + blockSize * 9, blockSize*6, blockSize*2, 1.0));
     this.buttons.push(new Button('play', 83, gStartX + btn_w * 4 + blockSize * 3, gStartY + blockSize * (board_height+1), image_size, image_size, 1.0));
     this.buttons.push(new Button('up', 76, gStartX + btn_w * 4 + blockSize * 3, gStartY + blockSize * (board_height+4), image_size, image_size, 0.3));
   }
