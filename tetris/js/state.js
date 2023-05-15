@@ -179,9 +179,12 @@ class PlayState extends State {
         while (this.tetrisBoard.isAcceptable(this.shadowBlock)) {
             this.shadowBlock.moveDown();
         }
-        if (!this.tetrisBoard.isAcceptable(this.shadowBlock)) {
+
+        let maxCount = 2;
+        while (!this.tetrisBoard.isAcceptable(this.shadowBlock) && maxCount-- > 0) {
             this.shadowBlock.moveUp();
         }
+
         console.log(">>shadow ", this.shadowBlock.x, this.shadowBlock.y);
     }
 
