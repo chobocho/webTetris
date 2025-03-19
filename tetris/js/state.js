@@ -348,6 +348,7 @@ class PlayState extends State {
             }
         }
         this.score.increase(removedLine);
+        this.Tetris.playPopSound();
     }
 
     updateBlock() {

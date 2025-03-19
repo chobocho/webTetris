@@ -34,7 +34,34 @@ class Tetris {
 
         this.state = this.initState;
         this.observer = []
+
+        this._is_play_music = true;
+        this._pop_audio = new Audio("data:audio/mp3;base64," + pop_sound);
+        this._clear_audio = new Audio("data:audio/mp3;base64," + clear_sound);
     }
+
+    isPlayMusic() {
+        return this._is_play_music;
+    }
+
+    playClearSound() {
+        if (!this.isPlayMusic()) return;
+        if (!this._clear_audio.paused) {
+            this._clear_audio.pause();
+            this._clear_audio.currentTime = 0;
+        }
+        this._clear_audio.play();
+    }
+
+    playPopSound() {
+        if (!this.isPlayMusic()) return;
+        if (!this._pop_audio.paused) {
+            this._pop_audio.pause();
+            this._pop_audio.currentTime = 0;
+        }
+        this._pop_audio.play();
+    }
+
 
     init() {
         this.board.init();
@@ -110,13 +137,16 @@ class Tetris {
         let result = this.state.moveDown();
         if (!result && this.state.isClear()) {
             this._score.add(1023);
+            this.playClearSound();
         }
         if (this.state.isSolve()) {
             console.log("[Tetris] Solved!");
             if (this.isPuzzleMode()) {
                 this._score.add(1024);
+                this.playClearSound();
             } else if (this.isItemMode()) {
                 this._score.add(512);
+                this.playClearSound();
             }
             this._saveHighScore();
             this._boardManager.updateBoard();
