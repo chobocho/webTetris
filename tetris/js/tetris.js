@@ -38,19 +38,29 @@ class Tetris {
         this._is_play_music = true;
         this._pop_audio = new Audio("data:audio/mp3;base64," + pop_sound);
         this._clear_audio = new Audio("data:audio/mp3;base64," + clear_sound);
+        this._clear_line_audio = new Audio("data:audio/mp3;base64," + clear_line_sound);
     }
 
     isPlayMusic() {
         return this._is_play_music;
     }
 
-    playClearSound() {
+    playClearStageSound() {
         if (!this.isPlayMusic()) return;
         if (!this._clear_audio.paused) {
             this._clear_audio.pause();
             this._clear_audio.currentTime = 0;
         }
         this._clear_audio.play();
+    }
+
+    playClearLineSound() {
+        if (!this.isPlayMusic()) return;
+        if (!this._clear_line_audio.paused) {
+            this._clear_line_audio.pause();
+            this._clear_line_audio.currentTime = 0;
+        }
+        this._clear_line_audio.play();
     }
 
     playPopSound() {
@@ -137,16 +147,16 @@ class Tetris {
         let result = this.state.moveDown();
         if (!result && this.state.isClear()) {
             this._score.add(1023);
-            this.playClearSound();
+            this.playClearStageSound();
         }
         if (this.state.isSolve()) {
             console.log("[Tetris] Solved!");
             if (this.isPuzzleMode()) {
                 this._score.add(1024);
-                this.playClearSound();
+                this.playClearStageSound();
             } else if (this.isItemMode()) {
                 this._score.add(512);
-                this.playClearSound();
+                this.playClearStageSound();
             }
             this._saveHighScore();
             this._boardManager.updateBoard();

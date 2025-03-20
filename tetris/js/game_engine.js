@@ -14,12 +14,21 @@ class GameEngine extends Observer {
     this.state = this.initState;
     this._tick = 0;
     this._effect = 0;
+    this._sound_tick = 0;
     this._max_move = 16;
   }
 
   tick() {
       this._tick++;
       this._effect++;
+      this._sound_tick++;
+      if (this._sound_tick < 15 && this.tetris.board.hasClearedLine()) {
+        // TODO
+        this.tetris.board.clearOneLine();
+        return;
+      }
+      this._sound_tick = 0;
+
       let speed = 0;
       if (this.tetris.isPuzzleMode()) {
         speed = Math.min(this.tetris.score * 25 / 100000, 25);

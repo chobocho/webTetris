@@ -340,6 +340,7 @@ class PlayState extends State {
     updateBoard() {
         let removedLine = this.tetrisBoard.arrange();
         if (removedLine === 0) {
+            this.Tetris.playPopSound();
             return;
         }
         if (this._boardManager.isArcadeMode()) {
@@ -348,7 +349,7 @@ class PlayState extends State {
             }
         }
         this.score.increase(removedLine);
-        this.Tetris.playPopSound();
+        this.Tetris.playClearLineSound();
     }
 
     updateBlock() {

@@ -27,6 +27,14 @@ class TetrisBoard {
     return this.board;
   }
 
+  hasClearedLine() {
+      return false;
+  }
+
+  clearOneLine() {
+
+  }
+
   hasEffect() {
     return this._effect.length !== 0;
   }
