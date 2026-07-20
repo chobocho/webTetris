@@ -171,6 +171,9 @@ function InitValue() {
 
   window.onkeydown = KeyPressEvent;
 
+  gamepadManager = new GamepadManager(processEvent);
+  gamepadManager.listen();
+
   window.addEventListener('resize', resizeCanvas, false);
 }
 
@@ -185,6 +188,7 @@ function InitCanvas() {
 }
 
 function OnDraw() {
+  gamepadManager.poll(performance.now());
   gameEngine.tick();
   drawEngine.OnDraw();
 }

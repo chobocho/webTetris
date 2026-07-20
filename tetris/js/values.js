@@ -33,6 +33,7 @@ let itemModeDB;
 let itemBoardManager;
 
 let tetris;
+let gamepadManager;
 let drawEngine;
 let gameEngine;
 
