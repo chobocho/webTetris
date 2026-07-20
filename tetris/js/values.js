@@ -40,6 +40,9 @@ const START_BOOM = 9;
 const END_BOOM = 17;
 const FIXED_BLOCK = 20;
 
+// 저장 데이터 포맷 버전. 키 오타(gameSate -> gameState) 수정으로 6으로 올림.
+const SAVED_BOARD_VERSION = 6;
+
 let LoadImage = function (image_name) {
     let load_image = new Image();
     load_image.src = image_name;

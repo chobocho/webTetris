@@ -212,6 +212,8 @@ class PlayState extends State {
         }
 
         let tmpBlock = this.currentBlock;
+        let holdX = this.holdBlock.x;
+        let holdY = this.holdBlock.y;
         this.currentBlock = this.holdBlock;
         this.currentBlock.x = tmpBlock.x;
         this.currentBlock.y = tmpBlock.y;
@@ -220,6 +222,9 @@ class PlayState extends State {
             console.log("Hold");
             this.resetShadowBlock();
         } else {
+            // 스왑 실패: holdBlock의 좌표까지 원래대로 되돌린다.
+            this.currentBlock.x = holdX;
+            this.currentBlock.y = holdY;
             this.currentBlock = tmpBlock;
             console.log("UnHold");
         }
@@ -229,7 +234,7 @@ class PlayState extends State {
 
     rotate() {
         if (this.tetrisBoard.hasEffect()) {
-            return;
+            return false;
         }
 
         let x = this.currentBlock.x;
@@ -250,7 +255,7 @@ class PlayState extends State {
 
     left_rotate() {
         if (this.tetrisBoard.hasEffect()) {
-            return;
+            return false;
         }
 
         let x = this.currentBlock.x;
@@ -272,7 +277,7 @@ class PlayState extends State {
 
     moveLeft() {
         if (this.tetrisBoard.hasEffect()) {
-            return;
+            return false;
         }
 
         this.currentBlock.moveLeft();
@@ -286,7 +291,7 @@ class PlayState extends State {
 
     moveRight() {
         if (this.tetrisBoard.hasEffect()) {
-            return;
+            return false;
         }
 
         this.currentBlock.moveRight();
@@ -300,7 +305,7 @@ class PlayState extends State {
 
     moveDown() {
         if (this.tetrisBoard.hasEffect()) {
-            return;
+            return false;
         }
 
         this.currentBlock.moveDown();
@@ -321,7 +326,7 @@ class PlayState extends State {
 
     moveBottom() {
         if (this.tetrisBoard.hasEffect()) {
-            return;
+            return false;
         }
 
         if (!this.moveDown()) {

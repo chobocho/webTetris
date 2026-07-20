@@ -127,5 +127,5 @@ const easyMapString = [
     ];
 
 default_map.forEach( e => boardMap.push(JSON.parse(e)));
-easyMapString.sort(() => Math.random() - 0.5);
+shuffle(easyMapString);
 easyMapString.forEach( e => boardMap.push(JSON.parse(e)));

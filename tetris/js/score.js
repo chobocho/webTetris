@@ -24,9 +24,10 @@ class Score {
   }
 
   increase(removeLines) {
-     this._score += this.scoreTable[removeLines];
-     if (removeLines > 2) {
-       this._score += Math.floor(Math.random() * this.scoreTable[removeLines] + 1);
+     const index = Math.max(0, Math.min(removeLines, this.scoreTable.length - 1));
+     this._score += this.scoreTable[index];
+     if (index > 2) {
+       this._score += Math.floor(Math.random() * this.scoreTable[index] + 1);
      }
      this._updateHighScore();
   }

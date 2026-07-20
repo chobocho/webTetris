@@ -43,7 +43,7 @@ class ItemBoardManager extends BoardManager {
         for (let i = 1; i < board.length; i++) {
             tmpBoard.push(board[i]);
         }
-        tmpBoard.sort(() => Math.random() - 0.5);
+        shuffle(tmpBoard);
         tmpBoard.forEach(e => this.mapData.push(e));
         console.log("[ItemBoardManager][isSolve]: setMapData> " + this.mapData.length);
     }
@@ -179,6 +179,7 @@ class ItemBoardManager extends BoardManager {
         }
 
         if (!hasThunder) {
+            this._board.popEffect();
             return;
         }
 
@@ -427,17 +428,19 @@ class ItemBoardManager extends BoardManager {
                 if (board[y][x] === BLACK_THUNDER) {
                     board[y][x] = FIXED_BLOCK;
                     hasBoom = true;
+                    boomCount++;
                 }
             }
 
             if (hasBoom) {
-                for (let ty = 0, boomCount = 0; ty < height && boomCount < 3; ty++) {
+                let hitCount = 0;
+                for (let ty = 0; ty < height && hitCount < 3; ty++) {
                     for (let tx = 0; tx < width; tx++) {
                         if (board[ty][tx] !== 0 &&
                             (board[ty][tx] < START_BOOM || board[ty][tx] > END_BOOM)) {
-                            if (Math.random() < 0.1 && boomCount < 3) {
+                            if (Math.random() < 0.1 && hitCount < 3) {
                                 board[ty][tx] = START_BOOM;
-                                boomCount++;
+                                hitCount++;
                             }
                         }
                     }
@@ -589,7 +592,7 @@ class ItemBoardManager extends BoardManager {
                     for (m = y; m > 0; m--) {
                         board[m][x] = board[m - 1][x];
                     }
-                    board[m][0] = 0;
+                    board[m][x] = 0;
                 }
                 y++;
             }

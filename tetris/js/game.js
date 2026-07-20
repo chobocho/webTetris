@@ -93,8 +93,14 @@ function processEvent(code) {
   }
 }
 
+// 스페이스/화살표/PageUp/PageDown 등은 브라우저 기본 스크롤을 유발하므로 막는다.
+const SCROLL_KEY_CODES = [32, 33, 34, 35, 36, 37, 38, 39, 40];
+
 function KeyPressEvent(e) {
   const code = e.keyCode;
+  if (SCROLL_KEY_CODES.includes(code)) {
+    e.preventDefault();
+  }
   processEvent(code);
 }
 

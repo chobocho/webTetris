@@ -63,7 +63,7 @@ class BoardManager {
                     for (m = y; m > 0; m--) {
                         board[m][x] = board[m - 1][x];
                     }
-                    board[m][0] = 0;
+                    board[m][x] = 0;
                 }
                 y++;
             }

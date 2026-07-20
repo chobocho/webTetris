@@ -111,10 +111,10 @@ class GameEngine extends Observer {
   init() {
     if (this.tetris.isInitState()) {
       const savedGame = this._scoreDB.getBoard();
-      if (savedGame['gameSate'] === 3) {
-        tetris.resumeGame(savedGame);
+      if (savedGame['gameState'] === 3) {
+        this.tetris.resumeGame(savedGame);
       } else {
-        tetris.idle();
+        this.tetris.idle();
       }
     }
   }

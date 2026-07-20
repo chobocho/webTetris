@@ -7,7 +7,7 @@ class TetrisBoard {
     this._boardManager = boardManager;
 
     for (let i = 0; i < height; i++) {
-      this.board.push(new Array(10).fill(0));
+      this.board.push(new Array(width).fill(0));
     }
 
     this.init();
@@ -99,7 +99,7 @@ class TetrisBoard {
   getBoard() {
     let result= [];
     for (let i = 0; i < this.height; i++) {
-      let line = Array(10).fill(0);
+      let line = Array(this.width).fill(0);
       for (let j = 0; j < this.width; j++) {
         line[j] = this.board[i][j];
       }

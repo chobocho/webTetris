@@ -51,7 +51,7 @@ class Tetris {
             this._clear_audio.pause();
             this._clear_audio.currentTime = 0;
         }
-        this._clear_audio.play();
+        this._clear_audio.play().catch(() => {});
     }
 
     playClearLineSound() {
@@ -60,7 +60,7 @@ class Tetris {
             this._clear_line_audio.pause();
             this._clear_line_audio.currentTime = 0;
         }
-        this._clear_line_audio.play();
+        this._clear_line_audio.play().catch(() => {});
     }
 
     playPopSound() {
@@ -69,7 +69,7 @@ class Tetris {
             this._pop_audio.pause();
             this._pop_audio.currentTime = 0;
         }
-        this._pop_audio.play();
+        this._pop_audio.play().catch(() => {});
     }
 
 
@@ -145,7 +145,7 @@ class Tetris {
             return false;
         }
         let result = this.state.moveDown();
-        if (!result && this.state.isClear()) {
+        if (!result && !this.board.hasEffect() && this.state.isClear()) {
             this._score.add(1023);
             this.playClearStageSound();
         }
@@ -328,8 +328,8 @@ class Tetris {
 
     getGameInfo() {
         return {
-            'version': 5,
-            'gameSate': 3,
+            'version': SAVED_BOARD_VERSION,
+            'gameState': 3,
             'score': this.score,
             'next_next_block': this.playState.nextNextBlock.getType(),
             'nnb_item_index': this.playState.nextNextBlock.getItemIndex(),

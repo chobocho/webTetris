@@ -28,7 +28,7 @@ class Button {
 }
 
 class InitDrawEngine extends InitGameState {
-  constructor() {``
+  constructor() {
     super();
 
     this.buttons = [];
@@ -259,7 +259,7 @@ class PlayDrawEngine extends PlayGameState {
 }
 
 class PauseDrawEngine extends PauseGameState {
-  constructor() {``
+  constructor() {
     super();
 
     let btn_w = blockSize * 2.5;
@@ -615,7 +615,7 @@ class DrawEngine extends Observer {
     const drawX = this.startX + blockSize * 14.4;
     let drawY = this.startY + blockSize * 14.1;
 
-    if (score > 1000000) {
+    if (score >= 1000000) {
       console.log("Score is " + score);
       score = 999999;
     }
@@ -629,7 +629,7 @@ class DrawEngine extends Observer {
     pos = 0;
     drawY = this.startY + blockSize * 17.2;
 
-    if (high_score > 1000000) {
+    if (high_score >= 1000000) {
       console.log("Score is " + high_score);
       high_score = 999999;
     }

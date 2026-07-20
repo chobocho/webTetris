@@ -379,7 +379,7 @@ class TetrisBlockFactory {
 
         for (let i = 1; i <= 14; i++) {
             let b = [1, 2, 3, 4, 5, 6, 7];
-            b.sort(() => Math.random() - 0.5);
+            shuffle(b);
             this._nextBlock.push(...b);
         }
         //printf(">> [DefaultBlock]", this._nextBlock);
@@ -387,7 +387,7 @@ class TetrisBlockFactory {
 
     initBlock() {
         this._index = 0;
-        this._nextBlock.sort(() => Math.random() - 0.5);
+        shuffle(this._nextBlock);
     }
 
     increaseIndex() {

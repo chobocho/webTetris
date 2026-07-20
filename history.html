@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>webTetris 작업 이력</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        h1 { border-bottom: 2px solid #333; padding-bottom: 0.5rem; }
+        .entry { margin-bottom: 1.5rem; }
+        .date { font-weight: bold; color: #2c3e50; }
+        ul { margin: 0.5rem 0; }
+    </style>
+</head>
+<body>
+<h1>webTetris 작업 이력</h1>
+
+<div class="entry">
+    <div class="date">2026-07-21</div>
+    <ul>
+        <li><b>버그 수정 (todo.md 1번 섹션 전체)</b>
+            <ul>
+                <li>줄 삭제 시 맨 윗줄이 지워지지 않던 버그 수정 — <code>board[m][0]=0</code> → <code>board[m][x]=0</code>
+                    (<code>board_manager.js</code>, <code>item_board_manager.js</code>)</li>
+                <li><code>_handleThunder</code> 이펙트 누수 수정 — THUNDER 아이템이 없으면 <code>popEffect()</code> 후 반환</li>
+                <li><code>_handleBlackThunder</code>의 <code>boomCount</code> 변수 섀도잉 제거 — 내부 카운터를 <code>hitCount</code>로 분리</li>
+                <li><code>GameEngine.init()</code>이 전역 <code>tetris</code>를 참조하던 문제 → <code>this.tetris</code>로 수정</li>
+                <li>저장 데이터 키 오타 <code>gameSate</code> → <code>gameState</code> 통일,
+                    <code>SAVED_BOARD_VERSION = 6</code> 상수 도입 및 버전 상승</li>
+                <li><code>createEmptyBoard()</code>의 board를 실제 2차원 배열로 수정 (18×10)</li>
+                <li><code>LocalDB.getScore()</code> 문자열 반환 → <code>parseInt</code> 적용</li>
+                <li><code>LocalDB.getBoard()</code>에 <code>JSON.parse</code> try/catch 추가 (손상 데이터 시 빈 보드 반환)</li>
+                <li><code>draw_engine.js</code> 생성자에 남아 있던 백틱 찌꺼기 제거</li>
+                <li>이펙트 재생 중 조작 시 반환값을 <code>false</code>로 통일 (<code>state.js</code> 6곳),
+                    <code>Tetris.moveDown()</code>에 <code>hasEffect()</code> 가드 추가</li>
+                <li>아이템 모드 점수 테이블 범위 초과 방어 (<code>score.js</code>)</li>
+                <li>hold 실패(UnHold) 시 holdBlock 좌표 복원</li>
+            </ul>
+        </li>
+        <li><b>동작 / UX 개선</b>
+            <ul>
+                <li>스페이스/화살표 키 입력 시 페이지 스크롤 방지 (<code>preventDefault</code>)</li>
+                <li>편향된 셔플(<code>sort(() =&gt; Math.random() - 0.5)</code>)을 Fisher–Yates
+                    <code>shuffle()</code> 유틸로 공용화 (4곳)</li>
+                <li>오디오 <code>play()</code> autoplay rejection 처리 (<code>.catch</code>)</li>
+                <li>점수 표시 경계값 <code>&gt; 1000000</code> → <code>&gt;= 1000000</code></li>
+                <li>보드 폭 하드코딩(<code>new Array(10)</code>) 제거 → <code>this.width</code> 사용</li>
+                <li><code>util.js</code>/<code>values.js</code>를 먼저 로드하도록 HTML 스크립트 순서 조정 (4개 파일)</li>
+            </ul>
+        </li>
+        <li>Node로 전체 JS 문법 검사 및 줄 삭제 로직 동작 검증 완료</li>
+    </ul>
+</div>
+
+<div class="entry">
+    <div class="date">2026-07-20</div>
+    <ul>
+        <li>전체 코드 리뷰 수행 (JS 15개 파일, HTML 4개 파일)</li>
+        <li>리뷰 결과를 <code>todo.md</code>로 정리 — 버그 12건, 동작/UX 개선 6건, 리팩터링 9건</li>
+        <li>주요 발견: 줄 삭제 시 맨 윗줄 미삭제 버그(<code>board[m][0]=0</code>),
+            아이템 모드 이펙트 누수(<code>_handleThunder</code>),
+            <code>boomCount</code> 변수 섀도잉, 저장 키 오타(<code>gameSate</code>) 등</li>
+    </ul>
+</div>
+
+</body>
+</html>
