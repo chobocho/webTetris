@@ -17,6 +17,15 @@
 <div class="entry">
     <div class="date">2026-07-21</div>
     <ul>
+        <li><b>Windows용 빌드 스크립트 <code>build.bat</code> 추가</b> — <code>build.sh</code>와 동일 동작
+            <ul>
+                <li>임베드된 Python 코드는 <code>build.sh</code>와 완전히 동일 (스크립트 인라인 + 이미지 base64 임베드 → <code>release\index.html</code>)</li>
+                <li><code>#===PYTHON===</code> 마커 이후 라인을 <code>more +N</code>으로 추출해 임시 파일로 실행 후 삭제</li>
+                <li><code>py</code> → <code>python</code> → <code>python3</code> 순으로 사용 가능한 파이썬 탐지 (이 PC엔 <code>python3</code>가 없어 <code>build.sh</code>는 실패)</li>
+                <li>파일 인코딩은 요청대로 cp949(CP949)로 저장, <code>chcp 949</code> 설정</li>
+                <li>실행 검증: 스크립트 인라인 + 이미지 55개 임베드, <code>release\index.html</code> 3,088,356 bytes 생성 확인</li>
+            </ul>
+        </li>
         <li><b>조이패드(게임패드) 지원 추가</b> — <code>js/gamepad.js</code> 신규
             <ul>
                 <li>Gamepad API는 이벤트를 보내주지 않으므로 <code>OnDraw()</code>에서 매 프레임 <code>poll()</code></li>
