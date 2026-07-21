@@ -164,6 +164,19 @@ const shapeMapString = [
     '{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":95682632,"7":10485832,"8":10485832,"9":10523208,"10":10523208,"11":10485832,"12":10485832,"13":95682632,"14":0,"15":0,"16":0,"17":0}',
 ];
 
+// Word levels: each entry spells a word with a 3x5 pixel font.
+// Adjacent letters use different colors so they read apart.
+const wordMapString = [
+    // "TETRIS"
+    '{"0":0,"1":0,"2":0,"3":0,"4":115006025,"5":12585480,"6":12769800,"7":12585480,"8":12769800,"9":0,"10":0,"11":57633837,"12":811333,"13":57434157,"14":50356549,"15":57634117,"16":0,"17":0}',
+    // "GAME"
+    '{"0":0,"1":0,"2":0,"3":0,"4":11960904,"5":10649608,"6":11960840,"7":10650120,"8":10650184,"9":0,"10":0,"11":14354984,"12":199528,"13":14355304,"14":199208,"15":14354984,"16":0,"17":0}',
+    // "PLAY"
+    '{"0":0,"1":0,"2":0,"3":0,"4":164424,"5":164360,"6":164424,"7":163848,"8":11960328,"9":0,"10":0,"11":12782440,"12":12782120,"13":1575784,"14":1575464,"15":1575464,"16":0,"17":0}',
+    // "WIN"
+    '{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":102423105,"8":114839617,"9":114839625,"10":114839625,"11":102423105,"12":0,"13":0,"14":0,"15":0,"16":0,"17":0}',
+];
+
 default_map.forEach( e => boardMap.push(JSON.parse(e)));
 easyMapString.sort(() => Math.random() - 0.5);
 easyMapString.forEach( e => boardMap.push(JSON.parse(e)));
@@ -171,5 +184,7 @@ hardMapString.sort(() => Math.random() - 0.5);
 hardMapString.forEach( e => boardMap.push(JSON.parse(e)));
 shapeMapString.sort(() => Math.random() - 0.5);
 shapeMapString.forEach( e => boardMap.push(JSON.parse(e)));
+wordMapString.sort(() => Math.random() - 0.5);
+wordMapString.forEach( e => boardMap.push(JSON.parse(e)));
 
 
