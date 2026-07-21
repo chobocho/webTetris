@@ -38,10 +38,10 @@ class ItemBoardManager extends BoardManager {
 
     setMapData(board) {
         this.mapData = [];
-        this.mapData.push(board[0]);
+        this.mapData.push(capMapHeight(board[0]));
         let tmpBoard = [];
         for (let i = 1; i < board.length; i++) {
-            tmpBoard.push(board[i]);
+            tmpBoard.push(capMapHeight(board[i]));
         }
         shuffle(tmpBoard);
         tmpBoard.forEach(e => this.mapData.push(e));

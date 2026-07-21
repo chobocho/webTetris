@@ -10,6 +10,31 @@ function shuffle(array) {
     return array;
 }
 
+// Guard against "instant death" in puzzle/item mode: a map whose obstacle
+// stack is taller than MAX_MAP_HEIGHT leaves the freshly spawned block no room
+// and the game ends the moment the level loads. Maps are bottom-aligned, so we
+// trim the overflow rows off the TOP, keeping the base of the picture intact
+// and guaranteeing (board_height - MAX_MAP_HEIGHT) empty rows above every map.
+// Returns the same object when already within the limit, else a trimmed copy.
+function capMapHeight(map) {
+    let top = board_height;
+    for (let i = 0; i < board_height; i++) {
+        if (map[i] && map[i] !== 0) {
+            top = i;
+            break;
+        }
+    }
+    if (board_height - top <= MAX_MAP_HEIGHT) {
+        return map;
+    }
+    let cut = board_height - MAX_MAP_HEIGHT; // rows [0, cut) forced empty
+    let result = {};
+    for (let i = 0; i < board_height; i++) {
+        result[i] = (i < cut) ? 0 : (map[i] || 0);
+    }
+    return result;
+}
+
 function createEmptyBoard() {
     return {
         'version': SAVED_BOARD_VERSION,

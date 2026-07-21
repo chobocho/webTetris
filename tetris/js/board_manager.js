@@ -25,7 +25,7 @@ class BoardManager {
     }
 
     setMapData(data) {
-        this.mapData = data;
+        this.mapData = data.map(capMapHeight);
     }
 
     isArcadeMode() {

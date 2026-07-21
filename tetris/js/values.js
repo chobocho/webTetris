@@ -14,6 +14,10 @@ let gStartY = 40;
 let blockSize = 40;
 let board_height = 18;
 let board_width = 10;
+// Puzzle/item maps taller than this leave no room for the spawning block and
+// cause an instant game-over. Matches the tallest hand-made easyMapString map
+// (11 rows high, i.e. 7 empty rows above). See capMapHeight() in util.js.
+let MAX_MAP_HEIGHT = 11;
 let arcadeTetris;
 let arcadeDrawEngine;
 let arcadeGameEngine;
