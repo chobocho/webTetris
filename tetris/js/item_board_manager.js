@@ -586,6 +586,7 @@ class ItemBoardManager extends BoardManager {
             }
 
             if (count === board_width) {
+                gFX.onLineClear(y, board[y].slice());
                 removedLine++;
                 for (let x = 0; x < board_width; x++) {
                     let m = 0;

@@ -646,7 +646,27 @@ class DrawEngine extends Observer {
   _drawBoard() {
     this.__drawBackGround();
     this.__drawKeypad();
+
+    // --- item-mode animation FX ---
+    gFX.enabled = this.tetris.isItemMode();
+    if (!gFX.enabled) {
+      gFX.reset();
+    } else {
+      // Trigger a burst on the rising edge of a boom/thunder effect.
+      const nowEffect = this.tetris.board.hasEffect();
+      if (nowEffect && !this._prevEffect) {
+        gFX.onEffectBurst(this.tetris.getBoard());
+      }
+      this._prevEffect = nowEffect;
+    }
+    gFX.update();
+
+    bufCtx.save();
+    gFX.applyShake(bufCtx);
     this.state.OnDraw(bufCtx, this.tetris, this.block_image, this.buttonImage, this.startX);
+    gFX.drawFX(bufCtx, this.block_image);
+    bufCtx.restore();
+
     this.__drawScore(bufCtx, this.buttonImage, this.tetris.score, this.tetris.getHighScore());
     cvs.clearRect(0, 0, canvas.width, canvas.height);
     cvs.drawImage(bufCanvas, gCanvasStartX, 0, gScreenX*gScale, gScreenY*gScale);
