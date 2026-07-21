@@ -5,8 +5,8 @@ class ImageLoader {
 
     load() {
         this._images.back = LoadImage("img/back.jpg");
-        this._images.back2 = LoadImage("img/back2.png");
-        this._images.back3 = LoadImage("img/back3.png");
+        this._images.back2 = LoadImage("img/back2.jpg");
+        this._images.back3 = LoadImage("img/back3.jpg");
 
         this._images.left = LoadImage("img/left.png");
         this._images.right = LoadImage("img/right.png");
