@@ -1,4 +1,8 @@
 function processEvent(code) {
+  // While a custom popup is open it owns all input (keyboard/gamepad/mouse).
+  if (typeof Popup !== "undefined" && Popup.isOpen()) {
+    return;
+  }
   switch (code) {
     case 17:
       console.log("hold");
@@ -125,6 +129,10 @@ function processEvent(code) {
 const SCROLL_KEY_CODES = [32, 33, 34, 35, 36, 37, 38, 39, 40];
 
 function KeyPressEvent(e) {
+  // Popup is open: let the dialog handle keys (and let text be typed into it).
+  if (typeof Popup !== "undefined" && Popup.isOpen()) {
+    return;
+  }
   const code = e.keyCode;
   if (SCROLL_KEY_CODES.includes(code)) {
     e.preventDefault();

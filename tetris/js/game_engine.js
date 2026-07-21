@@ -122,11 +122,9 @@ class GameEngine extends Observer {
 
   main_menu() {
     if (this.tetris.isPauseState() || this.tetris.isIdleState() || this.tetris.isSolveGameState()) {
-      let confirmNewGame = confirm("Do you want to quit game?");
-
-      if (confirmNewGame) {
+      Popup.confirm("Do you want to quit game?", () => {
         this.tetris.init();
-      }
+      });
     }
   }
 
@@ -163,13 +161,13 @@ class GameEngine extends Observer {
       return;
     }
 
-    let new_board = prompt("Input Custom Board", "");
-
-    if (new_board == null || new_board.length === 0) {
-      console.log("Empty data!");
-      return;
-    }
-    this.tetris.loadBoard(new_board);
+    Popup.prompt("Input Custom Board", "", (new_board) => {
+      if (new_board == null || new_board.length === 0) {
+        console.log("Empty data!");
+        return;
+      }
+      this.tetris.loadBoard(new_board);
+    });
   }
 
   pause() {
@@ -180,15 +178,13 @@ class GameEngine extends Observer {
 
   newGame() {
     if (this.tetris.isPauseState() || this.tetris.isSolveGameState()) {
-      let confirmNewGame = confirm("Do you want to start new game?");
-
-      if (confirmNewGame) {
+      Popup.confirm("Do you want to start new game?", () => {
         if (this.tetris.isPuzzleMode() || this.tetris.isItemMode()) {
           this.tetris.gotoLevelSelect();
         } else {
           this.tetris.idle();
         }
-      }
+      });
     }
   }
 

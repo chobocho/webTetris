@@ -17,6 +17,16 @@
 <div class="entry">
     <div class="date">2026-07-21</div>
     <ul>
+        <li><b>모든 팝업창을 커스텀 팝업창으로 교체</b> — 브라우저 기본 <code>confirm()</code>/<code>prompt()</code> 제거
+            <ul>
+                <li>DOM 기반 커스텀 모달 모듈 <code>js/popup.js</code> 신규 (게임 테마에 맞춘 다크/블루 디자인, 페이드·팝 애니메이션)</li>
+                <li><code>Popup.confirm()</code>/<code>Popup.prompt()</code>/<code>Popup.alert()</code> 제공 — 콜백 기반 비동기 API</li>
+                <li>교체 대상 3곳(<code>game_engine.js</code>): 게임 종료 확인, 새 게임 확인, 커스텀 보드 입력</li>
+                <li>모달 표시 중에는 키보드·게임패드·마우스 입력이 게임에 전달되지 않도록 <code>processEvent</code>/<code>KeyPressEvent</code>에 <code>Popup.isOpen()</code> 가드 추가</li>
+                <li>Enter=확인, Esc·배경 클릭=취소, prompt 입력창 자동 포커스</li>
+                <li><code>index.html</code> 스크립트 로드 순서에 <code>js/popup.js</code> 추가</li>
+            </ul>
+        </li>
         <li><b>Windows용 빌드 스크립트 <code>build.bat</code> 추가</b> — <code>build.sh</code>와 동일 동작
             <ul>
                 <li>임베드된 Python 코드는 <code>build.sh</code>와 완전히 동일 (스크립트 인라인 + 이미지 base64 임베드 → <code>release\index.html</code>)</li>
