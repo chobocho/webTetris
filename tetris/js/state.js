@@ -94,6 +94,7 @@ class State {
     isPauseState() { return false; }
 
     isSolveGameState() { return false; }
+    isLevelSelectState() { return false; }
 }
 
 class InitState extends State {
@@ -366,6 +367,7 @@ class PlayState extends State {
 
     fixCurrentBlock() {
         this.tetrisBoard.addBlock(this.currentBlock);
+        this.Tetris.countPiece();
     }
 
     getCurrentBlock() {
@@ -420,6 +422,15 @@ class SolveState extends State {
     isSolveGameState() { return true; }
 }
 
+class LevelSelectState extends State {
+    constructor(tetris) {
+        super(tetris);
+        this.state = 6;
+    }
+
+    isLevelSelectState() { return true; }
+}
+
 
 class GameState {
     constructor() {
@@ -469,5 +480,12 @@ class SolveGameState extends GameState {
     constructor() {
         super();
         this.state = 5;
+    }
+}
+
+class LevelSelectGameState extends GameState {
+    constructor() {
+        super();
+        this.state = 6;
     }
 }

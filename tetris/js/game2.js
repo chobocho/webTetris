@@ -47,7 +47,7 @@ function processEvent(code) {
         tetris = itemTetris;
         gameEngine = itemGameEngine;
         drawEngine = itemDrawEngine;
-        gameEngine.init();
+        tetris.gotoLevelSelect();
       }
       break;
     case 76:
@@ -82,7 +82,7 @@ function processEvent(code) {
         tetris = puzzleTetris;
         gameEngine = puzzleGameEngine;
         drawEngine = puzzleDrawEngine;
-        gameEngine.init();
+        tetris.gotoLevelSelect();
       }
       break;
     case 90:
@@ -90,6 +90,34 @@ function processEvent(code) {
       gameEngine.left_rotate();
       break;
     default:
+      // Level-select cells: code = 1000 + levelIndex
+      if (code >= 1000 && code < 1000 + LEVEL_COUNT) {
+        if (tetris.isLevelSelectState()) {
+          let lv = code - 1000;
+          if (tetris.isUnlocked(lv)) {
+            tetris.startLevel(lv);
+          }
+        }
+      } else if (code === 900) {
+        if (tetris.isLevelSelectState()) drawEngine.state.prevPage();
+      } else if (code === 901) {
+        if (tetris.isLevelSelectState()) drawEngine.state.nextPage();
+      } else if (code === 902) {
+        if (tetris.isLevelSelectState()) tetris.init();
+      } else if (code === 903) {
+        if (tetris.isSolveGameState()) {
+          let nx = tetris.getCurrentLevel() + 1;
+          if (nx < LEVEL_COUNT && tetris.isUnlocked(nx)) {
+            tetris.startLevel(nx);
+          } else {
+            tetris.gotoLevelSelect();
+          }
+        }
+      } else if (code === 904) {
+        if (tetris.isSolveGameState() || tetris.isGameOverState()) {
+          tetris.gotoLevelSelect();
+        }
+      }
       break;
   }
 }

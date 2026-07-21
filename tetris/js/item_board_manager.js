@@ -8,6 +8,12 @@ class ItemBoardManager extends BoardManager {
         this.nextBoard();
     }
 
+    // Load a specific level's picture without advancing the index (level select).
+    loadLevel(index) {
+        this._index = index;
+        this._board.setColorBoardWithItem(this.mapData[index]);
+    }
+
     nextBoard() {
         this._index++;
         if (this._index >= this.mapData.length) {
@@ -37,15 +43,10 @@ class ItemBoardManager extends BoardManager {
     }
 
     setMapData(board) {
-        this.mapData = [];
-        this.mapData.push(capMapHeight(board[0]));
-        let tmpBoard = [];
-        for (let i = 1; i < board.length; i++) {
-            tmpBoard.push(capMapHeight(board[i]));
-        }
-        shuffle(tmpBoard);
-        tmpBoard.forEach(e => this.mapData.push(e));
-        console.log("[ItemBoardManager][isSolve]: setMapData> " + this.mapData.length);
+        // Stable order (no shuffle) so a level index always maps to the same
+        // picture, matching the difficulty-ordered campaign list.
+        this.mapData = board.map(capMapHeight);
+        console.log("[ItemBoardManager] setMapData> " + this.mapData.length);
     }
 
     arrange(board) {

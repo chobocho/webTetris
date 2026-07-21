@@ -345,16 +345,39 @@ class SolveGameDrawEngine extends SolveGameState {
     let btn_h = blockSize * 2.5;
     let image_size = btn_h - 3;
 
+    // NEXT LEVEL (903) and LEVEL SELECT (904) buttons.
+    this.nextRect = { x: gStartX + blockSize * 2, y: gStartY + blockSize * 10.5, w: blockSize * 6, h: blockSize * 1.6 };
+    this.lvRect   = { x: gStartX + blockSize * 2, y: gStartY + blockSize * 12.8, w: blockSize * 6, h: blockSize * 1.6 };
     this.buttons = [];
-    this.buttons.push(new Button('success', 83, gStartX + blockSize * 2, gStartY + blockSize * 5, blockSize*6, blockSize*2, 1.0));
-    this.buttons.push(new Button('new_game', 78, gStartX + blockSize * 2, gStartY + blockSize * 9, blockSize*6, blockSize*2, 0.5));
-    this.buttons.push(new Button('main_menu', 77, gStartX + blockSize * 2, gStartY + blockSize * 13, blockSize*6, blockSize*2, 0.5));
-    this.buttons.push(new Button('play', 83, gStartX + btn_w * 4 + blockSize * 3, gStartY + blockSize * (board_height+1), image_size, image_size, 1.0));
+    this.buttons.push(new Button('nav', 903, this.nextRect.x, this.nextRect.y, this.nextRect.w, this.nextRect.h, 1.0));
+    this.buttons.push(new Button('nav', 904, this.lvRect.x, this.lvRect.y, this.lvRect.w, this.lvRect.h, 1.0));
   }
 
   OnDraw(canvas, tetris, block_image, button_image) {
     this.#drawBoard(canvas, tetris.getBoard(), block_image);
-    this.__drawKeypad(canvas, button_image);
+
+    const ctx = canvas;
+    ctx.save();
+    const midX = gStartX + board_width * blockSize / 2;
+
+    ctx.fillStyle = 'rgba(10,14,20,0.62)';
+    ctx.fillRect(gStartX, gStartY, board_width * blockSize, board_height * blockSize);
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#ffd23f';
+    ctx.font = 'bold ' + Math.floor(blockSize * 1.0) + 'px sans-serif';
+    ctx.fillText('LEVEL ' + (tetris.getCurrentLevel() + 1), midX, gStartY + blockSize * 3.8);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold ' + Math.floor(blockSize * 0.9) + 'px sans-serif';
+    ctx.fillText('CLEAR!', midX, gStartY + blockSize * 5.2);
+
+    _uiStars(ctx, midX, gStartY + blockSize * 7.4, tetris.getEarnedStars(), blockSize * 1.4);
+
+    const hasNext = (tetris.getCurrentLevel() + 1) < LEVEL_COUNT;
+    _uiButton(ctx, this.nextRect, hasNext ? 'NEXT LEVEL' : 'ALL CLEAR!', hasNext);
+    _uiButton(ctx, this.lvRect, 'LEVEL SELECT', true);
+    ctx.restore();
   }
 
   #drawBoard(canvas, board, block_image){
@@ -376,20 +399,163 @@ class SolveGameDrawEngine extends SolveGameState {
     canvas.closePath();
     canvas.stroke();
   }
+}
 
-  __drawKeypad(canvas_, button_image) {
-    let _canvas = canvas_;
 
-    _canvas.beginPath();
-    this.buttons.forEach(e => {
-      _canvas.globalAlpha = e.alpha;
-      _canvas.drawImage(button_image[e.name], e.x1, e.y1, e.x2-e.x1, e.y2-e.y1);
-      _canvas.globalAlpha = 1.0;
-    });
-    _canvas.closePath();
+// --- shared UI helpers for the level-select / success screens --------------
+function _uiRoundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function _uiStars(ctx, cx, cy, filled, size) {
+  ctx.font = Math.floor(size) + 'px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  const gap = size * 1.05;
+  for (let i = 0; i < 3; i++) {
+    ctx.fillStyle = i < filled ? '#ffd23f' : '#4a5160';
+    ctx.fillText(i < filled ? '★' : '☆', cx + (i - 1) * gap, cy);
   }
 }
 
+function _uiButton(ctx, r, label, enabled) {
+  ctx.fillStyle = enabled ? '#3a4560' : '#242832';
+  _uiRoundRect(ctx, r.x, r.y, r.w, r.h, 8);
+  ctx.fill();
+  ctx.fillStyle = enabled ? '#ffffff' : '#5b6270';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = 'bold ' + Math.floor(blockSize * 0.55) + 'px sans-serif';
+  ctx.fillText(label, r.x + r.w / 2, r.y + r.h / 2);
+}
+
+// Level-select screen: a paged grid of levels showing lock / earned stars.
+// Cell click codes are 1000+levelIndex; nav codes 900(prev)/901(next)/902(menu).
+class LevelSelectDrawEngine extends LevelSelectGameState {
+  constructor() {
+    super();
+    this.PER_PAGE = 20;
+    this.COLS = 5;
+    this.ROWS = 4;
+    this.page = 0;
+
+    this.gridLeft = gStartX;
+    this.gridTop = gStartY + blockSize * 2;
+    this.cellW = (board_width / this.COLS) * blockSize;
+    this.cellH = blockSize * 2.4;
+    this.pad = 6;
+
+    const navY = gStartY + blockSize * 12.8;
+    const navH = blockSize * 1.5;
+    this.prevRect = { x: gStartX,                  y: navY, w: blockSize * 2.5, h: navH };
+    this.menuRect = { x: gStartX + blockSize * 3,  y: navY, w: blockSize * 4,   h: navH };
+    this.nextRect = { x: gStartX + blockSize * 7.5, y: navY, w: blockSize * 2.5, h: navH };
+
+    this.buildButtons();
+  }
+
+  pageCount() {
+    return Math.max(1, Math.ceil(LEVEL_COUNT / this.PER_PAGE));
+  }
+
+  nextPage() {
+    if (this.page < this.pageCount() - 1) { this.page++; this.buildButtons(); }
+  }
+
+  prevPage() {
+    if (this.page > 0) { this.page--; this.buildButtons(); }
+  }
+
+  buildButtons() {
+    this.buttons = [];
+    const start = this.page * this.PER_PAGE;
+    for (let k = 0; k < this.PER_PAGE; k++) {
+      const lv = start + k;
+      if (lv >= LEVEL_COUNT) break;
+      const col = k % this.COLS;
+      const row = Math.floor(k / this.COLS);
+      const x = this.gridLeft + col * this.cellW + this.pad;
+      const y = this.gridTop + row * this.cellH + this.pad;
+      this.buttons.push(new Button('cell', 1000 + lv, x, y,
+                                   this.cellW - this.pad * 2, this.cellH - this.pad * 2, 1.0));
+    }
+    this.buttons.push(new Button('nav', 900, this.prevRect.x, this.prevRect.y, this.prevRect.w, this.prevRect.h, 1.0));
+    this.buttons.push(new Button('nav', 902, this.menuRect.x, this.menuRect.y, this.menuRect.w, this.menuRect.h, 1.0));
+    this.buttons.push(new Button('nav', 901, this.nextRect.x, this.nextRect.y, this.nextRect.w, this.nextRect.h, 1.0));
+  }
+
+  OnDraw(canvas, tetris, block_image, button_image) {
+    const ctx = canvas;
+    ctx.save();
+    ctx.globalAlpha = 1.0;
+    const midX = gStartX + board_width * blockSize / 2;
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold ' + Math.floor(blockSize * 0.9) + 'px sans-serif';
+    ctx.fillText('SELECT LEVEL', midX, gStartY + blockSize * 0.9);
+    ctx.fillStyle = '#cfd6e0';
+    ctx.font = Math.floor(blockSize * 0.5) + 'px sans-serif';
+    ctx.fillText('Page ' + (this.page + 1) + ' / ' + this.pageCount(), midX, gStartY + blockSize * 1.55);
+
+    const start = this.page * this.PER_PAGE;
+    for (let k = 0; k < this.PER_PAGE; k++) {
+      const lv = start + k;
+      if (lv >= LEVEL_COUNT) break;
+      const col = k % this.COLS;
+      const row = Math.floor(k / this.COLS);
+      const x = this.gridLeft + col * this.cellW + this.pad;
+      const y = this.gridTop + row * this.cellH + this.pad;
+      const w = this.cellW - this.pad * 2;
+      const h = this.cellH - this.pad * 2;
+      this._drawCell(ctx, x, y, w, h, lv, tetris.isUnlocked(lv), tetris.getStar(lv));
+    }
+
+    _uiButton(ctx, this.prevRect, '< PREV', this.page > 0);
+    _uiButton(ctx, this.menuRect, 'MENU', true);
+    _uiButton(ctx, this.nextRect, 'NEXT >', this.page < this.pageCount() - 1);
+    ctx.restore();
+  }
+
+  _drawCell(ctx, x, y, w, h, lv, unlocked, stars) {
+    ctx.fillStyle = !unlocked ? '#20252e' : (stars > 0 ? '#2f5d3a' : '#2b4a72');
+    _uiRoundRect(ctx, x, y, w, h, 8);
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = !unlocked ? '#3a4250' : (stars > 0 ? '#57b06a' : '#4f86c6');
+    ctx.stroke();
+
+    const cx = x + w / 2;
+    if (!unlocked) {
+      this._drawLock(ctx, cx, y + h * 0.5, blockSize * 0.6);
+      return;
+    }
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = 'bold ' + Math.floor(blockSize * 0.7) + 'px sans-serif';
+    ctx.fillText(String(lv + 1), cx, y + h * 0.36);
+    _uiStars(ctx, cx, y + h * 0.73, stars, blockSize * 0.34);
+  }
+
+  _drawLock(ctx, cx, cy, s) {
+    ctx.strokeStyle = '#8a93a3';
+    ctx.fillStyle = '#8a93a3';
+    ctx.lineWidth = Math.max(2, s * 0.14);
+    ctx.beginPath();
+    ctx.arc(cx, cy - s * 0.35, s * 0.28, Math.PI, 0);
+    ctx.stroke();
+    _uiRoundRect(ctx, cx - s * 0.42, cy - s * 0.1, s * 0.84, s * 0.7, s * 0.12);
+    ctx.fill();
+  }
+}
 
 class DrawEngine extends Observer {
   constructor(tetris, images) {
@@ -540,6 +706,7 @@ class DrawEngine extends Observer {
     this.pauseState = new PauseDrawEngine();
     this.gameoverState = new GameoverDrawEngine();
     this.solveGameState = new SolveGameDrawEngine();
+    this.levelSelectState = new LevelSelectDrawEngine();
     this.state = this.initState;
 
     let btn_w = blockSize * 2.5;
@@ -707,6 +874,9 @@ class DrawEngine extends Observer {
         break;
       case 5:
         this.state = this.solveGameState;
+        break;
+      case 6:
+        this.state = this.levelSelectState;
         break;
       default:
         console.log("Error: Unknown state ", state);

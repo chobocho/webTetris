@@ -31,9 +31,14 @@ class Tetris {
         this.pauseState = new PauseState(this);
         this.gameoverState = new GameOverState(this);
         this.solveGameState = new SolveState(this);
+        this.levelSelectState = new LevelSelectState(this);
 
         this.state = this.initState;
         this.observer = []
+
+        this._currentLevel = 0;   // level currently being played (puzzle/item)
+        this._piecesUsed = 0;     // tetrominoes placed this level (for stars)
+        this._earnedStars = 0;    // stars awarded on the last solve
 
         this._is_play_music = true;
         this._pop_audio = new Audio("data:audio/mp3;base64," + pop_sound);
@@ -159,17 +164,19 @@ class Tetris {
                 this.playClearStageSound();
             }
             this._saveHighScore();
-            this._boardManager.updateBoard();
-            this.saveGame();
+            // Award 3-star rating for this level and unlock the next one.
+            this._earnedStars = this._computeStars();
+            this._scoreDB.setLevelStar(this._currentLevel, this._earnedStars);
+            // Show the success screen (item mode waits for its effect to play).
             if (this.isItemMode()) {
                 let delay = this.board.hasEffect() ? 600 : 0;
                 setTimeout(() => {
                         this.board.clearEffect();
-                        this.setState(this.idleState);
+                        this.setState(this.solveGameState);
                     }
                     , delay);
             } else {
-                this.setState(this.idleState);
+                this.setState(this.solveGameState);
             }
             result = true;
         }
@@ -287,6 +294,10 @@ class Tetris {
         return this.state.isSolveGameState();
     }
 
+    isLevelSelectState() {
+        return this.state.isLevelSelectState();
+    }
+
     getCurrentBlock() {
         return this.state.getCurrentBlock();
     }
@@ -353,6 +364,57 @@ class Tetris {
 
     saveGame() {
         this._scoreDB.setBoard(this.getGameInfo());
+    }
+
+    // --- Level system (puzzle / item) --------------------------------------
+    countPiece() {
+        this._piecesUsed++;
+    }
+
+    getCurrentLevel() {
+        return this._currentLevel;
+    }
+
+    getEarnedStars() {
+        return this._earnedStars;
+    }
+
+    getStar(index) {
+        return this._scoreDB.getStar ? this._scoreDB.getStar(index) : 0;
+    }
+
+    isUnlocked(index) {
+        return this._scoreDB.isUnlocked ? this._scoreDB.isUnlocked(index) : true;
+    }
+
+    // Fewer pieces used than the level's theoretical minimum-ish -> more stars.
+    _computeStars() {
+        const min = (typeof levelMinPieces !== 'undefined' &&
+                     levelMinPieces[this._currentLevel]) || 1;
+        const used = this._piecesUsed;
+        if (used <= Math.ceil(min * 1.5)) return 3;
+        if (used <= Math.ceil(min * 2.5)) return 2;
+        return 1;
+    }
+
+    gotoLevelSelect() {
+        this.board.clearEffect();
+        this.setState(this.levelSelectState);
+    }
+
+    startLevel(index) {
+        if (index < 0 || index >= this._boardManager.mapData.length) {
+            return;
+        }
+        this._currentLevel = index;
+        this._piecesUsed = 0;
+        this._earnedStars = 0;
+        this.board.init();
+        this._boardManager.loadLevel(index);
+        this._score.init();
+        this.playState.init();
+        this.board.clearEffect();
+        this.setState(this.playState);
     }
 }
 

@@ -60,9 +60,41 @@ function createEmptyBoard() {
 }
 
 class LocalDB {
-    constructor(highScoreKey, savedBoardKey) {
+    constructor(highScoreKey, savedBoardKey, levelStarsKey) {
         this.DB_HIGH_SCORE = highScoreKey;
         this.DB_SAVED_BOARD = savedBoardKey;
+        this.DB_LEVEL_STARS = levelStarsKey; // may be undefined (arcade: no levels)
+    }
+
+    // --- per-level 3-star progress -----------------------------------------
+    // Stored as a JSON object { levelIndex: bestStars(1..3) }. A level is
+    // "unlocked" once the previous level has at least 1 star (level 0 always).
+    getLevelStars() {
+        if (!this.DB_LEVEL_STARS) return {};
+        try {
+            const raw = localStorage.getItem(this.DB_LEVEL_STARS);
+            return raw ? JSON.parse(raw) : {};
+        } catch (e) {
+            return {};
+        }
+    }
+
+    getStar(index) {
+        const stars = this.getLevelStars();
+        return stars[index] || 0;
+    }
+
+    setLevelStar(index, stars) {
+        if (!this.DB_LEVEL_STARS) return;
+        const all = this.getLevelStars();
+        if ((all[index] || 0) < stars) {
+            all[index] = stars;
+            localStorage.setItem(this.DB_LEVEL_STARS, JSON.stringify(all));
+        }
+    }
+
+    isUnlocked(index) {
+        return index <= 0 || this.getStar(index - 1) >= 1;
     }
 
     getScore() {
@@ -117,12 +149,12 @@ class ArcadeDB extends LocalDB {
 
 class PuzzleDB extends LocalDB {
     constructor() {
-        super('PZ_HIGH_SCORE', 'PZ_SAVED_BOARD');
+        super('PZ_HIGH_SCORE', 'PZ_SAVED_BOARD', 'PZ_LEVEL_STARS');
     }
 }
 
 class ItemTetrisDB extends LocalDB {
     constructor() {
-        super('ITEM_HIGH_SCORE', 'ITEM_SAVED_BOARD');
+        super('ITEM_HIGH_SCORE', 'ITEM_SAVED_BOARD', 'ITEM_LEVEL_STARS');
     }
 }

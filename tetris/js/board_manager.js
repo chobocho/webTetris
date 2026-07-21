@@ -83,6 +83,12 @@ class PuzzleBoardManager extends BoardManager {
         this.nextBoard();
     }
 
+    // Load a specific level's picture without advancing the index (level select).
+    loadLevel(index) {
+        this._index = index;
+        this._board.setColorBoardWithInt(this.mapData[index]);
+    }
+
     nextBoard() {
         this._index++;
         if (this._index >= this.mapData.length) {

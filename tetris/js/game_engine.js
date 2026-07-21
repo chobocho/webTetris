@@ -11,6 +11,7 @@ class GameEngine extends Observer {
     this.pauseState = new PauseGameState();
     this.gameoverState = new GameoverGameState();
     this.solveGameState = new SolveGameState();
+    this.levelSelectState = new LevelSelectGameState();
     this.state = this.initState;
     this._tick = 0;
     this._effect = 0;
@@ -133,9 +134,19 @@ class GameEngine extends Observer {
     if (this.tetris.isInitState()) {
       return;
     } else if (this.tetris.isSolveGameState()) {
-      this.tetris.solve();
+      // Success screen: Enter/Start advances to the next level (or level select).
+      let nx = this.tetris.getCurrentLevel() + 1;
+      if (nx < LEVEL_COUNT && this.tetris.isUnlocked(nx)) {
+        this.tetris.startLevel(nx);
+      } else {
+        this.tetris.gotoLevelSelect();
+      }
     } else if (this.tetris.isGameOverState()) {
-      this.tetris.idle();
+      if (this.tetris.isPuzzleMode() || this.tetris.isItemMode()) {
+        this.tetris.gotoLevelSelect();
+      } else {
+        this.tetris.idle();
+      }
     } else if (this.tetris.isIdleState() || this.tetris.isPauseState()) {
       this.tetris.start();
     }
@@ -172,7 +183,11 @@ class GameEngine extends Observer {
       let confirmNewGame = confirm("Do you want to start new game?");
 
       if (confirmNewGame) {
-        this.tetris.idle();
+        if (this.tetris.isPuzzleMode() || this.tetris.isItemMode()) {
+          this.tetris.gotoLevelSelect();
+        } else {
+          this.tetris.idle();
+        }
       }
     }
   }
@@ -206,6 +221,9 @@ class GameEngine extends Observer {
         break;
       case 5:
         this.state = this.solveGameState;
+        break;
+      case 6:
+        this.state = this.levelSelectState;
         break;
       default:
         console.log("Error: Unknown state ", state);
