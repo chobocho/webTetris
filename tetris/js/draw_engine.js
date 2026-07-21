@@ -648,7 +648,7 @@ class DrawEngine extends Observer {
     this.__drawKeypad();
 
     // --- item-mode animation FX ---
-    gFX.enabled = this.tetris.isItemMode();
+    gFX.enabled = this.tetris.isItemMode() || this.tetris.isArcadeMode();
     if (!gFX.enabled) {
       gFX.reset();
     } else {
