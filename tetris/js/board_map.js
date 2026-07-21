@@ -169,12 +169,80 @@ const chobochoMapString = [
     '{"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":11960904,"7":164360,"8":164360,"9":164360,"10":11960904,"11":0,"12":0,"13":14354984,"14":12782120,"15":12782440,"16":12782120,"17":14354984}',
 ];
 
-default_map.forEach( e => boardMap.push(JSON.parse(e)));
-shuffle(easyMapString);
-easyMapString.forEach( e => boardMap.push(JSON.parse(e)));
-shapeMapString.sort(() => Math.random() - 0.5);
-shapeMapString.forEach( e => boardMap.push(JSON.parse(e)));
-wordMapString.sort(() => Math.random() - 0.5);
-wordMapString.forEach( e => boardMap.push(JSON.parse(e)));
-// Not shuffled: keep the CHOBOCHO pair consecutive and in order.
-chobochoMapString.forEach( e => boardMap.push(JSON.parse(e)));
+// ---- Level campaign -------------------------------------------------------
+// Order every map easy -> hard and expose a STABLE list of LEVEL_COUNT levels
+// (no shuffle, so a level index always maps to the same picture). Difficulty
+// and the per-level star threshold are derived from the height-capped map that
+// is actually played (capMapHeight, util.js).
+
+const LEVEL_COUNT = 100;
+
+// Rows/columns of the map exactly as it will be played (after height cap).
+function _levelGrid(mapObj) {
+    const m = capMapHeight(mapObj);
+    const g = [];
+    for (let y = 0; y < board_height; y++) {
+        const line = m[y] || 0;
+        const row = [];
+        for (let x = 0; x < board_width; x++) {
+            row.push((line >> (x * 3)) & 0x7);
+        }
+        g.push(row);
+    }
+    return g;
+}
+
+// difficulty  : ranking key (empty cells to fill + how high obstacles reach)
+// minPieces   : ~min tetrominoes needed to clear the picture (star threshold)
+function _levelStats(mapObj) {
+    const g = _levelGrid(mapObj);
+    let solveWork = 0;
+    let topRow = board_height;
+    for (let y = 0; y < board_height; y++) {
+        let filled = 0;
+        let hasColor = false;
+        for (let x = 0; x < board_width; x++) {
+            const c = g[y][x];
+            if (c !== 0) filled++;
+            if (c >= 1 && c <= 7) hasColor = true;
+        }
+        if (filled > 0 && topRow === board_height) topRow = y;
+        if (hasColor) solveWork += (board_width - filled);
+    }
+    const reach = board_height - topRow;                 // stack height
+    const difficulty = solveWork + reach * 3;            // taller = harder
+    const minPieces = Math.max(1, Math.ceil(solveWork / 4)); // 4 cells / piece
+    return { difficulty, solveWork, minPieces };
+}
+
+// Gather every hand-made map, rank easy -> hard.
+const _allLevels = []
+    .concat(default_map, easyMapString, shapeMapString, wordMapString, chobochoMapString)
+    .map(s => {
+        const map = JSON.parse(s);
+        return { map: map, stats: _levelStats(map) };
+    });
+_allLevels.sort((a, b) =>
+    (a.stats.difficulty - b.stats.difficulty) ||
+    (a.stats.solveWork - b.stats.solveWork));
+
+// Keep LEVEL_COUNT levels spanning the full easy->hard range (drop extras
+// evenly so both the easiest and hardest survive).
+let _selectedLevels = _allLevels;
+if (_allLevels.length > LEVEL_COUNT) {
+    const drop = _allLevels.length - LEVEL_COUNT;
+    const dropSet = new Set();
+    for (let k = 0; k < drop; k++) {
+        dropSet.add(Math.round((k + 0.5) * _allLevels.length / drop));
+    }
+    _selectedLevels = _allLevels.filter((_, i) => !dropSet.has(i));
+    while (_selectedLevels.length > LEVEL_COUNT) _selectedLevels.pop();
+}
+
+// boardMap: the ordered level maps (fed to the board managers as today).
+// levelMinPieces: parallel array used later for 3-star scoring.
+boardMap = _selectedLevels.map(e => e.map);
+const levelMinPieces = _selectedLevels.map(e => e.stats.minPieces);
+
+console.log("[board_map] levels=" + boardMap.length +
+    " minPieces=[" + levelMinPieces[0] + ".." + levelMinPieces[levelMinPieces.length - 1] + "]");
